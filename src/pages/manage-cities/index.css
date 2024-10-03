@@ -1,0 +1,66 @@
+.manage-cities-page {
+  margin-top: 20px;
+  margin-bottom: 35px;
+}
+.manage-cities-page-header {
+  display: flex;
+  align-items: center;
+}
+.manage-cities-page-header > div {
+  background-color: #f7801a;
+  width: 16px;
+  height: 32px;
+  border-radius: 4px;
+}
+.manage-cities-page-header > p {
+  color: #1a1d1f;
+  font-family: "Poppins";
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+.manage-cities-add-btn {
+  background-color: #f7801a !important;
+  height: 40px !important;
+  border-radius: 8px !important;
+  width: 100%;
+  color: #ffffff !important;
+  font-family: "Poppins" !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-transform: capitalize !important;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-header > p {
+  color: #16151c;
+  font-family: "Switzer-Semibold";
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.modal-header > img {
+  cursor: pointer;
+}
+.modal-sub-heading {
+  color: #16151c;
+  font-family: "Switzer-Semibold";
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.manage-cities-save-btn {
+  background-color: #f7801a !important;
+  height: 56px !important;
+  border-radius: 10px !important;
+  width: 100%;
+  color: #ffffff !important;
+  font-family: "Switzer-Regular" !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  text-transform: capitalize !important;
+  margin-top: 20px !important;
+}
