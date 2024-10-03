@@ -1,0 +1,35 @@
+.or-main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.or-main > div {
+  height: 1px;
+  background-color: #2f324b;
+  display: flex;
+  flex: 1;
+}
+.or-main > p {
+  color: #2c5ebf;
+  font-family: "Work Sans";
+  font-size: 13.08px;
+  font-weight: 400;
+  margin: 0px 10px;
+}
+.social-button {
+  background-color: #f5f5f5 !important;
+  height: 50px !important;
+  border-radius: 10px !important;
+  width: 100% !important;
+  margin-top: 15px !important;
+}
+.social-button > p {
+  font-family: "Switzer-Regular";
+  font-size: 13px;
+  font-weight: 400;
+  color: #191919;
+  text-transform: none !important;
+  margin-left: 10px;
+}

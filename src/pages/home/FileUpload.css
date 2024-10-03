@@ -1,0 +1,29 @@
+/* FileUpload.css */
+.dropzone {
+  border: 1px dashed #f7801a;
+  height: 133px;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.dropzone.active {
+  border-color: #f7801a;
+  background-color: #f0f8ff;
+}
+
+/* .dropzone p {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+} */
+
+.file-drag-main{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

@@ -1,0 +1,39 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+button {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+}
+input,
+textarea {
+  border: none;
+  outline: none;
+  background: none;
+}
+body {
+  background-color: #fff;
+}
+@font-face {
+  font-family: "Switzer-Regular";
+  src: url("./fonts/Switzer-Regular.otf");
+}
+@font-face {
+  font-family: "Switzer-Light";
+  src: url("./fonts/Switzer-Light.otf");
+}
+@font-face {
+  font-family: "Switzer-Semibold";
+  src: url("./fonts/Switzer-Semibold.otf");
+}
+@font-face {
+  font-family: "Switzer-Bold";
+  src: url("./fonts/Switzer-Bold.otf");
+}
+@font-face {
+  font-family: "Switzer-Medium";
+  src: url("./fonts/Switzer-Medium.otf");
+}
