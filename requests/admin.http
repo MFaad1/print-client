@@ -1,0 +1,68 @@
+@baseUrl = http://localhost:5000/api/admin
+
+### Create Admin
+POST {{baseUrl}}/create-admin
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "password"
+}
+
+### Login Admin
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "johndoe@example.com",
+  "password": "password"
+}
+
+### Get Customers
+GET {{baseUrl}}/customers
+Authorization: Bearer {{token}}
+
+### Get Customer by ID
+GET {{baseUrl}}/customers/5f8d9f6c8b3a2c001d1e7c3e
+Authorization: Bearer {{token}}
+
+### Delete Customer by ID
+DELETE {{baseUrl}}/customers/5f8d9f6c8b3a2c001d1e7c3e
+Authorization: Bearer {{token}}
+
+### Get Print Agents
+GET {{baseUrl}}/print-agents
+Authorization: Bearer {{token}}
+
+### Get Print Agent by ID
+GET {{baseUrl}}/print-agents/5f8d9f6c8b3a2c001d1e7c3e
+Authorization: Bearer {{token}}
+
+### Delete Print Agent by ID
+DELETE {{baseUrl}}/print-agents/5f8d9f6c8b3a2c001d1e7c3e
+Authorization: Bearer {{token}}
+
+### Create Location
+POST {{baseUrl}}/locations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "city": "New York",
+  "state": "NY",
+  "zip_code": "10001",
+  "country": "USA"
+}
+
+### edit location
+PUT {{baseUrl}}/locations/5f8d9f6c8b3a2c001d1e7c3e
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "city": "New York",
+  "state": "NY",
+  "zip_code": "10001",
+  "country": "USA"
+}

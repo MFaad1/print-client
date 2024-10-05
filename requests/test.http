@@ -1,0 +1,59 @@
+@baseUrl = http://localhost:3000
+
+POST {{baseUrl}}/api/auth/customer/login
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "12345678"
+}
+
+###
+POST {{baseUrl}}/api/auth/customer/signup
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "12345678"
+}
+
+###
+POST {{baseUrl}}/api/auth/customer/verify-otp
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "otp": "viTgwI"
+}
+
+### print-agent auth
+POST {{baseUrl}}/api/auth/print-agent/signup
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "12345678",
+  "full_name": "test",
+  "business_name": "test",
+  "business_type": "Cafe"
+}
+
+###
+POST {{baseUrl}}/api/auth/print-agent/verify-otp
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "otp": "1eLYUj"
+}
+
+###
+# @name printlogin
+POST {{baseUrl}}/api/auth/print-agent/login
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "12345678"
+}
+

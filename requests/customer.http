@@ -1,0 +1,36 @@
+@baseUrl = http://localhost:3000
+POST {{baseUrl}}/api/customer/create-card
+Content-Type: application/json
+Authorization: Bearer {{customerlogin.response.body.$.token}}
+
+{
+  "card": {
+    "bank_name": "Bank",
+    "card_number": "1r34567812345678",
+    "expiry_date": "12/23",
+    "phone_number": "123-456-7890"
+  }
+}
+
+###
+POST {{baseUrl}}/api/auth/customer/login
+Content-Type: application/json
+
+{
+  "email": "fullmetal2336@gmail.com",
+  "password": "12345678"
+}
+
+###
+POST {{baseUrl}}/api/customer/create-card
+Content-Type: application/json
+Authorization: Bearer {{customerlogin.response.body.$.token}}
+
+{
+  "card": {
+    "bank_name": "Bank",
+    "card_number": "1r34567812345678",
+    "expiry_date": "12/23",
+    "phone_number": "123-456-7890"
+  }
+}

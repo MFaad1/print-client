@@ -1,0 +1,58 @@
+@baseUrl = http://localhost:3000
+###
+POST {{baseUrl}}/api/print-agent/additional-info
+Content-Type: application/json
+Authorization: Bearer {{printlogin.response.body.$.token}}
+
+{
+  "email": "fullmetal2336@gmail.com",
+  "personal_info": "Some info",
+  "location": {
+    "address": "123 Street",
+    "city": "City",
+    "state": "State",
+    "zip_code": "12345",
+    "country": "Country"
+  },
+  "personal_phone_number": "123-456-7890",
+  "card": {
+    "ref_type": "PrintAgent",
+    "bank_name": "Bank",
+    "card_number": "1r34567812345678",
+    "expiry_date": "12/23",
+    "phone_number": "123-456-7890"
+  }
+}
+
+###
+POST {{baseUrl}}/api/print-agent/create-card
+Content-Type: application/json
+Authorization: Bearer {{printlogin.response.body.$.token}}
+
+{
+  "email": "fullmetal2336@gmail.com",
+  "card": {
+    "bank_name": "Bank",
+    "card_number": "1r34567812345678",
+    "expiry_date": "12/23",
+    "phone_number": "123-456-7890"
+  }
+}
+
+###
+POST {{baseUrl}}/api/print-agent/add-location
+Content-Type: application/json
+Authorization: Bearer {{printlogin.response.body.$.token}}
+
+{
+  "location": {
+    "city": "City",
+    "state": "State",
+    "zip_code": "12345",
+    "country": "Country",
+    "coordinates": {
+      "latitude": 12.34,
+      "longitude": 12.34
+    }
+  }
+}
