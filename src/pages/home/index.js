@@ -1498,6 +1498,7 @@ console.log(Printed_file, "Printed_file")
           }}
         />
       </Model>
+
       {/* Password update Successful */}
       <Model
         open={passwordUpdateSuccModal}
@@ -1520,6 +1521,9 @@ console.log(Printed_file, "Printed_file")
           }}
         />
       </Model>
+
+
+
       {/* Link your bank account */}
       <Model
         open={linkBankAccountModal}
@@ -1570,6 +1574,9 @@ console.log(Printed_file, "Printed_file")
           }}
         />
       </Model>
+
+
+      
       {/* Send Money */}
       <Model
         open={sendMoneyModal}
