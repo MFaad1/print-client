@@ -62,6 +62,8 @@ const SideMenuData = () => {
                     <span className="side-menu-page-title">orders management</span>
                   </Button>
                 </li>
+
+
                 <li className="side-menu-list-item">
                   <Button
                     variant="text"
@@ -78,6 +80,28 @@ const SideMenuData = () => {
                     <span className="side-menu-page-title">customer management</span>
                   </Button>
                 </li>
+
+
+
+                <li className="side-menu-list-item">
+                  <Button
+                    variant="text"
+                    className={
+                      CurrentPagePath === "/agent-management"
+                        ? "side-menu-active-page"
+                        : "side-menu-page"
+                    }
+                    onClick={() => {
+                      navigate("/agent-management");
+                    }}
+                  >
+                    <img src={CustomerManagement} />
+                    <span className="side-menu-page-title">Agent management</span>
+                  </Button>
+                </li>
+
+
+                
                 <li className="side-menu-list-item">
                   <Button
                     variant="text"

@@ -7,6 +7,7 @@ import {
   ManageCities,
   Login,
   Support,
+  AgentManagement
 } from "../../pages";
 const RouterNavigation = () => {
   return (
@@ -16,6 +17,7 @@ const RouterNavigation = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/orders-management" element={<OrdersManagement />} />
         <Route path="/customer-management" element={<CustomerManagement />} />
+        <Route path="/agent-management" element={<AgentManagement />} />
         <Route path="/manage-cities" element={<ManageCities />} />
         <Route path="/support" element={<Support />} />
       </Routes>

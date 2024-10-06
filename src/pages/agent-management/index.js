@@ -10,12 +10,11 @@ import TableRow from "@mui/material/TableRow";
 import { SideMenu } from "../../components";
 import Button from "@mui/material/Button";
 import { FaCheck } from "react-icons/fa";
-import { Edit, Delete } from "./../../svg";
+import { Edit, Delete } from "../../svg";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader/Loader";
-import Agentmodel from "./Agent-model";
-
+import Agentmodel from "../agent-management/Agent-model";
 
 
 const columns = [
@@ -43,22 +42,22 @@ const columns = [
   },
 ];
 
-const CustomerManagement = () => {
+const AgentManagement = () => {
   let agent_token = localStorage.getItem("admin_access_token")
-
-
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [loading, setloading] = useState(false);
 
   const [page, setPage] = React.useState(0);
+  const [edit_value, setedit_value] = useState();
+  const [modal, setModal] = useState(false);
+
+
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
-
-  const [edit_value, setedit_value] = useState();
-  const [modal, setModal] = useState(false);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -238,26 +237,27 @@ const CustomerManagement = () => {
 
       if (!agent_token) throw new Error("Please re-login and try again")
       setloading(true)
-      let orders = await axios.get(`${process.env.REACT_APP_API_URL}/admin/customers`, {
+      let orders = await axios.get(`${process.env.REACT_APP_API_URL}/admin/print-agents`, {
         headers: {
           Authorization: `Bearer ${agent_token}`
         }
       });
 
+      console.log(orders, "order")
 
-      const dynamicOrders = orders.data.customers.map((job) => ({
+      const dynamicOrders = orders.data.printAgents.map((job) => ({
         isSelected: false,
         id: job._id,
         customerName: job.full_name,
         email: job.email,
-        // price: job.total_cost,
         createdDate: new Date(job.created_at).toLocaleDateString(),
+
+        businessName: job.business_name,
+        businessType: job.business_type,
         ...job,
       }));
 
       setOrdersList((prevOrders) => [...dynamicOrders]);
-
-
 
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -288,7 +288,7 @@ const CustomerManagement = () => {
     try {
 
       if (!id) return
-      let orders = await axios.delete(`${process.env.REACT_APP_API_URL}/admin/customers/${id}`, {
+      let orders = await axios.delete(`${process.env.REACT_APP_API_URL}/admin/print-agents/${id}`, {
         headers: {
           Authorization: `Bearer ${agent_token}`
         }
@@ -314,12 +314,13 @@ const CustomerManagement = () => {
 
 
 
+  console.log(modal, "modal")
 
   return (
     <SideMenu>
       <div className="page-header">
         <div />
-        <p>Customer Management</p>
+        <p>Agent Management</p>
       </div>
       <Paper sx={{ width: "100%" }} style={{ backgroundColor: "#fff" }}>
         <TableContainer sx={{ maxHeight: "70vh" }}>
@@ -401,7 +402,6 @@ const CustomerManagement = () => {
                                     }}
                                   />
                                 )}
-
                               </Button>
                             </TableCell>
                             <TableCell>
@@ -453,9 +453,10 @@ const CustomerManagement = () => {
           />}
       </Paper>
 
+
       <Agentmodel setModal={setModal} modal={modal} edit_value={edit_value} get_Orders={get_Orders} />
 
     </SideMenu>
   );
 };
-export default CustomerManagement;
+export default AgentManagement;

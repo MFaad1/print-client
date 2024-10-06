@@ -11,12 +11,14 @@ const Input = ({
   onChange,
   show,
   passwordHideShowHandler,
+  name
 }) => {
   return (
     <div>
       <p className="input-title">{title}</p>
       <div className="input-main">
         <input
+        name={name}
           type={type}
           placeholder={placeholder}
           value={value}

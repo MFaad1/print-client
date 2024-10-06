@@ -79,6 +79,7 @@ export const SideMenu = (props) => {
                               <CloseIcon />
                             </IconButton>
                           </div>
+
                           <div className="side-menu-data-list-main">
                             <ul className="side-menu-ul">
                               <li className="side-menu-list-item">
@@ -117,6 +118,8 @@ export const SideMenu = (props) => {
                                   </span>
                                 </Button>
                               </li>
+
+
                               <li className="side-menu-list-item">
                                 <Button
                                   variant="text"
@@ -135,6 +138,30 @@ export const SideMenu = (props) => {
                                   </span>
                                 </Button>
                               </li>
+
+
+                              <li className="side-menu-list-item">
+                                <Button
+                                  variant="text"
+                                  className={
+                                    CurrentPagePath === "/agent-management"
+                                      ? "side-menu-active-page"
+                                      : "side-menu-page"
+                                  }
+                                  onClick={() => {
+                                    navigate("/agent-management");
+                                  }}
+                                >
+                                  <img src={CustomerManagement} />
+                                  <span className="side-menu-page-title">
+                                    Agent management
+                                  </span>
+                                </Button>
+                              </li>
+
+
+
+
                               <li className="side-menu-list-item">
                                 <Button
                                   variant="text"
@@ -174,6 +201,9 @@ export const SideMenu = (props) => {
                               <br />
                             </ul>
                           </div>
+
+
+                          
                           <div className="side-menu-footer-container">
                             <Button
                               variant="text"
