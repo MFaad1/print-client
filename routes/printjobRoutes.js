@@ -29,7 +29,22 @@ const calculateCost = (pages) => {
   return pages * 10;
 };
 
-const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Specify the destination directory
+    cb(null, 'uploads/'); // Ensure this folder exists
+  },
+  filename: (req, file, cb) => {
+    // Specify the file naming convention
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+
+// const upload = multer({ dest: "uploads/" });
+
+const upload = multer({ storage })
+
 
 router.post(
   "/create-print-job",
@@ -38,7 +53,7 @@ router.post(
   async (req, res) => {
     try {
       const { print_job_title, print_job_description } = req.body;
-
+console.log(req.file, "file")
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
       }
