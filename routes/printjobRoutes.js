@@ -16,8 +16,7 @@ const multer = require("multer");
 const util = require("util");
 const cloudinary = require("cloudinary").v2;
 
-const unlinkFile = util.promisify(fs.unlink);;
-const path = require('path');
+const unlinkFile = util.promisify(fs.unlink);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -30,25 +29,10 @@ const calculateCost = (pages) => {
   return pages * 10;
 };
 
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // Specify the destination directory
-    cb(null, 'uploadsDir '); // Ensure this folder exists
-  },
-  filename: (req, file, cb) => {
-    // Specify the file naming convention
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
 
 
-// const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/" });
 
-const upload = multer({ storage })
 
 
 
