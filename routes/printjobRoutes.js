@@ -191,7 +191,10 @@ router.post("/initiate-payment", verifyToken("customer"), async (req, res) => {
         transporter,
       );
 
+      console.log(printJob.print_agent_id, "printJob")
       const printAgent = await PrintAgent.findById(printJob.print_agent_id);
+      console.log(printAgent, "agent")
+
       const printAgentEmailPromise = sendPrintAgentNotificationEmail(
         printAgent.email,
         printAgent.full_name,

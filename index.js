@@ -23,6 +23,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/print-agent", printAgentRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/printjob", printJobRoutes);
+app.use('/',(req, res)=>{res.send('Api working')})
+
 
 mongoose
   .connect(process.env.MONGO_URL, {
