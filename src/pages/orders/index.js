@@ -44,11 +44,11 @@ const columns = [
     label: "Created Date",
     minWidth: 120,
   },
-  {
-    id: "Action",
-    label: "Action",
-    minWidth: 100,
-  },
+  // {
+  //   id: "Action",
+  //   label: "Action",
+  //   minWidth: 100,
+  // },
 ];
 
 const Orders = () => {
@@ -217,13 +217,13 @@ const Orders = () => {
         isSelected: false,
         customerName: job.customer_id,
         pages: job.pages,
-        fileType: job.file_path.endsWith('.pdf') ? 'PDF' : 'Unknown',
+        fileType: job.file_path.split('.').pop().toUpperCase(),
         price: job.total_cost,
         status: job.payment_status.charAt(0).toUpperCase() + job.payment_status.slice(1),
         createdDate: new Date(job.created_at).toLocaleDateString(),
       }));
 
-      setOrdersList((prevOrders) => [...prevOrders, ...dynamicOrders]);
+      setOrdersList((prevOrders) => [...dynamicOrders]);
 
 
 
@@ -391,7 +391,7 @@ const Orders = () => {
                             <TableCell>
                               <p className="order-table-text">{row.createdDate}</p>
                             </TableCell>
-
+{/* 
                             <TableCell>
                               <Button className="order-table-action-btn">
                                 <img src={Edit} />
@@ -402,7 +402,9 @@ const Orders = () => {
                               >
                                 <img src={Delete} />
                               </Button>
-                            </TableCell>
+                            </TableCell> */}
+
+
                           </TableRow>
                         );
                       })}

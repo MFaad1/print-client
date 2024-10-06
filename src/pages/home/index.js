@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   Footer,
@@ -42,6 +42,9 @@ import OtpInput from "react-otp-input";
 import { MdOutlineRadioButtonUnchecked } from "react-icons/md";
 import { MdOutlineRadioButtonChecked } from "react-icons/md";
 import axios from "axios";
+import FileRenderer from "../../components/Docs_rendered/FileRenderer";
+import PaymentModal from "../../components/PaymentModal";
+import PaymentForm from "../../components/PaymentForm";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const emailRjx =
@@ -53,26 +56,18 @@ const Home = () => {
   const [printEmail, setPrintEmail] = useState("");
   const [printFile, setPrintFile] = useState("");
   const [printText, setPrintText] = useState("");
-  const printSubmitHandler = () => {
-    if (printName === "") {
-      toast.error("Print Job Title is required!");
-    } else if (printEmail === "") {
-      toast.error("Print Email is required!");
-    } else if (!printEmail.match(emailRjx)) {
-      toast.error("Please enter valid email address");
-    } else if (printFile === "") {
-      toast.error("Print Files is required!");
-    } else if (printText === "") {
-      toast.error("Print text is required!");
-    } else {
-      toast.success("Successfully submitted");
-      setPrintName("");
-      setPrintEmail("");
-      setPrintFile("");
-      setPrintText("");
-      setSignUpModal(true);
-    }
-  };
+  const [files, setfiles] = useState([]);
+
+
+  let agent_token = localStorage.getItem("use_access_token")
+  let user  = localStorage.getItem("loggedIn_user");
+  let loggedIn_use;
+  if(user){
+    loggedIn_use = JSON.parse(user)
+  }
+
+
+
   // log in
   const [loginModal, setLoginModal] = useState(false);
   const [loginType, setLoginType] = useState("Customer");
@@ -87,16 +82,24 @@ const Home = () => {
   const [businessname, setbusinessname] = useState("");
   const [business_type, setbusiness_type] = useState("");
   const [zip_code, setzip_code] = useState("");
-  
+
   const [signupEmail, setSignUpEmail] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
   const [showSignUpPassowrd, setShowSignUpPassowrd] = useState(false);
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
-  const [showSignUpComfirmPassowrd, setShowSignUpComfirmPassowrd] =useState(false);
-  const [forgetEmail, setforgetEmail] =useState("");
+  const [showSignUpComfirmPassowrd, setShowSignUpComfirmPassowrd] = useState(false);
+  const [forgetEmail, setforgetEmail] = useState("");
+
+  const [card, setCard] = useState({
+    bank_name: '',
+    card_number: '',
+    expiry_date: '',
+    phone_number: '',
+    cvv: ''
+  });
 
 
- 
+
   // Confirm your email
   const [confirmEmailModal, setConfirmEmailModal] = useState(false);
 
@@ -118,7 +121,7 @@ const Home = () => {
   {
     /* Code Sent Successfully! */
   }
-  const [codeSendSuccessfyllyModal, setCodeSendSuccessfyllyModal] =useState(false);
+  const [codeSendSuccessfyllyModal, setCodeSendSuccessfyllyModal] = useState(false);
   // Searching Print Agents in your area
   const [searchingModal, setSearchingModal] = useState(false);
   const defaultProps = {
@@ -129,26 +132,30 @@ const Home = () => {
     zoom: 11,
   };
   const [selectedCurrentLocation, setSelectedCurrentLocaiton] = useState();
-  const currentLocationList = [
-    {
-      heading: "Second Cup",
-      location: "St. 311, David Road, USA",
-      time: "Open Weds at 0800 PM",
-      distance: "6 mile away",
-    },
-    {
-      heading: "Mall A One",
-      location: "St. 311, David Road, USA",
-      time: "Open Weds at 0800 PM",
-      distance: "6 mile away",
-    },
-    {
-      heading: "Jupitar Mall",
-      location: "St. 311, David Road, USA",
-      time: "Open Weds at 0800 PM",
-      distance: "6 mile away",
-    },
-  ];
+
+
+  // const currentLocationList = [
+  //   {
+  //     heading: "Second Cup",
+  //     location: "St. 311, David Road, USA",
+  //     time: "Open Weds at 0800 PM",
+  //     distance: "6 mile away",
+  //   },
+  //   {
+  //     heading: "Mall A One",
+  //     location: "St. 311, David Road, USA",
+  //     time: "Open Weds at 0800 PM",
+  //     distance: "6 mile away",
+  //   },
+  //   {
+  //     heading: "Jupitar Mall",
+  //     location: "St. 311, David Road, USA",
+  //     time: "Open Weds at 0800 PM",
+  //     distance: "6 mile away",
+  //   },
+  // ];
+
+
   {
     /* Receipt from Print to Point, LLC */
   }
@@ -168,137 +175,370 @@ const Home = () => {
   // Send Money
   const [sendMoneyType, setSendMoneyType] = useState("To Yourself");
   const [sendMoneyModal, setSendMoneyModal] = useState(false);
+  const [currentLocationList, setcurrentLocationList] = useState([]);
+  const [selectedAgent, setSelectedAgent] = useState(null);
 
-const otp_verifyHandler = async()=>{
-  try {
-    let signup_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/customer/verify-otp`,{email:signupEmail, otp: otp })
-    setPrintJobModal(true);
-  } catch (error) {
-   if (error.response && error.response.data && error.response.data.message) {
-    toast.error(error.response.data.message);
-  } else {
-    toast.error("Internal server error");
-  }  
+  const [Printed_file, setPrinted_file] = useState(
 
-  }
+    // {
+    //   created_at: "2024-10-04T19:30:32.662Z",
+    //   customer_id: "66e0a7a5eb12ada0047ecd23",
+    //   file_path: "https://res.cloudinary.com/dkgvo62xy/image/upload/v1728070231/print_jobs/7660daf17dbb0030bcc4995b81621755_e1omha.pdf",
+    //   pages: 2,
+    //   payment_status: "pending",
+    //   print_job_description: "dsafasdfasdf",
+    //   print_job_title: "sdaafasd",
+    //   total_cost: 20,
+    //   updated_at: "2024-10-04T19:30:32.662Z",
+    //   __v: 0,
+    //   _id: "670042582ba2672d1d058ad8",
+    // }
 
-}
+  );
 
 
-const signUpHandler = async () => {
-  if (fullName === "") {
-    toast.error("Full name is required!");
-  } else if (signupEmail === "") {
-    toast.error("Email is required!");
-  } else if (!signupEmail.match(emailRjx)) {
-    toast.error("Please enter valid email address");
-  } else if (signUpPassword === "") {
-    toast.error("Password is required!");
-  } else if (signUpConfirmPassword === "") {
-    toast.error("Confirm password is required!");
-  } else if (signUpConfirmPassword !== signUpPassword) {
-    toast.error("Confirm password doesn't match!");
-  } else {
+
+  const [numPages, setNumPages] = useState(null);
+
+
+  const otp_verifyHandler = async () => {
     try {
-      let CustomerFlag = loginType === "Customer"
-
- let url = CustomerFlag? "/auth/customer/signup" : "/auth/print-agent/signup"
-     let CustomerDetails = {}
-if(CustomerFlag){
-CustomerDetails = {full_name: fullName,email:signupEmail, password: signUpPassword }
-}
-else {
-  if(!businessname) return toast.error("Business name is required");
-  if(!business_type) return toast.error("Business Type is required");
-  if(!zip_code) return toast.error("Zip code is required");
-  CustomerDetails = {full_name: fullName,email:signupEmail, password: signUpPassword,business_name:businessname,business_type,zip_code }
-
-}
-
-      
-    let signup_user = await axios.post(`${process.env.REACT_APP_API_URL+url}`,CustomerDetails)
-
-    toast.success("Successfully created new account");
-    setFullName("");
-    // setSignUpEmail("");
-    setSignUpPassword("");
-    setSignUpConfirmPassword("");
-    setSignUpModal(false);
-    setConfirmEmailModal(true);
-    } catch (error) {
-  
-   if (error.response && error.response.data && error.response.data.message) {
-    toast.error(error.response.data.message);
-    console.log(error.response.data.message)
-  } else {
-    toast.error("Internal server error");
-  }  
-      
-    }
-
-
-  }
-};
-
-
-
-// login handler
-const loginHandler = async() => {
-  if (loginEmail === "") {
-    toast.error("Email is required!");
-  } else if (!loginEmail.match(emailRjx)) {
-    toast.error("Please enter valid email address");
-  } else if (loginPassword === "") {
-    toast.error("Password is required!");
-  } else {
-
-let AgentFlag = loginType === "Agent"
-
-let URL = AgentFlag ? "/auth/print-agent/login" : "/auth/customer/login"
-
-
-
-    try {
-    let signup_user = await axios.post(`${process.env.REACT_APP_API_URL+URL}`,{email:loginEmail, password: loginPassword })
-    let token = signup_user.data.token
-console.log(token, "token")
-      
-    localStorage.setItem(AgentFlag ? "Agent_access_token" : "use_access_token",token )
-
-    toast.success("Successfully Logged");
-    setLoginEmail("");
-    setLoginPassword("");
-    setLoginModal(false);
-    if (loginType === "Agent") {
-      navigate("/dashboard");
-    }
+      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/customer/verify-otp`, { email: signupEmail, otp: otp })
+      setPrintJobModal(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
       } else {
         toast.error("Internal server error");
-      }  
+      }
+
     }
 
   }
-};
 
 
-const agent_otp = async()=>{
-  try {
-    console.log('funciton called')
-    let signup_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/print-agent/verify-otp`,{email:signupEmail, otp: otp })
-    setLinkBankAccountModal(true);
-  } catch (error) {
-   if (error.response && error.response.data && error.response.data.message) {
-    toast.error(error.response.data.message);
-  } else {
-    toast.error("Internal server error");
-  }  
+  const signUpHandler = async () => {
+    if (fullName === "") {
+      toast.error("Full name is required!");
+    } else if (signupEmail === "") {
+      toast.error("Email is required!");
+    } else if (!signupEmail.match(emailRjx)) {
+      toast.error("Please enter valid email address");
+    } else if (signUpPassword === "") {
+      toast.error("Password is required!");
+    } else if (signUpConfirmPassword === "") {
+      toast.error("Confirm password is required!");
+    } else if (signUpConfirmPassword !== signUpPassword) {
+      toast.error("Confirm password doesn't match!");
+    } else {
+      try {
+        let CustomerFlag = loginType === "Customer"
+
+        let url = CustomerFlag ? "/auth/customer/signup" : "/auth/print-agent/signup"
+        let CustomerDetails = {}
+        if (CustomerFlag) {
+          CustomerDetails = { full_name: fullName, email: signupEmail, password: signUpPassword }
+        }
+        else {
+          if (!businessname) return toast.error("Business name is required");
+          if (!business_type) return toast.error("Business Type is required");
+          if (!zip_code) return toast.error("Zip code is required");
+          CustomerDetails = { full_name: fullName, email: signupEmail, password: signUpPassword, business_name: businessname, business_type, zip_code }
+
+        }
+
+
+        let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + url}`, CustomerDetails)
+
+        toast.success("Successfully created new account");
+        setFullName("");
+        // setSignUpEmail("");
+        setSignUpPassword("");
+        setSignUpConfirmPassword("");
+        setSignUpModal(false);
+        setConfirmEmailModal(true);
+      } catch (error) {
+
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message);
+          console.log(error.response.data.message)
+        } else {
+          toast.error("Internal server error");
+        }
+
+      }
+
+
+    }
+  };
+
+
+
+  // login handler
+  const loginHandler = async () => {
+    if (loginEmail === "") {
+      toast.error("Email is required!");
+    } else if (!loginEmail.match(emailRjx)) {
+      toast.error("Please enter valid email address");
+    } else if (loginPassword === "") {
+      toast.error("Password is required!");
+    } else {
+
+      let AgentFlag = loginType === "Agent"
+
+      let URL = AgentFlag ? "/auth/print-agent/login" : "/auth/customer/login"
+
+
+
+      try {
+        let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: loginEmail, password: loginPassword })
+        let token = signup_user.data.token
+
+        localStorage.setItem(AgentFlag ? "Agent_access_token" : "use_access_token", token)
+        localStorage.setItem(AgentFlag ? "agent_loggedIn_user" : "loggedIn_user", JSON.stringify(signup_user.data.customer))
+        toast.success("Successfully Logged");
+        setLoginEmail("");
+        setLoginPassword("");
+        setLoginModal(false);
+        if (loginType === "Agent") {
+          navigate("/dashboard");
+
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Internal server error");
+        }
+      }
+
+    }
+  };
+
+
+  const agent_otp = async () => {
+    try {
+      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/print-agent/verify-otp`, { email: signupEmail, otp: otp })
+      setLinkBankAccountModal(true);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Internal server error");
+      }
+
+    }
 
   }
 
-}
+  const printSubmitHandler = async () => {
+
+    if (!agent_token) return toast.error('Please login your account and then try')
+
+    if (printName === "") {
+      toast.error("Print Job Title is required!");
+    } else if (printEmail === "") {
+      return toast.error("Print Email is required!");
+    }
+
+    // else if (!printEmail.match(emailRjx)) {
+    //   return toast.error("Please enter valid email address");
+    // } 
+
+
+    // else if (printFile === "") {
+    //   toast.error("Print Files is required!");
+
+    // } 
+
+    else if (printText === "") {
+      return toast.error("Print text is required!");
+    }
+    else if (!files.length > 0) return toast.error('Please select the relevant files.')
+
+    else {
+      const formData = new FormData();
+      try {
+
+        files.forEach((file) => {
+          formData.append("file", file);
+        });
+        formData.append("print_job_title", printName);
+        formData.append("print_job_description", printText);
+
+
+        let orders = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/create-print-job`, formData, {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+            "Content-Type": "multipart/form-data",
+
+          }
+        });
+
+
+        setPrinted_file(orders.data.printJob)
+
+        setPrintJobModal(true)
+
+
+
+        toast.success("Successfully submitted");
+        setPrintName("");
+        setPrintEmail("");
+        setPrintFile("");
+        setPrintText("");
+        setSignUpModal(true);
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          toast.error(error.response.data.message);
+          console.log(error.response.data.message)
+        }
+
+        else if (error.message) {
+          toast.error(error.message);
+        }
+        else {
+          toast.error("Internal server error");
+        }
+      }
+
+
+
+    }
+
+
+
+  };
+
+  const Add_card = async () => {
+    try {
+
+      if (!agent_token) throw new Error("Please re-login and try again")
+
+      let orders = await axios.post(`${process.env.REACT_APP_API_URL}/customer/create-card`, { card: card }, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`
+        }
+      });
+
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message)
+      }
+
+      else if (error.message) {
+        toast.error(error.message);
+      }
+      else {
+        toast.error("Internal server error");
+      }
+    }
+  }
+
+  const get_nearby_location = async () => {
+    let loggedIn_use = localStorage.getItem("loggedIn_user");
+    try {
+      if (!agent_token) throw new Error("Please re-login and try again");
+      if (!loggedIn_use) throw new Error("Login to your account");
+      let parsedLoggedInUser = JSON.parse(loggedIn_use);
+
+      if (!parsedLoggedInUser?.location?.zip_code) throw new Error("Please Add your location");
+
+      let orders = await axios.get(`${process.env.REACT_APP_API_URL}/customer/available-print-agents`, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`
+        }
+      });
+
+      let availableAgents = orders.data.availablePrintAgents.flat();
+      console.log(availableAgents, "availableAgents")
+      if (!Array.isArray(availableAgents) || availableAgents.length === 0) return;
+      let filteredAgents = availableAgents.filter((agent) => {
+
+        console.log(agent)
+        return agent?.location?.zip_code === parsedLoggedInUser.location.zip_code;
+
+
+      });
+
+      setcurrentLocationList(filteredAgents)
+      console.log(filteredAgents, "filteredAgents");
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("Internal server error");
+      }
+    }
+  };
+
+
+  useEffect(() => {
+    get_nearby_location()
+  }, [])
+
+
+  const selectPrintAgent = async () => {
+    let loggedIn_use = localStorage.getItem("loggedIn_user");
+
+    try {
+      // Validation Checkpoints
+      if (!selectedAgent) throw new Error("No agent selected");
+      if (!agent_token) throw new Error("User is not authenticated. Please login again.");
+      if (!Printed_file) throw new Error("Print Job not found, Please re-create.");
+      // let parsedLoggedInUser = JSON.parse(loggedIn_use);
+
+
+      let orders = await axios.get(`${process.env.REACT_APP_API_URL}/customer/available-print-agents`, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`
+        }
+      })
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/select-print-agent/${Printed_file?._id}`,
+        {
+          print_agent_id: selectedAgent._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setSearchingModal(false);
+      setPaymentModal(true)
+
+
+      toast.success("Print agent selected successfully!");
+      console.log(response.data);
+
+    } catch (error) {
+
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("Internal server error");
+      }
+    }
+  };
+
+  const maskEmail = (email) => {
+    if(!email) return 
+    const [name, domain] = email.split("@");
+    const maskedName = name.slice(0, 2) + "*".repeat(name.length - 2);
+    return `${maskedName}@${domain}`;
+  };
+
+
+console.log(Printed_file, "Printed_file")
+
 
   return (
     <div>
@@ -314,13 +554,13 @@ const agent_otp = async()=>{
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                 <div className="home-box-left">
                   <p className="home-box-left-title">
-                  Your printing solution...
+                    Your printing solution...
                   </p>
                   <p
                     className="home-box-left-title" id="home-box-left-title"
                     style={{ marginBottom: "30px" }}
                   >
-                 when you need it most
+                    when you need it most
                   </p>
                   {/* <p className="home-box-left-text">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -353,6 +593,9 @@ const agent_otp = async()=>{
               </Grid>
 
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+
+
+
                 <div className="home-form-main">
                   <p className="home-input-title">Print Job Title</p>
                   <div className="home-input-main">
@@ -373,7 +616,8 @@ const agent_otp = async()=>{
                     />
                   </div>
                   <p className="home-input-title">Upload Files</p>
-                  <FileUpload />
+
+                  <FileUpload setfiles={setfiles} files={files} />
                   {/* <label className="upload-button">
                     <input
                       type="file"
@@ -400,6 +644,8 @@ const agent_otp = async()=>{
                     <button onClick={printSubmitHandler}>Submit</button>
                   </div>
                 </div>
+
+
               </Grid>
             </Grid>
           </div>
@@ -482,6 +728,7 @@ const agent_otp = async()=>{
         <SocialButton />
         <p className="modal-form-footer">
           Don’t have an account?{" "}
+
           <Link
             className="modal-form-footer-link"
             onClick={() => {
@@ -544,7 +791,7 @@ const agent_otp = async()=>{
         />
         {loginType === "Agent" && (
           <div>
-      <Input
+            <Input
               password={false}
               title="Zip Code"
               type="text"
@@ -745,7 +992,7 @@ const agent_otp = async()=>{
             setVerificationModal(false);
             if (loginType === "Customer") {
               otp_verifyHandler()
-         
+
             } else {
               // setLinkBankAccountModal(true);
               agent_otp()
@@ -776,29 +1023,36 @@ const agent_otp = async()=>{
         </div>
 
         <div className="modal-header">
-          <p className="modal-header-heading">Print Job 001</p>
-          <p className="modal-header-page">Pages: 2</p>
+          <p className="modal-header-heading">{Printed_file?.print_job_title}</p>
+          <p className="modal-header-page">Pages: {Printed_file?.pages}</p>
         </div>
-        <img src={Invoice} width={"100%"} style={{ marginTop: "20px" }} />
+        {/* <img src={Invoice} width={"100%"} style={{ marginTop: "20px" }} /> */}
+        {Printed_file ?
+          <FileRenderer file={Printed_file} numPages={numPages} setNumPages={setNumPages} />
+
+          : null
+        }
+
         <label className="download-btn">
           <input type="file" hidden />
           <div>
             <img src={Pdf} />
-            <div>
-              <p>Curriculum_vitae.pdf </p>
-              <p className="download-size">File Size: 123KB</p>
+            <div className="file_name">
+              <p className="file_name">{Printed_file?.file_path} </p>
+              <p className="download-size">File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}</p>
             </div>
+
           </div>
           <img src={Download} />
         </label>
 
         <p className="input-title">Title</p>
         <div className="modal-textarea">
-          <textarea></textarea>
+          <textarea value={Printed_file?.print_job_title}></textarea>
         </div>
         <p className="input-title">Message</p>
         <div className="modal-textarea">
-          <textarea></textarea>
+          <textarea value={Printed_file?.print_job_description}></textarea>
         </div>
         <div className="modal-footer-btn">
           <button
@@ -813,168 +1067,14 @@ const agent_otp = async()=>{
             className="modal-footer-next-btn"
             onClick={() => {
               setPrintJobModal(false);
-              setPaymentModal(true);
+              setSearchingModal(true)
             }}
           >
             Next
           </button>
         </div>
       </Model>
-      {/* Payment / Add New Card */}
-      <Model
-        open={paymentModal}
-        onClose={() => setPaymentModal(false)}
-        maxWidth="sm"
-      >
-        <div
-          className="confirm-email-modal-header"
-          style={{ justifyContent: "flex-start" }}
-        >
-          <button
-            className="back-button"
-            onClick={() => {
-              setPaymentModal(false);
-              setPrintJobModal(true);
-            }}
-          >
-            <img src={ArrowLeft} />
-            <p>Back</p>
-          </button>
-        </div>
 
-        <div className="modal-header">
-          <p className="modal-header-heading">Print Job 001</p>
-          <p className="modal-header-page">Pages: 2</p>
-        </div>
-        <button className="download-btn">
-          <div>
-            <img src={Pdf} />
-            <div>
-              <p>Curriculum_vitae.pdf </p>
-              <p className="download-size">File Size: 123KB</p>
-            </div>
-          </div>
-          <img src={Download} />
-        </button>
-        <div className="modal-price-list">
-          <p className="modal-price-title">1-5 Pages</p>
-          <p className="modal-price-price">$5.53</p>
-        </div>
-        <div className="modal-price-list-2">
-          <p className="modal-price-title">Service Fee</p>
-          <p className="modal-price-price">$0.61</p>
-        </div>
-        <div className="modal-price-list-3">
-          <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">$6.14</p>
-        </div>
-        <h1 className="modal-payment-heading">Payment / Add New Card</h1>
-        <Input type="text" title="Holder Name" placeholder="Holder Name" />
-        <Input
-          type="number"
-          title="Credit Card Number"
-          placeholder="XXXX   XXXX   XXXX   XXXX"
-        />
-        <div className="modal-card-input-main">
-          <div>
-            <Input type="number" title="Expiry Date" placeholder="MM / YY" />
-          </div>
-          <div>
-            <Input type="number" title="CVV" placeholder="XXX" />
-          </div>
-        </div>
-        <div className="remember-main">
-          <button onClick={() => setRemember(!remember)}>
-            <div style={{ backgroundColor: remember ? "#F7801A" : "#fff" }}>
-              {remember && <FaCheck style={{ color: "#fff" }} />}
-            </div>
-            <p>Remember me</p>
-          </button>
-        </div>
-        <div className="modal-footer-btn">
-          <button
-            className="modal-footer-start-btn"
-            onClick={() => {
-              setPaymentModal(false);
-              setPrintJobModal(true);
-            }}
-          >
-            Back
-          </button>
-          <button
-            className="modal-footer-next-btn"
-            onClick={() => {
-              setPaymentModal(false);
-              setCodeSendSuccessfyllyModal(true);
-            }}
-          >
-            Next
-          </button>
-        </div>
-      </Model>
-      {/* Code Sent Successfully! */}
-      <Model
-        open={codeSendSuccessfyllyModal}
-        onClose={() => setCodeSendSuccessfyllyModal(false)}
-        maxWidth="sm"
-      >
-        <div
-          className="confirm-email-modal-header"
-          style={{ justifyContent: "flex-start" }}
-        >
-          <button
-            className="back-button"
-            onClick={() => {
-              setCodeSendSuccessfyllyModal(false);
-              setPaymentModal(true);
-            }}
-          >
-            <img src={ArrowLeft} />
-            <p>Back</p>
-          </button>
-        </div>
-
-        <div className="modal-header">
-          <p className="modal-header-heading">Print Job 001</p>
-          <p className="modal-header-page">Pages: 2</p>
-        </div>
-        <button className="download-btn">
-          <div>
-            <img src={Pdf} />
-            <div>
-              <p>Curriculum_vitae.pdf </p>
-              <p className="download-size">File Size: 123KB</p>
-            </div>
-          </div>
-          <img src={Download} />
-        </button>
-        <div className="modal-price-list">
-          <p className="modal-price-title">1-5 Pages</p>
-          <p className="modal-price-price">$5.53</p>
-        </div>
-        <div className="modal-price-list-2">
-          <p className="modal-price-title">Service Fee</p>
-          <p className="modal-price-price">$0.61</p>
-        </div>
-        <div className="modal-price-list-3">
-          <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">$6.14</p>
-        </div>
-
-        <h1 className="successfully-send-heading">Code Sent Successfully!</h1>
-        <p className="successfully-send-text">
-          A confirmation code has been sent to your email on file ending in
-          ********doe@gmail.com
-        </p>
-        <Button
-          title="Find Print to Point Agent in your area"
-          onClick={() => {
-            setCodeSendSuccessfyllyModal(false);
-            setSearchingModal(true);
-          }}
-        />
-      </Model>
-      {/* Searching Print Agents in your area */}
       <Model
         open={searchingModal}
         onClose={() => setSearchingModal(false)}
@@ -1021,11 +1121,18 @@ const agent_otp = async()=>{
           <button>Use Location</button>
         </div>
         {currentLocationList.map((val, index) => {
+          console.log(val.full_name)
           return (
             <button
               key={index}
               className="current-location-box"
-              onClick={() => setSelectedCurrentLocaiton(index)}
+              onClick={() => {
+                setSelectedCurrentLocaiton(index)
+                setSelectedAgent(val)
+              }
+
+
+              }
             >
               <div className="current-location-box-left">
                 {selectedCurrentLocation === index ? (
@@ -1042,16 +1149,16 @@ const agent_otp = async()=>{
 
                 <div>
                   <p className="current-location-heading">
-                    ({index + 1}){val.heading}
+                    ({index + 1}){val.full_name}
                   </p>
-                  <p className="current-location-location">{val.location}</p>
-                  <div className="current-location-time">
+                  {/* <p className="current-location-location">{val.location.zip_code}</p> */}
+                  {/* <div className="current-location-time">
                     <img src={Time} />
                     <p>{val.time}</p>
-                  </div>
+                  </div> */}
                   <div className="current-location-time">
                     <img src={Location3} />
-                    <p>{val.distance}</p>
+                    <p>{val.location.zip_code}</p>
                   </div>
                 </div>
               </div>
@@ -1062,14 +1169,192 @@ const agent_otp = async()=>{
             </button>
           );
         })}
+
         <Button
           title="Save"
           onClick={() => {
-            setSearchingModal(false);
+            selectPrintAgent()
+
+          }}
+        />
+
+
+      </Model>
+
+      {/* Payment / Add New Card */}
+      <Model
+        open={paymentModal}
+        onClose={() => setPaymentModal(false)}
+        maxWidth="sm"
+      >
+        <div
+          className="confirm-email-modal-header"
+          style={{ justifyContent: "flex-start" }}
+        >
+          <button
+            className="back-button"
+            onClick={() => {
+              setPaymentModal(false);
+              setPrintJobModal(true);
+            }}
+          >
+            <img src={ArrowLeft} />
+            <p>Back</p>
+          </button>
+        </div>
+
+        <div className="modal-header">
+          <p className="modal-header-heading">{Printed_file?.print_job_title}</p>
+          <p className="modal-header-page">Pages: {Printed_file?.pages}</p>
+        </div>
+        <button className="download-btn">
+          <div>
+            <img src={Pdf} />
+            <div className="file_name">
+              <p className="file_name">{Printed_file?.file_path} </p>
+              {files && files.length > 0 ? <p className="download-size">File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}</p> : null}
+            </div>
+          </div>
+          <img src={Download} />
+        </button>
+
+        <div className="modal-price-list">
+          <p className="modal-price-title">1-5 Pages</p>
+          <p className="modal-price-price">$5.53</p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">Service Fee</p>
+          <p className="modal-price-price">$0.61</p>
+        </div>
+        <div className="modal-price-list-3">
+          <p className="modal-price-title">Total</p>
+          <p className="modal-price-price">${Printed_file && (Printed_file?.total_cost && Printed_file?.total_cost + 0.61.toFixed())}</p>
+        </div>
+
+        {/* <h1 className="modal-payment-heading">Payment / Add New Card</h1> */}
+
+        {/* 
+        <Input type="text" title="Holder Name" placeholder="Holder Name" />
+        <Input
+          type="number"
+          title="Credit Card Number"
+          placeholder="XXXX   XXXX   XXXX   XXXX"
+        />
+        <div className="modal-card-input-main">
+          <div>
+            <Input type="number" title="Expiry Date" placeholder="MM / YY" />
+          </div>
+          <div>
+            <Input type="number" title="CVV" placeholder="XXX" />
+          </div>
+        </div>
+        <div className="remember-main">
+          <button onClick={() => setRemember(!remember)}>
+            <div style={{ backgroundColor: remember ? "#F7801A" : "#fff" }}>
+              {remember && <FaCheck style={{ color: "#fff" }} />}
+            </div>
+            <p>Remember me</p>
+          </button>
+        </div>
+        <div className="modal-footer-btn">
+          <button
+            className="modal-footer-start-btn"
+            onClick={() => {
+              setPaymentModal(false);
+              setPrintJobModal(true);
+            }}
+          >
+            Back
+          </button>
+
+          */}
+        {/* <button
+            className="modal-footer-next-btn"
+            onClick={() => {
+              setPaymentModal(false);
+              setCodeSendSuccessfyllyModal(true);
+            }}
+          >
+            Next
+          </button> */}
+        {/* </div>  */}
+
+
+        <PaymentForm id={Printed_file?._id} setPaymentModal={setPaymentModal} setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal} />
+
+        {/* <PaymentModal Add_card={Add_card} setPaymentModal={setPaymentModal} setPrintJobModal={setPrintJobModal} setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal} card={card} setCard={setCard} /> */}
+
+
+
+
+      </Model>
+
+      {/* Code Sent Successfully! */}
+      <Model
+        open={codeSendSuccessfyllyModal}
+        onClose={() => setCodeSendSuccessfyllyModal(false)}
+        maxWidth="sm"
+      >
+        <div
+          className="confirm-email-modal-header"
+          style={{ justifyContent: "flex-start" }}
+        >
+          <button
+            className="back-button"
+            onClick={() => {
+              setCodeSendSuccessfyllyModal(false);
+              setPaymentModal(true);
+            }}
+          >
+            <img src={ArrowLeft} />
+            <p>Back</p>
+          </button>
+        </div>
+
+        <div className="modal-header">
+          <p className="modal-header-heading">{Printed_file?.print_job_title}</p>
+          <p className="modal-header-page">{Printed_file?.page}</p>
+        </div>
+        <button className="download-btn">
+          <div className="file_name">
+            <img src={Pdf} />
+            <div>
+              <p className="file_name">{Printed_file?.file_path}</p>
+              {files && files.length > 0 ? <p className="download-size">File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}</p> : null}
+            </div>
+          </div>
+          <img src={Download} />
+        </button>
+        <div className="modal-price-list">
+          <p className="modal-price-title">1-5 Pages</p>
+          <p className="modal-price-price">$5.53</p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">Service Fee</p>
+          <p className="modal-price-price">$0.61</p>
+        </div>
+        <div className="modal-price-list-3">
+          <p className="modal-price-title">Total</p>
+          <p className="modal-price-price">${Printed_file && (Printed_file?.total_cost && Printed_file?.total_cost + 0.61.toFixed())}</p>
+        </div>
+
+        <h1 className="successfully-send-heading">Code Sent Successfully!</h1>
+        <p className="successfully-send-text">
+          A confirmation code has been sent to your email on file ending in
+          ******** {loggedIn_use?.email && loggedIn_use.email.split("@")[0].slice(-4) + "@" + loggedIn_use.email.split("@")[1]}
+
+        </p>
+        <Button
+          title="Find Print to Point Agent in your area"
+          onClick={() => {
+            setCodeSendSuccessfyllyModal(false);
             setReceiptModal(true);
           }}
         />
       </Model>
+
+      {/* Searching Print Agents in your area */}
+
       {/* Receipt from Print to Point, LLC */}
       <Model
         open={receiptModal}
@@ -1108,6 +1393,8 @@ const agent_otp = async()=>{
           call us at +1 561-234-5912.
         </p>
       </Model>
+
+
       {/* Forgot Password */}
       <Model
         open={forgotPasswordModal}
@@ -1140,7 +1427,7 @@ const agent_otp = async()=>{
           Enter your registered email address. we will send you a code to reset
           your password.
         </p>
-        <Input title="Email" value={forgetEmail} onChange={(e)=>setforgetEmail(e.target.value)} placeholder="john@example.com" />
+        <Input title="Email" value={forgetEmail} onChange={(e) => setforgetEmail(e.target.value)} placeholder="john@example.com" />
 
         <Button
           title="Send OTP"
@@ -1333,7 +1620,7 @@ const agent_otp = async()=>{
           className="send-money-card"
           onClick={() => {
             setSendMoneyModal(false);
-            navigate("/dashboard");
+            setLoginModal(true)
           }}
         >
           <div>
@@ -1371,6 +1658,9 @@ const agent_otp = async()=>{
           <MdChevronRight style={{ height: "24px", width: "24px" }} />
         </div>
       </Model>
+
+
+
     </div>
   );
 };

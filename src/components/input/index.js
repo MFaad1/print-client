@@ -11,6 +11,7 @@ const Input = ({
   onChange,
   show,
   passwordHideShowHandler,
+  name
 }) => {
   return (
     <div>
@@ -21,6 +22,7 @@ const Input = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          name={name}
         />
         {password && (
           <button onClick={passwordHideShowHandler}>

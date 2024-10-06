@@ -3,11 +3,14 @@ import React from "react";
 import { useDropzone } from "react-dropzone";
 import "./FileUpload.css"; // Import custom styles
 import { Upload } from "./../../svg";
-const FileUpload = () => {
+const FileUpload = ({files, setfiles}) => {
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/*", // Accept only image files
+    multiple: false,
     onDrop: (acceptedFiles) => {
-      console.log(acceptedFiles); // Handle file upload here
+        multiple: false,
+  setfiles(acceptedFiles)
     },
   });
 

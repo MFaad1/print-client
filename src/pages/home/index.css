@@ -330,7 +330,7 @@
   border-radius: 8px;
   margin-top: 15px;
   padding: 0px 15px;
-  height: 59px;
+  min-height: 59px;
   cursor: pointer;
 }
 .download-btn > div {
@@ -734,4 +734,34 @@
     font-weight: 600;
     border-radius: 5px;
   }
+  
+}
+
+
+
+.order-table-action-btn{
+  height: 35px !important;
+  width: 35px !important;
+  min-width: 35px !important;
+  min-height: 35px !important;
+  max-width: 35px !important;
+  max-height: 35px !important;
+  border-radius: 100px !important;
+  padding: 0px !important;
+}
+
+
+
+.file_name {
+  word-break: break-word; /* This will break long words to fit within the container */
+  white-space: normal; /* Allows wrapping */
+  overflow-wrap: break-word; /* Ensures long words are wrapped */
+}
+
+
+
+.modal-footer-next-btn{
+  width: 100% !important;
+  margin: 10px 0px ;
+
 }
