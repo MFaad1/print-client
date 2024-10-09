@@ -45,7 +45,9 @@ import axios from "axios";
 import FileRenderer from "../../components/Docs_rendered/FileRenderer";
 import PaymentModal from "../../components/PaymentModal";
 import PaymentForm from "../../components/PaymentForm";
+import Btnloader from "../../components/Loader/Btnloader";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
 
 const emailRjx =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -60,9 +62,9 @@ const Home = () => {
 
 
   let agent_token = localStorage.getItem("use_access_token")
-  let user  = localStorage.getItem("loggedIn_user");
+  let user = localStorage.getItem("loggedIn_user");
   let loggedIn_use;
-  if(user){
+  if (user) {
     loggedIn_use = JSON.parse(user)
   }
 
@@ -73,6 +75,9 @@ const Home = () => {
   const [loginType, setLoginType] = useState("Customer");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [forgotPassword, setforgotPassword] = useState("");
+
+
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [remember, setRemember] = useState(false);
 
@@ -164,6 +169,10 @@ const Home = () => {
     /* Forgot Password */
   }
   const [forgotPasswordModal, setForgotPasswordModal] = useState(false);
+  const [newPasswordModal, setnewPasswordModal] = useState(false);
+
+
+
   {
     /* password otp */
   }
@@ -177,6 +186,18 @@ const Home = () => {
   const [sendMoneyModal, setSendMoneyModal] = useState(false);
   const [currentLocationList, setcurrentLocationList] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState(null);
+  const [modal, setModal] = useState(false);
+
+  const [cityName, setCityName] = useState("");
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
+  const [country, setcountry] = useState('');
+  const [location_loading, setlocation_loading] = useState(false)
+  const [job_loading, setjob_loading] = useState(false)
+  const [otp_loading, setotp_loading] = useState(false)
+  const [forgot_loading, setforgot_loading] = useState(false)
+  const [newpassowrd_loading, setnewpassowrd_loading] = useState(false)
+
 
   const [Printed_file, setPrinted_file] = useState(
 
@@ -204,7 +225,7 @@ const Home = () => {
   const otp_verifyHandler = async () => {
     try {
       let signup_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/customer/verify-otp`, { email: signupEmail, otp: otp })
-      setPrintJobModal(true);
+      setLoginModal(true);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
@@ -304,6 +325,11 @@ const Home = () => {
           navigate("/dashboard");
 
         }
+        if (!signup_user.data.customer.location) {
+          setModal(true)
+        }
+
+
       } catch (error) {
         if (error.response && error.response.data && error.response.data.message) {
           toast.error(error.response.data.message);
@@ -331,84 +357,75 @@ const Home = () => {
 
   }
 
+
+
   const printSubmitHandler = async () => {
+    try {
+      if (!loggedIn_use) return setLoginModal(true);
+      console.log(loggedIn_use, "loggedIn_use");
 
-    if (!agent_token) return toast.error('Please login your account and then try')
+      let parsedLoggedInUser = typeof loggedIn_use === "string" ? JSON.parse(loggedIn_use) : loggedIn_use;
 
-    if (printName === "") {
-      toast.error("Print Job Title is required!");
-    } else if (printEmail === "") {
-      return toast.error("Print Email is required!");
-    }
+      if (!agent_token) return toast.error('Please login your account and then try');
 
-    // else if (!printEmail.match(emailRjx)) {
-    //   return toast.error("Please enter valid email address");
-    // } 
-
-
-    // else if (printFile === "") {
-    //   toast.error("Print Files is required!");
-
-    // } 
-
-    else if (printText === "") {
-      return toast.error("Print text is required!");
-    }
-    else if (!files.length > 0) return toast.error('Please select the relevant files.')
-
-    else {
-      const formData = new FormData();
-      try {
-
-        files.forEach((file) => {
-          formData.append("file", file);
-        });
-        formData.append("print_job_title", printName);
-        formData.append("print_job_description", printText);
-
-
-        let orders = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/create-print-job`, formData, {
-          headers: {
-            Authorization: `Bearer ${agent_token}`,
-            "Content-Type": "multipart/form-data",
-
-          }
-        });
-
-
-        setPrinted_file(orders.data.printJob)
-
-        setPrintJobModal(true)
-
-
-
-        toast.success("Successfully submitted");
-        setPrintName("");
-        setPrintEmail("");
-        setPrintFile("");
-        setPrintText("");
-        setSignUpModal(true);
-      } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          toast.error(error.response.data.message);
-          console.log(error.response.data.message)
-        }
-
-        else if (error.message) {
-          toast.error(error.message);
-        }
-        else {
-          toast.error("Internal server error");
-        }
+      if (parsedLoggedInUser && !parsedLoggedInUser.location) {
+        toast.error('Please add the location');
+        setModal(true);
+        return;
       }
 
+      if (printName === "") {
+        return toast.error("Print Job Title is required!");
+      } else if (printEmail === "") {
+        return toast.error("Print Email is required!");
+      } else if (printText === "") {
+        return toast.error("Print text is required!");
+      } else if (!files.length > 0) {
+        return toast.error('Please select the relevant files.');
+      }
 
+      const formData = new FormData();
+      files.forEach((file) => {
+        formData.append("file", file);
+      });
+      formData.append("print_job_title", printName);
+      formData.append("print_job_description", printText);
 
+      setjob_loading(true);
+
+      let orders = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/create-print-job`, formData, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setPrinted_file(orders.data.printJob);
+      setPrintJobModal(true);
+      toast.success("Successfully submitted");
+
+      setPrintName("");
+      setPrintEmail("");
+      setPrintFile("");
+      setPrintText("");
+      setSignUpModal(true);
+
+    } catch (error) {
+      // Handle errors and provide feedback
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("Internal server error");
+      }
+    } finally {
+      setjob_loading(false); // Change to false after the request is done
     }
-
-
-
   };
+
+
 
   const Add_card = async () => {
     try {
@@ -435,15 +452,23 @@ const Home = () => {
       }
     }
   }
-
   const get_nearby_location = async () => {
     let loggedIn_use = localStorage.getItem("loggedIn_user");
+
     try {
-      if (!agent_token) throw new Error("Please re-login and try again");
-      if (!loggedIn_use) throw new Error("Login to your account");
+      if (!agent_token) {
+        return setLoginModal(true);
+      }
+
+      if (!loggedIn_use) {
+        return setLoginModal(true);
+      }
+
       let parsedLoggedInUser = JSON.parse(loggedIn_use);
 
-      if (!parsedLoggedInUser?.location?.zip_code) throw new Error("Please Add your location");
+      if (parsedLoggedInUser && !parsedLoggedInUser.location) {
+        return setModal(true);
+      }
 
       let orders = await axios.get(`${process.env.REACT_APP_API_URL}/customer/available-print-agents`, {
         headers: {
@@ -451,19 +476,20 @@ const Home = () => {
         }
       });
 
-      let availableAgents = orders.data.availablePrintAgents.flat();
-      console.log(availableAgents, "availableAgents")
-      if (!Array.isArray(availableAgents) || availableAgents.length === 0) return;
+      let availableAgents = (orders.data.availablePrintAgents || []).flat();
+
+      if (!Array.isArray(availableAgents) || availableAgents.length === 0) {
+        toast.error("No available agents found.");
+        return;
+      }
+
       let filteredAgents = availableAgents.filter((agent) => {
-
-        console.log(agent)
-        return agent?.location?.zip_code === parsedLoggedInUser.location.zip_code;
-
-
+        return agent?.location?.zip_code === parsedLoggedInUser.location?.zip_code;
       });
 
-      setcurrentLocationList(filteredAgents)
+      setcurrentLocationList(filteredAgents);
       console.log(filteredAgents, "filteredAgents");
+
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
@@ -475,6 +501,7 @@ const Home = () => {
       }
     }
   };
+
 
 
   useEffect(() => {
@@ -529,15 +556,141 @@ const Home = () => {
     }
   };
 
-  const maskEmail = (email) => {
-    if(!email) return 
-    const [name, domain] = email.split("@");
-    const maskedName = name.slice(0, 2) + "*".repeat(name.length - 2);
-    return `${maskedName}@${domain}`;
+
+
+  const handleSave = async () => {
+    const cityDetails = { city: cityName, state, zip_code: zipCode, country };
+
+    console.log(cityDetails, "city details")
+
+    if (!cityName || !state || !zipCode || !country) {
+      toast.error("Please fill in all the required fields.");
+      return;
+    }
+
+    try {
+      setlocation_loading(true)
+      let orders = await axios.post(`${process.env.REACT_APP_API_URL}/customer/add-location`, { location: cityDetails }, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`
+        }
+      });
+
+      console.log(orders, "orders")
+      toast.success("location has been added");
+      setModal(false);
+      setLoginModal(true)
+      toast.success("location has been added, Please login again");
+
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message)
+      }
+
+      else if (error.message) {
+        toast.error(error.message);
+      }
+      else {
+        toast.error("Internal server error");
+      }
+    } finally {
+      setlocation_loading(false)
+
+    }
+
   };
 
+  const foreget_passowrd = async () => {
+    try {
+      setforgot_loading(true)
+      let AgentFlag = loginType === "Agent"
 
-console.log(Printed_file, "Printed_file")
+      let URL = AgentFlag ? "/print-agent/forgot-password" : "/auth/customer/forgot-password"
+
+      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: forgetEmail })
+
+      setForgotPasswordModal(false);
+      setPasswrodOtpModal(true);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message)
+      }
+
+      else if (error.message) {
+        toast.error(error.message);
+      }
+      else {
+        toast.error("Internal server error");
+      }
+    } finally {
+      setforgot_loading(false)
+
+    }
+  }
+
+  const otp_Verify = async () => {
+    try {
+      setotp_loading(true)
+      let AgentFlag = loginType === "Agent"
+
+      let URL = AgentFlag ? "/print-agent/forgot-password" : "/auth/customer/verify-otp"
+
+      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: forgetEmail, otp })
+
+      setPasswrodOtpModal(false);
+      // setPasswordUpdateSuccModal(true);
+      setnewPasswordModal(true);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message)
+      }
+
+      else if (error.message) {
+        toast.error(error.message);
+      }
+      else {
+        toast.error("Internal server error");
+      }
+    } finally {
+      setotp_loading(false)
+
+    }
+  }
+
+
+
+  const new_passord_handler = async () => {
+    try {
+      setnewpassowrd_loading(true)
+      let AgentFlag = loginType === "Agent"
+
+      let URL = AgentFlag ? "/print-agent/forgot-password" : "/auth/customer/reset-password"
+
+      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: forgetEmail, password: forgotPassword, otp })
+
+      setnewPasswordModal(false);
+      setPasswordUpdateSuccModal(true);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message)
+      }
+
+      else if (error.message) {
+        toast.error(error.message);
+      }
+      else {
+        toast.error("Internal server error");
+      }
+    } finally {
+      setnewpassowrd_loading(false)
+
+    }
+  }
+
 
 
   return (
@@ -641,7 +794,7 @@ console.log(Printed_file, "Printed_file")
                     ></textarea>
                   </div>
                   <div className="home-form-submit-btn">
-                    <button onClick={printSubmitHandler}>Submit</button>
+                    <button onClick={printSubmitHandler} disabled={job_loading}>{job_loading ? <Btnloader /> : "Submit"}</button>
                   </div>
                 </div>
 
@@ -1149,7 +1302,7 @@ console.log(Printed_file, "Printed_file")
 
                 <div>
                   <p className="current-location-heading">
-                    ({index + 1}){val.full_name}
+                    ({index + 1}){val.business_name}
                   </p>
                   {/* <p className="current-location-location">{val.location.zip_code}</p> */}
                   {/* <div className="current-location-time">
@@ -1344,14 +1497,74 @@ console.log(Printed_file, "Printed_file")
           ******** {loggedIn_use?.email && loggedIn_use.email.split("@")[0].slice(-4) + "@" + loggedIn_use.email.split("@")[1]}
 
         </p>
-        <Button
-          title="Find Print to Point Agent in your area"
+        {/* <Button
+          title=""
           onClick={() => {
             setCodeSendSuccessfyllyModal(false);
             setReceiptModal(true);
           }}
-        />
+        /> */}
       </Model>
+
+
+      {
+        loggedIn_use && !loggedIn_use.location ?
+          <Model open={modal} onClose={() => setModal(false)} maxWidth="xs">
+            <div className="modal-header">
+              <p>Location Details</p>
+              <img src={Close} onClick={() => setModal(false)} alt="close" />
+            </div>
+            {/* <p className="modal-sub-heading">City Details</p> */}
+
+            {/* Controlled Input for City Name */}
+            <Input
+              title="City Name"
+              type="text"
+              placeholder="City Name"
+              value={cityName}
+              onChange={(e) => setCityName(e.target.value)}
+            />
+
+            {/* Controlled Input for State */}
+            <Input
+              title="State"
+              type="text"
+              placeholder="State"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            />
+
+            {/* Controlled Input for Zip Code */}
+            <Input
+
+              title="Zip Code"
+              type="number"
+              placeholder="Zip Code"
+              value={zipCode}
+              onChange={(e) => setZipCode(e.target.value)}
+            />
+
+            <Input
+              title="Country"
+              type="text"
+              placeholder="Country"
+              value={country}
+              onChange={(e) => setcountry(e.target.value)}
+            />
+
+            {/* Save Button */}
+
+
+            <Button
+              disabled={location_loading}
+              onClick={handleSave}
+              title="Save"
+            />
+
+          </Model> : null
+      }
+
+
 
       {/* Searching Print Agents in your area */}
 
@@ -1408,8 +1621,7 @@ console.log(Printed_file, "Printed_file")
           <button
             className="back-button"
             onClick={() => {
-              setForgotPasswordModal(false);
-              setLoginModal(true);
+
             }}
           >
             <img src={ArrowLeft} />
@@ -1430,13 +1642,17 @@ console.log(Printed_file, "Printed_file")
         <Input title="Email" value={forgetEmail} onChange={(e) => setforgetEmail(e.target.value)} placeholder="john@example.com" />
 
         <Button
-          title="Send OTP"
+          title={forgot_loading ? <Btnloader /> : "Send OTP"}
+          disabled={forgot_loading}
           onClick={() => {
-            setForgotPasswordModal(false);
-            setPasswrodOtpModal(true);
+            foreget_passowrd()
           }}
         />
       </Model>
+
+
+
+
       {/* password otp */}
       <Model
         open={passwordOtpMoadal}
@@ -1466,8 +1682,8 @@ console.log(Printed_file, "Printed_file")
           Enter the OTP
         </p>
         <p className="verification-text">
-          We have shared a code of your registered email address
-          johndoe@esempio.com
+          We have shared a code of your registered email address {" "}
+          {forgetEmail}
         </p>
         <div className="otp-div">
           <OtpInput
@@ -1491,13 +1707,71 @@ console.log(Printed_file, "Printed_file")
           />
         </div>
         <Button
-          title="Verify"
+          disabled={otp_loading}
+          title={otp_loading ? <Btnloader /> : "Verify"}
           onClick={() => {
-            setPasswrodOtpModal(false);
-            setPasswordUpdateSuccModal(true);
+            otp_Verify()
+
           }}
         />
       </Model>
+
+      {/* New passowrd */}
+      <Model
+        open={newPasswordModal}
+        onClose={() => setnewPasswordModal(false)}
+        maxWidth="sm"
+      >
+        <div
+          className="confirm-email-modal-header"
+          style={{ justifyContent: "flex-start" }}
+        >
+          <button
+            className="back-button"
+            onClick={() => {
+              setPasswrodOtpModal(true);
+              setnewPasswordModal(false);
+            }}
+          >
+            <img src={ArrowLeft} />
+            <p>Back</p>
+          </button>
+        </div>
+
+        <p
+          className="confirm-email-modal-heading"
+          style={{ textAlign: "left" }}
+        >
+          Forgot Password
+        </p>
+        <p className="verification-text">
+          Enter your New passowrd.
+        </p>
+        {/* <Input password={true} title="Passowrd" value={forgetEmail} onChange={(e) => setforgetEmail(e.target.value)} placeholder="john@example.com" /> */}
+
+        <Input
+          password={true}
+          title="Password"
+          show={showLoginPassword}
+          type={!showLoginPassword ? "password" : "text"}
+          placeholder="••••••••••••••••"
+          value={forgotPassword}
+          onChange={(val) => setforgotPassword(val.target.value)}
+          passwordHideShowHandler={() =>
+            setShowLoginPassword(!showLoginPassword)
+          }
+        />
+
+
+        <Button
+          title={newpassowrd_loading ? <Btnloader /> : "SUBMIT"}
+          disabled={newpassowrd_loading}
+          onClick={() => {
+            new_passord_handler()
+          }}
+        />
+      </Model>
+
 
       {/* Password update Successful */}
       <Model
@@ -1521,7 +1795,6 @@ console.log(Printed_file, "Printed_file")
           }}
         />
       </Model>
-
 
 
       {/* Link your bank account */}
@@ -1576,7 +1849,7 @@ console.log(Printed_file, "Printed_file")
       </Model>
 
 
-      
+
       {/* Send Money */}
       <Model
         open={sendMoneyModal}

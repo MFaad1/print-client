@@ -1,0 +1,45 @@
+.business-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.business-mode-logo {
+  height: 142px;
+}
+.business-mode-heading {
+  color: #16151c;
+  font-family: "Lexend";
+  font-size: 30px;
+  font-weight: 600;
+  margin-top: 20px;
+}
+.business-mode-text {
+  color: #a2a1a8;
+  font-family: "Lexend";
+  font-size: 16px;
+  font-weight: 300;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+.Text-buton{
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.isPdf{
+  display: none !important;
+  height: 100% !important;
+  width: 100% !important;
+
+}
+ 
+@media print {
+  .isPdf{
+    display: block !important;
+  }
+
+} 
+

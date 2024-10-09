@@ -94,6 +94,27 @@ const SideMenuData = () => {
                     <span className="side-menu-page-title">Business Mode</span>
                   </Button>
                 </li>
+                
+                <li className="side-menu-list-item">
+                  <Button
+                    variant="text"
+                    className={
+                      CurrentPagePath === "/verify-job"
+                        ? "side-menu-active-page"
+                        : "side-menu-page"
+                    }
+                    onClick={() => {
+                      navigate("/verify-job");
+                    }}
+                  >
+                    <img src={BusinessMode} />
+                    <span className="side-menu-page-title">Verify job</span>
+                  </Button>
+                </li>
+
+
+
+
                 <br />
               </ul>
             </div>

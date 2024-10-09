@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home,Dashboard,Orders,DeliverDocuments,BusinessMode } from "../../pages";
+import { Home,Dashboard,Orders,DeliverDocuments,BusinessMode,VerifyMode } from "../../pages";
 const RouterNavigation = () => {
   return (
     <BrowserRouter>
@@ -10,6 +10,7 @@ const RouterNavigation = () => {
         <Route path="/orders" element={<Orders />} />
         <Route path="/deliver-documents" element={<DeliverDocuments />} />
         <Route path="/business-mode" element={<BusinessMode />} />
+        <Route path="/verify-job" element={<VerifyMode />} />
       </Routes>
     </BrowserRouter>
   );

@@ -26,6 +26,7 @@
     "react-pdf-viewer": "^0.1.0",
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
+    "react-to-print": "^3.0.1",
     "react-toastify": "^10.0.5",
     "styled-components": "^6.1.12",
     "web-vitals": "^2.1.4"
