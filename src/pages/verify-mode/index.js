@@ -1,116 +1,95 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Model, SideMenu } from "../../components";
-import { Logo } from '../../svg'
+import React, { useEffect, useState } from "react";
+import { SideMenu } from "../../components";
+import { Logo } from "../../svg";
 import Grid from "@mui/material/Grid";
 import OtpInput from "react-otp-input";
-import './index.css'
+import "./index.css";
 import { toast } from "react-toastify";
 import axios from "axios";
-import Print from './Print'
-import { useReactToPrint } from "react-to-print";
-import { Visibility } from "@mui/icons-material";
-
-
 
 const VerifyMode = () => {
-  const [otp, setOtp] = useState("")
-  const [otp_verificaion, setotp_verificaion] = useState(false)
-  const [fileUrl, setfileUrl] = useState(false)
-  const [model, setmodel] = useState(false)
-  const componentRef =useRef(null);
-  const iframeRef = useRef();
+  const [otp, setOtp] = useState("");
+  const [otp_verificaion, setOtpVerification] = useState(false);
+  const [fileUrl, setFileUrl] = useState("");
 
+  let agent_token = localStorage.getItem("Agent_access_token");
 
+  const downloadPDF = async (url) => {
+    try {
+      const response = await axios.get(url, { responseType: "blob" });
+      const blobUrl = URL.createObjectURL(
+        new Blob([response.data], { type: "application/pdf" }),
+      );
+      return blobUrl;
+    } catch (error) {
+      console.error("Error downloading PDF:", error);
+      return null;
+    }
+  };
 
-
-
-  let agent_token = localStorage.getItem("Agent_access_token")
-
-  const handleAfterPrint = () => {
-    console.log("ocomponentRef.current.iframe", componentRef.current.iframe);
-if(componentRef.current){
-  componentRef.current.style.display= "block"
-}
-    const iframe = componentRef.current.querySelector('iframe');
-    if (iframe) {
+  const handlePrint = async (url) => {
+    const downloadedPdfUrl = await downloadPDF(url);
+    if (downloadedPdfUrl) {
+      const iframe = document.createElement("iframe");
+      iframe.src = downloadedPdfUrl;
       iframe.style.display = "none";
-      console.log("Hiding iframe before print", iframe);
-      return Promise.resolve();
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        setTimeout(() => document.body.removeChild(iframe), 1000);
+      };
     }
   };
-
-
-  const handleBeforePrint = () => {
-    const iframe = componentRef.current.querySelector('iframe');
-    // if(componentRef.current){
-    //   componentRef.current.style.display= "block"
-    // }
-
-    if (iframe) {
-      iframe.style.display = "block"; 
-      console.log("Showing iframe before print", iframe);
-
-    }
-    return Promise.resolve();
-  };
-
-  
-
-
-  const printFn = useReactToPrint({
-    contentRef: componentRef,
-    onAfterPrint: handleAfterPrint,
-    onBeforePrint: handleBeforePrint,
-  });
-
 
   const handleOtpSubmit = async (enteredOtp) => {
     try {
-
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/complete-print-job`,{confirmation_code:enteredOtp}, {
-        headers: {
-          Authorization: `Bearer ${agent_token}`
-        }
-      }
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/printjob/complete-print-job`,
+        { confirmation_code: enteredOtp },
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+          },
+        },
       );
 
       console.log("OTP verification response:", response.data);
       toast.success(response.data.message);
       if (response.data.printJob && response.data.printJob.file_path) {
-        setfileUrl(response.data.printJob.file_path)
-        setmodel(true)
-        printFn()
+        setFileUrl(response.data.printJob.file_path);
+        setOtpVerification(true);
+        handlePrint(response.data.printJob.file_path);
       }
-
-      setotp_verificaion(true)
-
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
-        console.log(error.response.data.message)
-      }
-
-      else if (error.message) {
+        console.log(error.response.data.message);
+      } else if (error.message) {
         toast.error(error.message);
-      }
-      else {
+      } else {
         toast.error("Internal server error");
       }
     }
   };
 
-
+  // Trigger OTP verification when input reaches 6 digits
   useEffect(() => {
     if (otp.length === 6) {
       handleOtpSubmit(otp);
     }
   }, [otp]);
 
-
- 
-
   return (
-    <SideMenu otp_verificaion={otp_verificaion} setotp_verificaion={setotp_verificaion} >
+    <SideMenu
+      otp_verificaion={otp_verificaion}
+      setotp_verificaion={setOtpVerification}
+    >
       <div className="page-header">
         <div />
         <p>Verify Job</p>
@@ -119,16 +98,17 @@ if(componentRef.current){
         <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
         <Grid item xs={10} sm={6} md={4} lg={4} xl={4}>
           <div className="business-mode">
-            <img src={Logo} className="business-mode-logo" />
+            <img src={Logo} className="business-mode-logo" alt="logo" />
             <p className="business-mode-heading">Welcome</p>
-            <p className="business-mode-text">If you have a confirmation code, please enter it below</p>
+            <p className="business-mode-text">
+              If you have a confirmation code, please enter it below
+            </p>
           </div>
           <div className="otp-div">
             <OtpInput
               className="intput-class"
               value={otp}
               onChange={setOtp}
-              // placeholder="0"
               placeholder={"0".repeat(otp)}
               numInputs={6}
               renderInput={(props) => <input {...props} placeholder="0" />}
@@ -149,23 +129,8 @@ if(componentRef.current){
         </Grid>
         <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
       </Grid>
-
-{/* <Model open={model} onClose={()=>setmodel(false)}>
-<Print fileUrl ={fileUrl} ref={componentRef} />
-</Model>
- : null} */}
-
-
-{fileUrl ?
-
-<Print fileUrl ={fileUrl} ref={componentRef} />
- : null
-
-}
     </SideMenu>
   );
 };
+
 export default VerifyMode;
-
-
-
