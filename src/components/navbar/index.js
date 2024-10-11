@@ -12,10 +12,30 @@ import ButtonCom from "../button";
 import { Edit, Delete, Close } from "./../../svg";
 import { toast } from "react-toastify";
 import axios from "axios";
+import AvatarDemo from "../../components/Avatar/AvatarDemo";
+
 
 
 const Navbar = ({ onClickSignIn, onClickSignUp }) => {
 
+  const [user, setuser] = useState()
+
+
+  useEffect(() => {
+    const handle_loggedin_user = () => {
+      const user = JSON.parse(localStorage.getItem("loggedIn_user"));
+      setuser(user) 
+    };
+  
+    window.addEventListener("logged_user", handle_loggedin_user);
+  
+    return () => {
+      window.removeEventListener("logged_user", handle_loggedin_user);
+    };
+  }, []);
+
+
+  console.log(user,"user")
 
 
   return (
@@ -35,12 +55,20 @@ const Navbar = ({ onClickSignIn, onClickSignUp }) => {
            {/*  <button className="navbar-search">
               <img src={Search} />
             </button> */}
+
+            {
+              // true
+              user
+               ? <AvatarDemo/> : 
+              <>
             <button className="navbar-sign-in-btn" onClick={onClickSignIn}>
               Sign in
             </button>
             <button className="navbar-sign-up-btn" onClick={onClickSignUp}>
               Sign up
             </button>
+              </>
+            }
           </div>
         </div>
       </Grid>

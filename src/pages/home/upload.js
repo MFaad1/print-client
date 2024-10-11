@@ -9,7 +9,6 @@ const FileUpload = ({files, setfiles}) => {
     accept: "image/*", // Accept only image files
     multiple: false,
     onDrop: (acceptedFiles) => {
-        multiple: false,
   setfiles(acceptedFiles)
     },
   });

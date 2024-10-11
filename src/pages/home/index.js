@@ -69,7 +69,6 @@ const Home = () => {
   }
 
 
-
   // log in
   const [loginModal, setLoginModal] = useState(false);
   const [loginType, setLoginType] = useState("Customer");
@@ -325,6 +324,7 @@ const Home = () => {
           navigate("/dashboard");
 
         }
+        window.dispatchEvent(new Event("logged_user"));
         if (!signup_user.data.customer.location) {
           setModal(true)
         }
