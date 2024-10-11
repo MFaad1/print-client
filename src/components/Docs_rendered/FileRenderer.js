@@ -17,14 +17,13 @@ console.log(numPages, "file")
       <Document
         file={file.file_path}
         onLoadSuccess={onDocumentLoadSuccess}
-        style={{ width: '100%', height: '100%' }} // Ensure the document fits
+        style={{ width: '100%', height: '100%' }}
       >
         {Array.from(new Array(numPages), (el, index) => (
           <Page
             key={`page_${index + 1}`}
             pageNumber={index + 1}
-            width={window.innerWidth} // Make sure the page scales with the screen width
-            style={{ display: 'block', margin: '0 auto' }} // Center the pages
+            width={window.innerWidth} // Center the pages
           />
         ))}
       </Document>

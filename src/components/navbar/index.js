@@ -4,14 +4,7 @@ import { Logo, Search } from "./../../svg";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import "./index.css";
-import Model from "../modal";
-import Input from "../input";
-import Button from "@mui/material/Button";
-import ButtonCom from "../button";
 
-import { Edit, Delete, Close } from "./../../svg";
-import { toast } from "react-toastify";
-import axios from "axios";
 import AvatarDemo from "../../components/Avatar/AvatarDemo";
 
 
@@ -24,7 +17,13 @@ const Navbar = ({ onClickSignIn, onClickSignUp }) => {
   useEffect(() => {
     const handle_loggedin_user = () => {
       const user = JSON.parse(localStorage.getItem("loggedIn_user"));
-      setuser(user) 
+      if(user){
+        setuser(user) 
+
+      } else{
+        setuser(null) 
+
+      }
     };
   
     window.addEventListener("logged_user", handle_loggedin_user);
@@ -35,7 +34,15 @@ const Navbar = ({ onClickSignIn, onClickSignUp }) => {
   }, []);
 
 
-  console.log(user,"user")
+
+useEffect(() => {
+     const user = JSON.parse(localStorage.getItem("loggedIn_user"));
+      if(user){
+        setuser(user) 
+
+      }
+}, [])
+
 
 
   return (
@@ -59,7 +66,7 @@ const Navbar = ({ onClickSignIn, onClickSignUp }) => {
             {
               // true
               user
-               ? <AvatarDemo/> : 
+               ? <AvatarDemo name ={user.full_name.charAt(0)}/> : 
               <>
             <button className="navbar-sign-in-btn" onClick={onClickSignIn}>
               Sign in

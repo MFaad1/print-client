@@ -196,6 +196,8 @@ const Home = () => {
   const [otp_loading, setotp_loading] = useState(false)
   const [forgot_loading, setforgot_loading] = useState(false)
   const [newpassowrd_loading, setnewpassowrd_loading] = useState(false)
+  const [login_loading, setlogin_loading] = useState(false)
+  const [signup_loading, setsignup_loading] = useState(false)
 
 
   const [Printed_file, setPrinted_file] = useState(
@@ -252,6 +254,8 @@ const Home = () => {
       toast.error("Confirm password doesn't match!");
     } else {
       try {
+        setsignup_loading(true)
+
         let CustomerFlag = loginType === "Customer"
 
         let url = CustomerFlag ? "/auth/customer/signup" : "/auth/print-agent/signup"
@@ -286,6 +290,9 @@ const Home = () => {
           toast.error("Internal server error");
         }
 
+      }finally{
+        setsignup_loading(false)
+
       }
 
 
@@ -303,7 +310,7 @@ const Home = () => {
     } else if (loginPassword === "") {
       toast.error("Password is required!");
     } else {
-
+      setlogin_loading(true)
       let AgentFlag = loginType === "Agent"
 
       let URL = AgentFlag ? "/auth/print-agent/login" : "/auth/customer/login"
@@ -336,6 +343,9 @@ const Home = () => {
         } else {
           toast.error("Internal server error");
         }
+      }finally{
+      setlogin_loading(false)
+
       }
 
     }
@@ -452,6 +462,8 @@ const Home = () => {
       }
     }
   }
+
+
   const get_nearby_location = async () => {
     let loggedIn_use = localStorage.getItem("loggedIn_user");
 
@@ -506,7 +518,7 @@ const Home = () => {
 
   useEffect(() => {
     get_nearby_location()
-  }, [])
+  }, [searchingModal])
 
 
   const selectPrintAgent = async () => {
@@ -692,6 +704,7 @@ const Home = () => {
   }
 
 
+  console.log(files,"files")
 
   return (
     <div>
@@ -769,6 +782,9 @@ const Home = () => {
                     />
                   </div>
                   <p className="home-input-title">Upload Files</p>
+{files && files.length >0 ? files.map((file)=><p className="" style={{marginTop:"5px", marginBottom:"5px"}}>{file.name}</p>) : null}
+
+
 
                   <FileUpload setfiles={setfiles} files={files} />
                   {/* <label className="upload-button">
@@ -877,7 +893,7 @@ const Home = () => {
             Forget Password?
           </Link>
         </div>
-        <Button title="Login" onClick={loginHandler} />
+        <Button disabled={login_loading} title={login_loading ?<Btnloader /> : "Login"} onClick={loginHandler} />
         <SocialButton />
         <p className="modal-form-footer">
           Don’t have an account?{" "}
@@ -1005,7 +1021,7 @@ const Home = () => {
             setShowSignUpComfirmPassowrd(!showSignUpComfirmPassowrd)
           }
         />
-        <Button title="Sign up" onClick={signUpHandler} />
+        <Button disabled={signup_loading} title={signup_loading ?<Btnloader /> : "Sign up"} onClick={signUpHandler} />
 
 
 
@@ -1241,7 +1257,7 @@ const Home = () => {
             className="back-button"
             onClick={() => {
               setSearchingModal(false);
-              setCodeSendSuccessfyllyModal(true);
+              setPrintJobModal(true);
             }}
           >
             <img src={ArrowLeft} />
@@ -1456,7 +1472,7 @@ const Home = () => {
             className="back-button"
             onClick={() => {
               setCodeSendSuccessfyllyModal(false);
-              setPaymentModal(true);
+              // setPaymentModal(true);
             }}
           >
             <img src={ArrowLeft} />
