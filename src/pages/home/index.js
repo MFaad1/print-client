@@ -715,6 +715,9 @@ const Home = () => {
     }
   }
 
+
+  console.log(Printed_file, "Printed_file")
+
   return (
     <div>
       <Navbar
@@ -1406,16 +1409,21 @@ const Home = () => {
         </button>
 
         <div className="modal-price-list">
-          <p className="modal-price-title">1-5 Pages</p>
-          <p className="modal-price-price">$5.53</p>
+          <p className="modal-price-title">1-{Printed_file && Printed_file.pages} Pages</p>
+          <p className="modal-price-price">${Printed_file && Printed_file?.total_cost}</p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
-          <p className="modal-price-price">$0.61</p>
+          
+          <p className="modal-price-price">{Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`    : '$0.00'}</p>
         </div>
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">${Printed_file && (Printed_file?.total_cost && Printed_file?.total_cost + 0.61.toFixed())}</p>
+          <p className="modal-price-price">
+                     {Printed_file && Printed_file.total_cost 
+  ? `$${(Printed_file.total_cost + Printed_file.total_cost * 0.11).toFixed(2)}` 
+  : '$0.00'}
+          </p>
         </div>
 
 
@@ -1478,7 +1486,7 @@ const Home = () => {
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">$
           {Printed_file && Printed_file.total_cost 
-      ? `$${(Printed_file.total_cost + Printed_file.total_cost * 0.11).toFixed(1)}` 
+      ? `$${(Printed_file.total_cost + (Printed_file.total_cost * 0.11).toFixed(2))}` 
       : '$0.00'}
             
             </p>
