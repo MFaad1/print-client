@@ -6,6 +6,7 @@ import '../../components/Docs_rendered/index.css'
 const FileRenderer = ({ file, numPages, setNumPages }) => {
 
   const fileType = file.file_path.split('.').pop().toLowerCase();
+  console.log(fileType, "file Type")
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -29,13 +30,13 @@ console.log(numPages, "file")
       </Document>
     </div>
     );
-  } else if (file.type.startsWith("image/")) {
-    return <img src={URL.createObjectURL(file)} alt="file" />;
-  } else if (file.type.startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document") || 
-             file.type.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+  } else if (file.type?.startsWith("image/")) {
+    return <img src={file.file_path} alt="file" />;
+  } else if (file.type?.startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document") || 
+             file.type?.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
     return (
       <div>
-        <a href={URL.createObjectURL(file)} download={file.name}>
+        <a href={file.file_path} download={file.name} target="_blank" rel="noopener noreferrer">
           Download {file.name}
         </a>
       </div>
@@ -44,7 +45,7 @@ console.log(numPages, "file")
     return (
       <div>
         <p>Unsupported file type</p>
-        <a href={URL.createObjectURL(file)} download={file.name}>
+        <a href={file.file_path} download={file.name}>
           Download {file.name}
         </a>
       </div>

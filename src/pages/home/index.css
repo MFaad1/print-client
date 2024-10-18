@@ -765,3 +765,10 @@
   margin: 10px 0px ;
 
 }
+
+
+.color_container{
+  display: flex;
+  gap: 2px ;
+  align-items: center;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,6 +11,9 @@ import { SideMenu } from "../../components";
 import Button from "@mui/material/Button";
 import { FaCheck } from "react-icons/fa";
 import { Edit, Delete } from "./../../svg";
+import { toast } from "react-toastify";
+import axios from "axios";
+import Loader from "../../components/Loader/Loader";
 const columns = [
   { id: "selected", label: "", minWidth: 30 },
   { id: "CustomerName", label: "Customer Name", minWidth: 120 },
@@ -19,21 +22,21 @@ const columns = [
     label: "Order Number",
     minWidth: 120,
   },
-  {
-    id: "FileType",
-    label: "File Type",
-    minWidth: 80,
-  },
-  {
-    id: "Price",
-    label: "Price",
-    minWidth: 50,
-  },
-  {
-    id: "Status",
-    label: "Status",
-    minWidth: 150,
-  },
+  // {
+  //   id: "FileType",
+  //   label: "File Type",
+  //   minWidth: 80,
+  // },
+  // {
+  //   id: "Price",
+  //   label: "Price",
+  //   minWidth: 50,
+  // },
+  // {
+  //   id: "Status",
+  //   label: "Status",
+  //   minWidth: 150,
+  // },
   {
     id: "CreatedDate",
     label: "Created Date",
@@ -44,20 +47,262 @@ const columns = [
     label: "Out for Delivery Date",
     minWidth: 140,
   },
-  {
-    id: "DeliveredDate",
-    label: "Delivered Date",
-    minWidth: 120,
-  },
-  {
-    id: "Action",
-    label: "Action",
-    minWidth: 100,
-  },
+  // {
+  //   id: "DeliveredDate",
+  //   label: "Delivered Date",
+  //   minWidth: 120,
+  // },
+  // {
+  //   id: "Action",
+  //   label: "Action",
+  //   minWidth: 100,
+  // },
 ];
+
+
+
+  //   [
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "PDF",
+  //     price: 200,
+  //     status: "Arrival",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "---",
+  //     deliveredDate: "---",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "Excel",
+  //     price: 150,
+  //     status: "Delivered",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "JPEG",
+  //     price: 400,
+  //     status: "Out for delivery",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "PDF",
+  //     price: 200,
+  //     status: "Arrival",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "---",
+  //     deliveredDate: "---",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "Excel",
+  //     price: 150,
+  //     status: "Delivered",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "JPEG",
+  //     price: 400,
+  //     status: "Out for delivery",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "PDF",
+  //     price: 200,
+  //     status: "Arrival",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "---",
+  //     deliveredDate: "---",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "Excel",
+  //     price: 150,
+  //     status: "Delivered",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "JPEG",
+  //     price: 400,
+  //     status: "Out for delivery",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "PDF",
+  //     price: 200,
+  //     status: "Arrival",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "---",
+  //     deliveredDate: "---",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "Excel",
+  //     price: 150,
+  //     status: "Delivered",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "JPEG",
+  //     price: 400,
+  //     status: "Out for delivery",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "PDF",
+  //     price: 200,
+  //     status: "Arrival",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "---",
+  //     deliveredDate: "---",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "Excel",
+  //     price: 150,
+  //     status: "Delivered",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "JPEG",
+  //     price: 400,
+  //     status: "Out for delivery",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "PDF",
+  //     price: 200,
+  //     status: "Arrival",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "---",
+  //     deliveredDate: "---",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "Excel",
+  //     price: 150,
+  //     status: "Delivered",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "JPEG",
+  //     price: 400,
+  //     status: "Out for delivery",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "PDF",
+  //     price: 200,
+  //     status: "Arrival",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "---",
+  //     deliveredDate: "---",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "Excel",
+  //     price: 150,
+  //     status: "Delivered",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  //   {
+  //     isSelected: false,
+  //     customerName: "John Doe",
+  //     orderNumber: "#12543",
+  //     fileType: "JPEG",
+  //     price: 400,
+  //     status: "Out for delivery",
+  //     createdDate: "21/07/2024",
+  //     outForDeliveryDate: "21/07/2024",
+  //     deliveredDate: "21/07/2024",
+  //   },
+  // ]
+
 
 const DeliverDocuments = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  let agent_token = localStorage.getItem("Agent_access_token")
+  const [loading, setloading] = useState(false);
+
+
   const [page, setPage] = React.useState(0);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
@@ -67,240 +312,7 @@ const DeliverDocuments = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const [ordersList, setOrdersList] = useState([
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "PDF",
-      price: 200,
-      status: "Arrival",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "---",
-      deliveredDate: "---",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "Excel",
-      price: 150,
-      status: "Delivered",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "JPEG",
-      price: 400,
-      status: "Out for delivery",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "PDF",
-      price: 200,
-      status: "Arrival",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "---",
-      deliveredDate: "---",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "Excel",
-      price: 150,
-      status: "Delivered",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "JPEG",
-      price: 400,
-      status: "Out for delivery",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "PDF",
-      price: 200,
-      status: "Arrival",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "---",
-      deliveredDate: "---",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "Excel",
-      price: 150,
-      status: "Delivered",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "JPEG",
-      price: 400,
-      status: "Out for delivery",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "PDF",
-      price: 200,
-      status: "Arrival",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "---",
-      deliveredDate: "---",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "Excel",
-      price: 150,
-      status: "Delivered",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "JPEG",
-      price: 400,
-      status: "Out for delivery",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "PDF",
-      price: 200,
-      status: "Arrival",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "---",
-      deliveredDate: "---",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "Excel",
-      price: 150,
-      status: "Delivered",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "JPEG",
-      price: 400,
-      status: "Out for delivery",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "PDF",
-      price: 200,
-      status: "Arrival",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "---",
-      deliveredDate: "---",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "Excel",
-      price: 150,
-      status: "Delivered",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "JPEG",
-      price: 400,
-      status: "Out for delivery",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "PDF",
-      price: 200,
-      status: "Arrival",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "---",
-      deliveredDate: "---",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "Excel",
-      price: 150,
-      status: "Delivered",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-    {
-      isSelected: false,
-      customerName: "John Doe",
-      orderNumber: "#12543",
-      fileType: "JPEG",
-      price: 400,
-      status: "Out for delivery",
-      createdDate: "21/07/2024",
-      outForDeliveryDate: "21/07/2024",
-      deliveredDate: "21/07/2024",
-    },
-  ]);
+  const [ordersList, setOrdersList] = useState([]);
   const [allSelected, setAllSelected] = useState(false);
 
   const handleOrderClick = () => {
@@ -312,6 +324,63 @@ const DeliverDocuments = () => {
     setAllSelected((prev) => !prev);
   };
 
+  const get_Customers = async () => {
+    try {
+
+      if (!agent_token) throw new Error("Please re-login and try again")
+      setloading(true)
+      let orders = await axios.get(`${process.env.REACT_APP_API_URL}/print-agent/all-customers`, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`
+        }
+      });
+
+
+
+      const dynamicOrders = orders.data.customers.map((job) => (
+        {
+        isSelected: false,
+        // id: job._id,
+        customerName: job.full_name,
+        OrderNumber: job._id,
+        CreatedDate: new Date().toLocaleDateString(),
+         OutforDeliveryDate: "",
+        // ...job,
+      }
+    ));
+
+      setOrdersList((prevOrders) => [...dynamicOrders]);
+
+
+
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message)
+      }
+
+      else if (error.message) {
+        toast.error(error.message);
+      }
+      else {
+        toast.error("Internal server error");
+      }
+    }
+    finally {
+      setloading(false)
+
+    }
+  }
+
+
+
+
+
+  useEffect(() => {
+    get_Customers()
+}, [])
+
+console.log(ordersList, "ordersList")
   return (
     <SideMenu>
       <div className="page-header">
@@ -357,8 +426,14 @@ const DeliverDocuments = () => {
                 ))}
               </TableRow>
             </TableHead>
+
+
             <TableBody style={{ backgroundColor: "#fff" }}>
-              {ordersList
+              {
+               !ordersList.length > 0 && !loading ? <div className="not-job"><p>No Deliver documents</p></div> :
+
+               loading ? <Loader /> :
+              ordersList
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, i) => {
                   return (
@@ -392,14 +467,14 @@ const DeliverDocuments = () => {
                         <p className="order-table-text">{row.customerName}</p>
                       </TableCell>
                       <TableCell>
-                        <p className="order-table-text">{row.orderNumber}</p>
+                        <p className="order-table-text">{row.OrderNumber}</p>
                       </TableCell>
+
                       <TableCell>
-                        <p className="order-table-text">{row.fileType}</p>
+                        <p className="order-table-text">{row.CreatedDate}</p>
                       </TableCell>
-                      <TableCell>
-                        <p className="order-table-text">{row.price}</p>
-                      </TableCell>
+
+
                       <TableCell>
                         {row.status === "Delivered" ? (
                           <p className="order-table-status-delivered">
@@ -438,28 +513,22 @@ const DeliverDocuments = () => {
                           </select>
                         )}
                       </TableCell>
-                      <TableCell>
-                        <p className="order-table-text">{row.createdDate}</p>
-                      </TableCell>
+
+
                       <TableCell>
                         <p className="order-table-text">
                           {row.outForDeliveryDate}
                         </p>
                       </TableCell>
-                      <TableCell>
+
+
+
+                      {/* <TableCell>
                         <p className="order-table-text">{row.deliveredDate}</p>
-                      </TableCell>
-                      <TableCell>
-                        <Button className="order-table-action-btn">
-                          <img src={Edit} />
-                        </Button>
-                        <Button
-                          className="order-table-action-btn"
-                          style={{ marginLeft: "15px" }}
-                        >
-                          <img src={Delete} />
-                        </Button>
-                      </TableCell>
+                      </TableCell> */}
+
+           
+
                     </TableRow>
                   );
                 })}

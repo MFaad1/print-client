@@ -20,10 +20,6 @@ const VerifyMode = () => {
   const componentRef =useRef(null);
   const iframeRef = useRef();
 
-
-
-
-
   let agent_token = localStorage.getItem("Agent_access_token")
 
   const handleAfterPrint = () => {

@@ -13,6 +13,8 @@ import "./index.css";
 import { MdChevronRight } from "react-icons/md";
 import GoogleMapReact from "google-map-react";
 import FileUpload from "./upload";
+import Checkbox from '@mui/material/Checkbox';
+
 
 import {
   Upload,
@@ -59,6 +61,7 @@ const Home = () => {
   const [printFile, setPrintFile] = useState("");
   const [printText, setPrintText] = useState("");
   const [files, setfiles] = useState([]);
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
   let agent_token = localStorage.getItem("use_access_token")
@@ -198,6 +201,8 @@ const Home = () => {
   const [newpassowrd_loading, setnewpassowrd_loading] = useState(false)
   const [login_loading, setlogin_loading] = useState(false)
   const [signup_loading, setsignup_loading] = useState(false)
+  const [isChecked, setIsChecked] = React.useState(false);
+
 
 
   const [Printed_file, setPrinted_file] = useState(
@@ -301,6 +306,11 @@ const Home = () => {
 
 
 
+  const handleChange = (event) => {
+      setIsChecked(event.target.checked);
+  };
+
+
   // login handler
   const loginHandler = async () => {
     if (loginEmail === "") {
@@ -332,7 +342,7 @@ const Home = () => {
 
         }
         window.dispatchEvent(new Event("logged_user"));
-        if (!signup_user.data.customer.location) {
+        if ( loginType !== "Agent" && !signup_user.data.customer.location) {
           setModal(true)
         }
 
@@ -400,6 +410,8 @@ const Home = () => {
       });
       formData.append("print_job_title", printName);
       formData.append("print_job_description", printText);
+      formData.append("is_color", isChecked);
+
 
       setjob_loading(true);
 
@@ -703,9 +715,6 @@ const Home = () => {
     }
   }
 
-
-  console.log(files,"files")
-
   return (
     <div>
       <Navbar
@@ -809,6 +818,15 @@ const Home = () => {
                       onChange={(val) => setPrintText(val.target.value)}
                     ></textarea>
                   </div>
+
+                  <div className="color_container">
+                    <p>Color Print</p>
+            <Checkbox
+                {...label}
+                checked={isChecked}
+                onChange={handleChange}
+            />
+        </div>
                   <div className="home-form-submit-btn">
                     <button onClick={printSubmitHandler} disabled={job_loading}>{job_loading ? <Btnloader /> : "Submit"}</button>
                   </div>

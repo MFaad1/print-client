@@ -225,9 +225,10 @@ useEffect(()=>{
                             <Button
                               variant="text"
                               className={"side-menu-page"}
-                              // onClick={() => {
-                              //   navigate("/settings");
-                              // }}
+                              onClick={() => {
+                                localStorage.removeItem('Agent_access_token')
+                                navigate("/");
+                              }}
                             >
                               <LogoutOutlinedIcon />
                               <span className="side-menu-page-title">
