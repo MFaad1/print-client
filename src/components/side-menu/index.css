@@ -1,0 +1,104 @@
+.right-side-container {
+    width: 100%;
+  }
+  .right-side-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 8vh;
+    position: fixed;
+    flex: 1;
+    background-color: #fff;
+    width: 83.5%;
+    z-index: 100;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  }
+  .right-side-header-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+  }
+  .drawer-header-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 8vh;
+    border-bottom: 1px solid #fff;
+    padding: 0px 5%;
+    background-color: #ffff;
+  }
+  .drawer-header-main > img {
+    height: 30px;
+    margin-right: 15px;
+  }
+  
+  .app-bar-component-drawer-close-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid white;
+    cursor: pointer !important;
+    background-color: #fff !important;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  .side-menu-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0px 2%;
+    background-color: #fff;
+    height: 100%;
+    /* background-color: red; */
+  }
+  .side-menu-children-data {
+    min-height: 92vh;
+    padding: 10vh 20px 10px 20px;
+    background-color: #fff;
+  }
+  
+  /* >>>>>>>>>>>>>>>>>>>> <<<<<<<<<<<<<<<<<<<<<< */
+  /* .css-10tn45-MuiBadge-badge {
+    background-color: #98189a !important;
+    border: 1px solid white !important;
+  } */
+  
+  .css-6hp17o-MuiList-root-MuiMenu-list {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+    padding-right: 0px !important;
+  }
+  .side-menu-profile {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+    padding: 0px !important;
+    border-radius: 100px !important;
+  }
+  .side-menu-notificatin {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
+    padding: 0px !important;
+    border-radius: 100px !important;
+    margin-right: 15px !important;
+  }
+  .side-menu-profile > img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    
+  }
+  @media only screen and (max-width: 1199px) {
+    .right-side-header-container {
+      width: 100%;
+    }
+  }

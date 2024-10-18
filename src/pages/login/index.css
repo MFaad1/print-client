@@ -1,0 +1,102 @@
+.login-container {
+  height: 100vh;
+}
+.login-left {
+  background-color: #f3f3f3;
+  border-radius: 30px;
+  height: 95vh;
+  margin: 20px;
+}
+.login-right {
+  height: 95vh;
+  margin: 20px;
+}
+.login-right > div {
+  height: 100%;
+  margin: 0px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.login-logo {
+  margin-bottom: 25px;
+}
+.login-logo > img {
+  height: 94px;
+}
+.modal-from-heading {
+  color: #16151c;
+  font-family: "Switzer-Semibold";
+  font-size: 30px;
+  font-weight: 600;
+}
+.modal-from-title {
+  color: #a2a1a8;
+  font-family: "Switzer-Light";
+  font-size: 16px;
+  font-weight: 300;
+}
+.remember-main {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.remember-main > button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.remember-main > button > div {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid #f7801a;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.remember-main > button > p {
+  color: #16151c;
+  font-family: "Switzer-Light";
+  font-size: 16px;
+  font-weight: 300;
+  margin-left: 15px;
+}
+.forget-password-link {
+  color: #f7801a;
+  font-family: "Switzer-Light";
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: none;
+}
+.modal-form-footer {
+  color: #000000;
+  font-family: "Switzer-Regular";
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 30px;
+}
+.modal-form-footer-link {
+  color: #f7801a;
+  font-family: "Switzer-Semibold";
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 5px;
+}
+@media only screen and (max-width: 899px) {
+  .login-left {
+    height: auto;
+    margin: 20px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .login-logo > img {
+    height: 64px;
+  }
+}

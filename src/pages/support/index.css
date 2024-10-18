@@ -1,0 +1,19 @@
+.support-search {
+  background-color: #fafcff;
+  height: 45px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 10px;
+}
+.support-search > input {
+  height: 100%;
+  width: 100%;
+  margin-left: 10px;
+  color: #aeb6cf;
+  font-family: "Poppins";
+  font-size: 14px;
+  font-weight: 400;
+}
