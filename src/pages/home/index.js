@@ -1418,54 +1418,6 @@ const Home = () => {
           <p className="modal-price-price">${Printed_file && (Printed_file?.total_cost && Printed_file?.total_cost + 0.61.toFixed())}</p>
         </div>
 
-        {/* <h1 className="modal-payment-heading">Payment / Add New Card</h1> */}
-
-        {/* 
-        <Input type="text" title="Holder Name" placeholder="Holder Name" />
-        <Input
-          type="number"
-          title="Credit Card Number"
-          placeholder="XXXX   XXXX   XXXX   XXXX"
-        />
-        <div className="modal-card-input-main">
-          <div>
-            <Input type="number" title="Expiry Date" placeholder="MM / YY" />
-          </div>
-          <div>
-            <Input type="number" title="CVV" placeholder="XXX" />
-          </div>
-        </div>
-        <div className="remember-main">
-          <button onClick={() => setRemember(!remember)}>
-            <div style={{ backgroundColor: remember ? "#F7801A" : "#fff" }}>
-              {remember && <FaCheck style={{ color: "#fff" }} />}
-            </div>
-            <p>Remember me</p>
-          </button>
-        </div>
-        <div className="modal-footer-btn">
-          <button
-            className="modal-footer-start-btn"
-            onClick={() => {
-              setPaymentModal(false);
-              setPrintJobModal(true);
-            }}
-          >
-            Back
-          </button>
-
-          */}
-        {/* <button
-            className="modal-footer-next-btn"
-            onClick={() => {
-              setPaymentModal(false);
-              setCodeSendSuccessfyllyModal(true);
-            }}
-          >
-            Next
-          </button> */}
-        {/* </div>  */}
-
 
         <PaymentForm id={Printed_file?._id} setPaymentModal={setPaymentModal} setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal} />
 
@@ -1514,15 +1466,22 @@ const Home = () => {
         </button>
         <div className="modal-price-list">
           <p className="modal-price-title">1-5 Pages</p>
-          <p className="modal-price-price">$5.53</p>
+          <p className="modal-price-price">${Printed_file && Printed_file?.total_cost}</p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
-          <p className="modal-price-price">$0.61</p>
+          <p className="modal-price-price">
+          {Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`    : '$0.00'}
+          </p>
         </div>
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">${Printed_file && (Printed_file?.total_cost && Printed_file?.total_cost + 0.61.toFixed())}</p>
+          <p className="modal-price-price">$
+          {Printed_file && Printed_file.total_cost 
+      ? `$${(Printed_file.total_cost + Printed_file.total_cost * 0.11).toFixed(1)}` 
+      : '$0.00'}
+            
+            </p>
         </div>
 
         <h1 className="successfully-send-heading">Code Sent Successfully!</h1>

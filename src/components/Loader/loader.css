@@ -20,10 +20,10 @@
   width: 80%;  
   height: 80%; 
   margin: 10%; 
-  border: 0.8vw solid currentColor; 
+  border: 0.8vw solid #f7801a; 
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: currentColor transparent transparent transparent;
+  border-color: #f7801a transparent transparent transparent;
 }
 
 .lds-ring div:nth-child(1) {

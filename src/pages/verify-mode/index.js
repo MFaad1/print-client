@@ -23,30 +23,12 @@ const VerifyMode = () => {
   let agent_token = localStorage.getItem("Agent_access_token")
 
   const handleAfterPrint = () => {
-    console.log("ocomponentRef.current.iframe", componentRef.current.iframe);
-if(componentRef.current){
-  componentRef.current.style.display= "block"
-}
-    const iframe = componentRef.current.querySelector('iframe');
-    if (iframe) {
-      iframe.style.display = "none";
-      console.log("Hiding iframe before print", iframe);
-      return Promise.resolve();
-    }
+
   };
 
 
   const handleBeforePrint = () => {
     const iframe = componentRef.current.querySelector('iframe');
-    // if(componentRef.current){
-    //   componentRef.current.style.display= "block"
-    // }
-
-    if (iframe) {
-      iframe.style.display = "block"; 
-      console.log("Showing iframe before print", iframe);
-
-    }
     return Promise.resolve();
   };
 
@@ -73,7 +55,7 @@ if(componentRef.current){
       console.log("OTP verification response:", response.data);
       toast.success(response.data.message);
       if (response.data.printJob && response.data.printJob.file_path) {
-        setfileUrl(response.data.printJob.file_path)
+        setfileUrl(response.data.printJob)
         setmodel(true)
         printFn()
       }
@@ -106,7 +88,7 @@ if(componentRef.current){
  
 
   return (
-    <SideMenu otp_verificaion={otp_verificaion} setotp_verificaion={setotp_verificaion} >
+    <SideMenu  >
       <div className="page-header">
         <div />
         <p>Verify Job</p>
