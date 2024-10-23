@@ -813,7 +813,7 @@ const Home = () => {
                       Format Supports: Jpeg, PNG, Word and pdf
                     </p>
                   </label> */}
-                  <p className="home-input-title">Text</p>
+                  <p className="home-input-title">Copy and Paste Text Below</p>
                   <div className="home-textarea-main">
                     <textarea
                       placeholder="Enter text"
@@ -985,7 +985,7 @@ const Home = () => {
               password={false}
               title="Zip Code"
               type="text"
-              placeholder="Zip cod"
+              placeholder="Zip Code"
               value={zip_code}
               onChange={(val) => setzip_code(val.target.value)}
 
@@ -1240,10 +1240,10 @@ const Home = () => {
         <div className="modal-textarea">
           <textarea value={Printed_file?.print_job_title}></textarea>
         </div>
-        <p className="input-title">Message</p>
+        {/* <p className="input-title">Message</p>
         <div className="modal-textarea">
           <textarea value={Printed_file?.print_job_description}></textarea>
-        </div>
+        </div> */}
         <div className="modal-footer-btn">
           <button
             className="modal-footer-start-btn"
@@ -1410,18 +1410,18 @@ const Home = () => {
 
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file && Printed_file.pages} Pages</p>
-          <p className="modal-price-price">${Printed_file && Printed_file?.total_cost}</p>
+          <p className="modal-price-price">{Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.90).toFixed(2)}`    : '$0.00'}</p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           
-          <p className="modal-price-price">{Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`    : '$0.00'}</p>
+          <p className="modal-price-price">{Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.10).toFixed(2)}`    : '$0.00'}</p>
         </div>
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
                      {Printed_file && Printed_file.total_cost 
-  ? `$${(Printed_file.total_cost + Printed_file.total_cost * 0.11).toFixed(2)}` 
+  ? `$${(Printed_file.total_cost)}` 
   : '$0.00'}
           </p>
         </div>
@@ -1474,19 +1474,19 @@ const Home = () => {
         </button>
         <div className="modal-price-list">
           <p className="modal-price-title">1-5 Pages</p>
-          <p className="modal-price-price">${Printed_file && Printed_file?.total_cost}</p>
+          <p className="modal-price-price">{Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.90).toFixed(2)}`    : '$0.00'}</p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
-          {Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`    : '$0.00'}
+          {Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.10).toFixed(2)}`    : '$0.00'}
           </p>
         </div>
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">$
+          <p className="modal-price-price">
           {Printed_file && Printed_file.total_cost 
-      ? `$${(Printed_file.total_cost + (Printed_file.total_cost * 0.11).toFixed(2))}` 
+      ? `$${(Printed_file.total_cost)}` 
       : '$0.00'}
             
             </p>

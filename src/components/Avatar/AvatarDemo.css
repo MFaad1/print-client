@@ -43,7 +43,7 @@
   .avatar {
     width: 40px;
     height: 40px;
-    background-color: #4caf50;
+    background-color: orange;
     color: white;
     border-radius: 50%;
     display: flex;
