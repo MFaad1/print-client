@@ -57,7 +57,7 @@ useEffect(() => {
           </button>
           <div>
             {/* <Link className="navbar-explore">Locations</Link> */}
-    <p className="navbar-explore navbar-location">Locations</p>
+    {/* <p className="navbar-explore navbar-location">Locations</p> */}
 
            {/*  <button className="navbar-search">
               <img src={Search} />
