@@ -54,10 +54,14 @@ const VerifyMode = () => {
 
       console.log("OTP verification response:", response.data);
       toast.success(response.data.message);
+  
+
       if (response.data.printJob && response.data.printJob.file_path) {
         setfileUrl(response.data.printJob)
         setmodel(true)
-        printFn()
+        setTimeout(() => {
+          printFn();
+        }, 100);
       }
 
       setotp_verificaion(true)
