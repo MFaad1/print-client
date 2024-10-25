@@ -47,6 +47,8 @@ import axios from "axios";
 import FileRenderer from "../../components/Docs_rendered/FileRenderer";
 import PaymentModal from "../../components/PaymentModal";
 import PaymentForm from "../../components/PaymentForm";
+import IncrementDecrement from '../../components/IncrementDecrement/IncrementDecrement'
+
 import Btnloader from "../../components/Loader/Btnloader";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -96,6 +98,7 @@ const Home = () => {
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
   const [showSignUpComfirmPassowrd, setShowSignUpComfirmPassowrd] = useState(false);
   const [forgetEmail, setforgetEmail] = useState("");
+
 
   const [card, setCard] = useState({
     bank_name: '',
@@ -172,7 +175,19 @@ const Home = () => {
   }
   const [forgotPasswordModal, setForgotPasswordModal] = useState(false);
   const [newPasswordModal, setnewPasswordModal] = useState(false);
-
+  // {
+  //   created_at: "2024-10-04T19:30:32.662Z",
+  //   customer_id: "66e0a7a5eb12ada0047ecd23",
+  //   file_path: "https://res.cloudinary.com/dkgvo62xy/image/upload/v1728070231/print_jobs/7660daf17dbb0030bcc4995b81621755_e1omha.pdf",
+  //   pages: 2,
+  //   payment_status: "pending",
+  //   print_job_description: "dsafasdfasdf",
+  //   print_job_title: "sdaafasd",
+  //   total_cost: 20,
+  //   updated_at: "2024-10-04T19:30:32.662Z",
+  //   __v: 0,
+  //   _id: "670042582ba2672d1d058ad8",
+  // }
 
 
   {
@@ -202,26 +217,21 @@ const Home = () => {
   const [login_loading, setlogin_loading] = useState(false)
   const [signup_loading, setsignup_loading] = useState(false)
   const [isChecked, setIsChecked] = React.useState(false);
+  const [Printed_file, setPrinted_file] = useState();
 
+  const [totalCost, setTotalCost] = useState(Printed_file?.total_cost || 0);
+  const [count, setCount] = useState(Printed_file?.pages || 1);
+  const [isColor, setIsColor] = useState(false)
+  const [PrintType, setPrintType] = useState(false)
 
-
-  const [Printed_file, setPrinted_file] = useState(
-
-    // {
-    //   created_at: "2024-10-04T19:30:32.662Z",
-    //   customer_id: "66e0a7a5eb12ada0047ecd23",
-    //   file_path: "https://res.cloudinary.com/dkgvo62xy/image/upload/v1728070231/print_jobs/7660daf17dbb0030bcc4995b81621755_e1omha.pdf",
-    //   pages: 2,
-    //   payment_status: "pending",
-    //   print_job_description: "dsafasdfasdf",
-    //   print_job_title: "sdaafasd",
-    //   total_cost: 20,
-    //   updated_at: "2024-10-04T19:30:32.662Z",
-    //   __v: 0,
-    //   _id: "670042582ba2672d1d058ad8",
-    // }
-
-  );
+  const pricingTable = [
+    { range: [1, 5], blackAndWhitePrice: 5.53, colorPrice: 6.64 },
+    { range: [6, 10], blackAndWhitePrice: 8.31, colorPrice: 9.42 },
+    { range: [11, 15], blackAndWhitePrice: 11.08, colorPrice: 12.19 },
+    { range: [16, 20], blackAndWhitePrice: 13.86, colorPrice: 14.97 },
+    { range: [21, 25], blackAndWhitePrice: 16.63, colorPrice: 17.74 },
+    { range: [26, Infinity], pricePerPageBW: 0.65, pricePerPageColor: 0.75 }
+  ];
 
 
 
@@ -295,7 +305,7 @@ const Home = () => {
           toast.error("Internal server error");
         }
 
-      }finally{
+      } finally {
         setsignup_loading(false)
 
       }
@@ -305,9 +315,20 @@ const Home = () => {
   };
 
 
+  const calculateTotalCost = (count, isColor) => {
+    for (let i = 0; i < pricingTable.length; i++) {
+      const { range, blackAndWhitePrice, colorPrice, pricePerPageBW, pricePerPageColor } = pricingTable[i];
+
+      if (count >= range[0] && count <= range[1]) {
+        return isColor ? colorPrice : blackAndWhitePrice;
+      }
+    }
+    return isColor? pricingTable[pricingTable.length - 1].pricePerPageColor * count : pricingTable[pricingTable.length - 1].pricePerPageBW * count;
+  };
+
 
   const handleChange = (event) => {
-      setIsChecked(event.target.checked);
+    setIsChecked(event.target.checked);
   };
 
 
@@ -342,7 +363,7 @@ const Home = () => {
 
         }
         window.dispatchEvent(new Event("logged_user"));
-        if ( loginType !== "Agent" && !signup_user.data.customer.location) {
+        if (loginType !== "Agent" && !signup_user.data.customer.location) {
           setModal(true)
         }
 
@@ -353,8 +374,8 @@ const Home = () => {
         } else {
           toast.error("Internal server error");
         }
-      }finally{
-      setlogin_loading(false)
+      } finally {
+        setlogin_loading(false)
 
       }
 
@@ -382,7 +403,6 @@ const Home = () => {
   const printSubmitHandler = async () => {
     try {
       if (!loggedIn_use) return setLoginModal(true);
-      console.log(loggedIn_use, "loggedIn_use");
 
       let parsedLoggedInUser = typeof loggedIn_use === "string" ? JSON.parse(loggedIn_use) : loggedIn_use;
 
@@ -396,11 +416,12 @@ const Home = () => {
 
       if (printName === "") {
         return toast.error("Print Job Title is required!");
-      } else if (printEmail === "") {
+      } 
+      else if (printEmail === "") {
         return toast.error("Print Email is required!");
-      } else if (printText === "") {
-        return toast.error("Print text is required!");
-      } else if (!files.length > 0) {
+      } 
+ 
+      else if (!files.length > 0) {
         return toast.error('Please select the relevant files.');
       }
 
@@ -409,8 +430,10 @@ const Home = () => {
         formData.append("file", file);
       });
       formData.append("print_job_title", printName);
-      formData.append("print_job_description", printText);
-      formData.append("is_color", isChecked);
+      if(printText){
+        formData.append("print_job_description", printText);
+      }
+      // formData.append("is_color", isChecked);
 
 
       setjob_loading(true);
@@ -580,8 +603,6 @@ const Home = () => {
     }
   };
 
-
-
   const handleSave = async () => {
     const cityDetails = { city: cityName, state, zip_code: zipCode, country };
 
@@ -715,8 +736,10 @@ const Home = () => {
     }
   }
 
-
-  console.log(Printed_file, "Printed_file")
+  useEffect(() => {
+    const cost = calculateTotalCost(count, isColor);
+    setTotalCost(cost);
+  }, [count, isColor]);
 
   return (
     <div>
@@ -794,7 +817,7 @@ const Home = () => {
                     />
                   </div>
                   <p className="home-input-title">Upload Files</p>
-{files && files.length >0 ? files.map((file)=><p className="" style={{marginTop:"5px", marginBottom:"5px"}}>{file.name}</p>) : null}
+                  {files && files.length > 0 ? files.map((file) => <p className="" style={{ marginTop: "5px", marginBottom: "5px" }}>{file.name}</p>) : null}
 
 
 
@@ -822,14 +845,16 @@ const Home = () => {
                     ></textarea>
                   </div>
 
-                  <div className="color_container">
+                  {/* <div className="color_container">
                     <p>Color Print</p>
             <Checkbox
                 {...label}
                 checked={isChecked}
                 onChange={handleChange}
             />
-        </div>
+        </div> */}
+
+
                   <div className="home-form-submit-btn">
                     <button onClick={printSubmitHandler} disabled={job_loading}>{job_loading ? <Btnloader /> : "Submit"}</button>
                   </div>
@@ -914,7 +939,7 @@ const Home = () => {
             Forget Password?
           </Link>
         </div>
-        <Button disabled={login_loading} title={login_loading ?<Btnloader /> : "Login"} onClick={loginHandler} />
+        <Button disabled={login_loading} title={login_loading ? <Btnloader /> : "Login"} onClick={loginHandler} />
         <SocialButton />
         <p className="modal-form-footer">
           Don’t have an account?{" "}
@@ -1042,7 +1067,7 @@ const Home = () => {
             setShowSignUpComfirmPassowrd(!showSignUpComfirmPassowrd)
           }
         />
-        <Button disabled={signup_loading} title={signup_loading ?<Btnloader /> : "Sign up"} onClick={signUpHandler} />
+        <Button disabled={signup_loading} title={signup_loading ? <Btnloader /> : "Sign up"} onClick={signUpHandler} />
 
 
 
@@ -1204,7 +1229,7 @@ const Home = () => {
             className="back-button"
             onClick={() => {
               setPrintJobModal(false);
-              setVerificationModal(true);
+              // setVerificationModal(true);
             }}
           >
             <img src={ArrowLeft} />
@@ -1372,15 +1397,8 @@ const Home = () => {
       </Model>
 
       {/* Payment / Add New Card */}
-      <Model
-        open={paymentModal}
-        onClose={() => setPaymentModal(false)}
-        maxWidth="sm"
-      >
-        <div
-          className="confirm-email-modal-header"
-          style={{ justifyContent: "flex-start" }}
-        >
+      <Model open={paymentModal} onClose={() => setPaymentModal(false)} maxWidth="sm">
+        <div className="confirm-email-modal-header" style={{ justifyContent: "flex-start" }}>
           <button
             className="back-button"
             onClick={() => {
@@ -1388,53 +1406,74 @@ const Home = () => {
               setPrintJobModal(true);
             }}
           >
-            <img src={ArrowLeft} />
+            <img src={ArrowLeft} alt="Back" />
             <p>Back</p>
           </button>
         </div>
 
         <div className="modal-header">
           <p className="modal-header-heading">{Printed_file?.print_job_title}</p>
-          <p className="modal-header-page">Pages: {Printed_file?.pages}</p>
+          <div className='modal-header-left'>
+            <IncrementDecrement count={count} setCount={setCount} />
+            <p className="mod">Pages: {Printed_file?.pages}</p>
+          </div>
         </div>
+
         <button className="download-btn">
-          <div>
-            <img src={Pdf} />
+          <div className="file_info">
+            <img src={Pdf} alt="PDF" />
             <div className="file_name">
-              <p className="file_name">{Printed_file?.file_path} </p>
-              {files && files.length > 0 ? <p className="download-size">File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}</p> : null}
+              <p>{Printed_file?.file_path}</p>
+              {files && files.length > 0 ? <p className="download-size">File Size: {(Number(files[0]?.size) / (1024 * 1024)).toFixed(2)} MB</p> : null}
             </div>
           </div>
-          <img src={Download} />
+          <img src={Download} alt="Download" />
         </button>
 
         <div className="modal-price-list">
-          <p className="modal-price-title">1-{Printed_file && Printed_file.pages} Pages</p>
-          <p className="modal-price-price">${Printed_file && Printed_file?.total_cost}</p>
+          <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
+          <p className="modal-price-price">${totalCost}</p>
         </div>
+
+
+        <div className="print-type-container">
+          <label htmlFor="printType" className="print-type-label">Print Type</label>
+          <select
+            id="printType"
+            className="print-type-dropdown"
+            onChange={(e) => {
+              if (e.target.value == "color") {
+                setIsColor(true)
+
+              } else {
+                setIsColor(false)
+
+              }
+
+            }}
+          >
+            <option value="black-and-white">Black and White</option>
+            <option value="color">Color</option>
+          </select>
+        </div>
+
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
-          
-          <p className="modal-price-price">{Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`    : '$0.00'}</p>
-        </div>
-        <div className="modal-price-list-3">
-          <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
-                     {Printed_file && Printed_file.total_cost 
-  ? `$${(Printed_file.total_cost + Printed_file.total_cost * 0.11).toFixed(2)}` 
-  : '$0.00'}
+            ${Printed_file?.total_cost ? (Printed_file.total_cost * 0.11).toFixed(2) : '0.00'}
           </p>
         </div>
 
+        <div className="modal-price-list-3">
+          <p className="modal-price-title">Total</p>
+          <p className="modal-price-price">
+            ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : '0.00'}
+          </p>
+        </div>
 
         <PaymentForm id={Printed_file?._id} setPaymentModal={setPaymentModal} setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal} />
-
-        {/* <PaymentModal Add_card={Add_card} setPaymentModal={setPaymentModal} setPrintJobModal={setPrintJobModal} setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal} card={card} setCard={setCard} /> */}
-
-
-
-
       </Model>
+
 
       {/* Code Sent Successfully! */}
       <Model
@@ -1479,17 +1518,17 @@ const Home = () => {
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
-          {Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`    : '$0.00'}
+            {Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}` : '$0.00'}
           </p>
         </div>
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">$
-          {Printed_file && Printed_file.total_cost 
-      ? `$${(Printed_file.total_cost + (Printed_file.total_cost * 0.11).toFixed(2))}` 
-      : '$0.00'}
-            
-            </p>
+            {Printed_file && Printed_file.total_cost
+              ? `$${(Printed_file.total_cost + (Printed_file.total_cost * 0.11).toFixed(2))}`
+              : '$0.00'}
+
+          </p>
         </div>
 
         <h1 className="successfully-send-heading">Code Sent Successfully!</h1>

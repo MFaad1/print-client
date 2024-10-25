@@ -12,21 +12,25 @@ const FileRenderer = ({ file, numPages, setNumPages }) => {
   };
 console.log(numPages, "file")
 
+
   if (fileType === 'pdf') {
     return (
       <div style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
       <Document
         file={file.file_path}
         onLoadSuccess={onDocumentLoadSuccess}
+        onLoadError={(error) => console.error('PDF loading error:', error)}
         style={{ width: '100%', height: '100%' }}
       >
-        {Array.from(new Array(numPages), (el, index) => (
+        {/* {Array.from(new Array(numPages), (el, index) => ( */}
           <Page
-            key={`page_${index + 1}`}
-            pageNumber={index + 1}
+            // key={`page_${index + 1}`}
+            pageNumber={numPages}
             width={window.innerWidth} // Center the pages
+            renderTextLayer={false}
+
           />
-        ))}
+        {/* ))} */}
       </Document>
     </div>
     );

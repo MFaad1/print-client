@@ -30,7 +30,7 @@ const FileUpload = ({files, setfiles}) => {
             Drag and drop or <span>choose file</span> to upload
           </p>
           <p className="upload-button-format">
-            Format Supports: Jpeg, PNG, Word and pdf
+            Format Supports: Jpeg, PNG, and pdf
           </p>
         </div>
       )}

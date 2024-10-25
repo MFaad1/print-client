@@ -8,6 +8,12 @@
   border-radius: 36px;
   padding: 20px;
 }
+
+.modal-header-left{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 .home-input-title {
   color: #16151ce5;
   font-family: "Switzer-Light";
@@ -771,4 +777,115 @@
   display: flex;
   gap: 2px ;
   align-items: center;
+}
+
+
+/* Global CSS for the Modal */
+.modal-header-heading {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-header-left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mod {
+  font-size: 1rem;
+  color: #666;
+}
+
+.file_info {
+  display: flex;
+  align-items: center;
+}
+
+.file_name {
+  font-size: 1rem;
+  color: #333;
+  margin-left: 10px;
+}
+
+.download-size {
+  font-size: 0.875rem;
+  color: #999;
+}
+
+.modal-price-list, .modal-price-list-2, .modal-price-list-3 {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-price-title {
+  font-size: 1rem;
+  color: #333;
+}
+
+.modal-price-price {
+  font-size: 1rem;
+  color: #333;
+}
+
+.download-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.back-button p {
+  margin-left: 5px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.confirm-email-modal-header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px;
+}
+
+
+.table-price{
+  width: 100%;
+}
+
+
+.print-type-container {
+  margin-top: 20px;
+}
+
+.print-type-label {
+  font-weight: bold;
+}
+
+.print-type-dropdown {
+  width: 26%;
+  margin-left: 15px;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
