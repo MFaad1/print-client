@@ -34,7 +34,7 @@ console.log(numPages, "file")
       </Document>
     </div>
     );
-  } else if (file.type?.startsWith("image/")) {
+  } else if (file.type =="png" || file.type =="jpeg" ) {
     return <img src={file.file_path} alt="file" />;
   } else if (file.type?.startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document") || 
              file.type?.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
@@ -48,7 +48,7 @@ console.log(numPages, "file")
   } else {
     return (
       <div>
-        <p>Unsupported file type</p>
+        {/* <p>Unsupported file type</p> */}
         <a href={file.file_path} download={file.name}>
           Download {file.name}
         </a>
