@@ -17,7 +17,7 @@ const VerifyMode = () => {
   const [otp_verificaion, setotp_verificaion] = useState(false)
   const [fileUrl, setfileUrl] = useState(false)
   const [model, setmodel] = useState(false)
-  const componentRef =useRef(null);
+  const componentRef = useRef(null);
   const iframeRef = useRef();
 
   let agent_token = localStorage.getItem("Agent_access_token")
@@ -32,7 +32,7 @@ const VerifyMode = () => {
     return Promise.resolve();
   };
 
-  
+
 
 
   const printFn = useReactToPrint({
@@ -45,7 +45,7 @@ const VerifyMode = () => {
   const handleOtpSubmit = async (enteredOtp) => {
     try {
 
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/complete-print-job`,{confirmation_code:enteredOtp}, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/complete-print-job`, { confirmation_code: enteredOtp }, {
         headers: {
           Authorization: `Bearer ${agent_token}`
         }
@@ -54,7 +54,7 @@ const VerifyMode = () => {
 
       console.log("OTP verification response:", response.data);
       toast.success(response.data.message);
-  
+
 
       if (response.data.printJob && response.data.printJob.file_path) {
         setfileUrl(response.data.printJob)
@@ -89,7 +89,7 @@ const VerifyMode = () => {
   }, [otp]);
 
 
- 
+
 
   return (
     <SideMenu  >
@@ -132,18 +132,18 @@ const VerifyMode = () => {
         <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
       </Grid>
 
-{/* <Model open={model} onClose={()=>setmodel(false)}>
+      {/* <Model open={model} onClose={()=>setmodel(false)}>
 <Print fileUrl ={fileUrl} ref={componentRef} />
 </Model>
  : null} */}
 
 
-{fileUrl ?
+      {fileUrl ?
 
-<Print fileUrl ={fileUrl} ref={componentRef} />
- : null
+        <Print fileUrl={fileUrl} ref={componentRef} />
+        : null
 
-}
+      }
     </SideMenu>
   );
 };

@@ -220,7 +220,7 @@ const Home = () => {
   const [Printed_file, setPrinted_file] = useState();
 
   const [totalCost, setTotalCost] = useState(Printed_file?.total_cost || 0);
-  const [count, setCount] = useState(Printed_file?.pages || 1);
+  const [count, setCount] = useState(1);
   const [isColor, setIsColor] = useState(false)
   const [PrintType, setPrintType] = useState(false)
 
@@ -315,16 +315,35 @@ const Home = () => {
   };
 
 
+  // const calculateTotalCost = (count, isColor) => {
+
+  //   for (let i = 0; i < pricingTable.length; i++) {
+  //     const { range, blackAndWhitePrice, colorPrice, pricePerPageBW, pricePerPageColor } = pricingTable[i];
+
+  //     if (count >= range[0] && count <= range[1]) {
+  //       return isColor ? colorPrice : blackAndWhitePrice;
+  //     }
+  //   }
+  //   return isColor? pricingTable[pricingTable.length - 1].pricePerPageColor * count : pricingTable[pricingTable.length - 1].pricePerPageBW * count;
+  // };
+
+
   const calculateTotalCost = (count, isColor) => {
+    const totalPages = count * (Printed_file?.pages || 1);
+  
     for (let i = 0; i < pricingTable.length; i++) {
       const { range, blackAndWhitePrice, colorPrice, pricePerPageBW, pricePerPageColor } = pricingTable[i];
-
-      if (count >= range[0] && count <= range[1]) {
+      
+      if (totalPages >= range[0] && totalPages <= range[1]) {
         return isColor ? colorPrice : blackAndWhitePrice;
       }
     }
-    return isColor? pricingTable[pricingTable.length - 1].pricePerPageColor * count : pricingTable[pricingTable.length - 1].pricePerPageBW * count;
+  
+    return isColor 
+      ? pricingTable[pricingTable.length - 1].pricePerPageColor * totalPages 
+      : pricingTable[pricingTable.length - 1].pricePerPageBW * totalPages;
   };
+  
 
 
   const handleChange = (event) => {
@@ -738,6 +757,7 @@ const Home = () => {
 
   useEffect(() => {
     const cost = calculateTotalCost(count, isColor);
+  console.log(cost, "cost")
     setTotalCost(cost);
   }, [count, isColor]);
 
@@ -1475,7 +1495,7 @@ const Home = () => {
       </Model>
 
 
-      {/* Code Sent Successfully! */}
+      {/* Code Sent Successfully! */}``
       <Model
         open={codeSendSuccessfyllyModal}
         onClose={() => setCodeSendSuccessfyllyModal(false)}
@@ -1512,8 +1532,8 @@ const Home = () => {
           <img src={Download} />
         </button>
         <div className="modal-price-list">
-          <p className="modal-price-title">1-5 Pages</p>
-          <p className="modal-price-price">{Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.90).toFixed(2)}`    : '$0.00'}</p>
+          <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
+          <p className="modal-price-price">{totalCost}</p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
@@ -1523,11 +1543,8 @@ const Home = () => {
         </div>
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">$
-            {Printed_file && Printed_file.total_cost
-              ? `$${(Printed_file.total_cost + (Printed_file.total_cost * 0.11).toFixed(2))}`
-              : '$0.00'}
-
+          <p className="modal-price-price">
+          ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : '0.00'}
           </p>
         </div>
 
