@@ -22,19 +22,19 @@ console.log(numPages, "file")
         onLoadError={(error) => console.error('PDF loading error:', error)}
         style={{ width: '100%', height: '100%' }}
       >
-        {/* {Array.from(new Array(numPages), (el, index) => ( */}
+        {Array.from(new Array(numPages), (el, index) => (
           <Page
-            // key={`page_${index + 1}`}
-            pageNumber={numPages}
+            key={`page_${index + 1}`}
+            pageNumber={index + 1}
             width={window.innerWidth} // Center the pages
             renderTextLayer={false}
 
           />
-        {/* ))} */}
+        ))}
       </Document>
     </div>
     );
-  } else if (file.type =="png" || file.type =="jpeg" ) {
+  } else if (file.type =="png" || file.type =="jpeg" || file.type =="jpg" ) {
     return <img src={file.file_path} alt="file" />;
   } else if (file.type?.startsWith("application/vnd.openxmlformats-officedocument.wordprocessingml.document") || 
              file.type?.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
@@ -48,7 +48,6 @@ console.log(numPages, "file")
   } else {
     return (
       <div>
-        {/* <p>Unsupported file type</p> */}
         <a href={file.file_path} download={file.name}>
           Download {file.name}
         </a>
