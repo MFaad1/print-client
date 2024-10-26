@@ -98,6 +98,7 @@ const Home = () => {
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
   const [showSignUpComfirmPassowrd, setShowSignUpComfirmPassowrd] = useState(false);
   const [forgetEmail, setforgetEmail] = useState("");
+  const [searchVal, setsearchVal] = useState("");
 
 
   const [card, setCard] = useState({
@@ -223,6 +224,9 @@ const Home = () => {
   const [count, setCount] = useState(1);
   const [isColor, setIsColor] = useState(false)
   const [PrintType, setPrintType] = useState(false)
+
+  const [originalLocationList, setOriginalLocationList] = useState([]);
+
 
   const pricingTable = [
     { range: [1, 5], blackAndWhitePrice: 5.53, colorPrice: 6.64 },
@@ -554,6 +558,7 @@ const Home = () => {
       });
 
       setcurrentLocationList(filteredAgents);
+      setOriginalLocationList(filteredAgents)
       console.log(filteredAgents, "filteredAgents");
 
     } catch (error) {
@@ -568,7 +573,20 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    if (searchVal.trim() === '') {
+      setcurrentLocationList(originalLocationList);
+    } else {
+      setcurrentLocationList(
+            originalLocationList.filter((item) => {
+                const itemString = JSON.stringify(item).toLowerCase();
+                return itemString.includes(searchVal.toLowerCase());
+            })
+        );
+    }
+}, [searchVal, originalLocationList]);
 
+console.log(currentLocationList, "current lisst")
 
   useEffect(() => {
     get_nearby_location()
@@ -1311,7 +1329,7 @@ const Home = () => {
       </Model>
 
       <Model
-        open={searchingModal}
+        open={!searchingModal}
         onClose={() => setSearchingModal(false)}
         maxWidth="sm"
       >
@@ -1333,7 +1351,7 @@ const Home = () => {
         <p className="searching-heading">Searching Print Agents in your area</p>
         <div className="searching-main">
           <img src={Search2} />
-          <input placeholder="Enter zip code, city or state" />
+          <input placeholder="Enter zip code, city or state" value={searchVal} onChange={(e)=>setsearchVal(e.target.value)} />
           <img src={Map} />
         </div>
 
