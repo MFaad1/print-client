@@ -1329,7 +1329,7 @@ console.log(currentLocationList, "current lisst")
       </Model>
 
       <Model
-        open={!searchingModal}
+        open={searchingModal}
         onClose={() => setSearchingModal(false)}
         maxWidth="sm"
       >
