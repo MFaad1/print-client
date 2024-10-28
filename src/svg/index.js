@@ -29,6 +29,8 @@ import BusinessMode from './business-mode.svg'
 import File from './file.svg'
 import LocationList from './location-list.svg'
 import Printing from './printing.svg'
+import VerifyJob from './verify-job.svg'
+import Calendar from './calendar.svg'
 export {
   Logo,
   Search,
@@ -60,5 +62,7 @@ export {
   BusinessMode,
   File,
   LocationList,
-  Printing
+  Printing,
+  VerifyJob,
+  Calendar
 };

@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-
 import { Logo, Search } from "./../../svg";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
@@ -53,7 +54,7 @@ useEffect(() => {
       <Grid item xs={10} sm={10} md={10} lg={10} xl={10}>
         <div className="navbar-container">
           <button className="navbar-logo">
-            <img src={Logo} />
+            <img src={Logo} alt="" />
           </button>
           <div>
             {/* <Link className="navbar-explore">Locations</Link> */}

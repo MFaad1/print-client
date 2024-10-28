@@ -1,3 +1,8 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable no-lone-blocks */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import {
   Navbar,
@@ -13,8 +18,7 @@ import "./index.css";
 import { MdChevronRight } from "react-icons/md";
 import GoogleMapReact from "google-map-react";
 import FileUpload from "./upload";
-import Checkbox from '@mui/material/Checkbox';
-
+import Checkbox from "@mui/material/Checkbox";
 
 import {
   Upload,
@@ -47,11 +51,10 @@ import axios from "axios";
 import FileRenderer from "../../components/Docs_rendered/FileRenderer";
 import PaymentModal from "../../components/PaymentModal";
 import PaymentForm from "../../components/PaymentForm";
-import IncrementDecrement from '../../components/IncrementDecrement/IncrementDecrement'
+import IncrementDecrement from "../../components/IncrementDecrement/IncrementDecrement";
 
 import Btnloader from "../../components/Loader/Btnloader";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
 
 const emailRjx =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -63,16 +66,14 @@ const Home = () => {
   const [printFile, setPrintFile] = useState("");
   const [printText, setPrintText] = useState("");
   const [files, setfiles] = useState([]);
-  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
-
-  let agent_token = localStorage.getItem("use_access_token")
+  let agent_token = localStorage.getItem("use_access_token");
   let user = localStorage.getItem("loggedIn_user");
   let loggedIn_use;
   if (user) {
-    loggedIn_use = JSON.parse(user)
+    loggedIn_use = JSON.parse(user);
   }
-
 
   // log in
   const [loginModal, setLoginModal] = useState(false);
@@ -80,7 +81,6 @@ const Home = () => {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [forgotPassword, setforgotPassword] = useState("");
-
 
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [remember, setRemember] = useState(false);
@@ -96,20 +96,18 @@ const Home = () => {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [showSignUpPassowrd, setShowSignUpPassowrd] = useState(false);
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
-  const [showSignUpComfirmPassowrd, setShowSignUpComfirmPassowrd] = useState(false);
+  const [showSignUpComfirmPassowrd, setShowSignUpComfirmPassowrd] =
+    useState(false);
   const [forgetEmail, setforgetEmail] = useState("");
   const [searchVal, setsearchVal] = useState("");
 
-
   const [card, setCard] = useState({
-    bank_name: '',
-    card_number: '',
-    expiry_date: '',
-    phone_number: '',
-    cvv: ''
+    bank_name: "",
+    card_number: "",
+    expiry_date: "",
+    phone_number: "",
+    cvv: "",
   });
-
-
 
   // Confirm your email
   const [confirmEmailModal, setConfirmEmailModal] = useState(false);
@@ -132,7 +130,8 @@ const Home = () => {
   {
     /* Code Sent Successfully! */
   }
-  const [codeSendSuccessfyllyModal, setCodeSendSuccessfyllyModal] = useState(false);
+  const [codeSendSuccessfyllyModal, setCodeSendSuccessfyllyModal] =
+    useState(false);
   // Searching Print Agents in your area
   const [searchingModal, setSearchingModal] = useState(false);
   const defaultProps = {
@@ -143,7 +142,6 @@ const Home = () => {
     zoom: 11,
   };
   const [selectedCurrentLocation, setSelectedCurrentLocaiton] = useState();
-
 
   // const currentLocationList = [
   //   {
@@ -165,7 +163,6 @@ const Home = () => {
   //     distance: "6 mile away",
   //   },
   // ];
-
 
   {
     /* Receipt from Print to Point, LLC */
@@ -190,7 +187,6 @@ const Home = () => {
   //   _id: "670042582ba2672d1d058ad8",
   // }
 
-
   {
     /* password otp */
   }
@@ -207,26 +203,25 @@ const Home = () => {
   const [modal, setModal] = useState(false);
 
   const [cityName, setCityName] = useState("");
-  const [state, setState] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [country, setcountry] = useState('');
-  const [location_loading, setlocation_loading] = useState(false)
-  const [job_loading, setjob_loading] = useState(false)
-  const [otp_loading, setotp_loading] = useState(false)
-  const [forgot_loading, setforgot_loading] = useState(false)
-  const [newpassowrd_loading, setnewpassowrd_loading] = useState(false)
-  const [login_loading, setlogin_loading] = useState(false)
-  const [signup_loading, setsignup_loading] = useState(false)
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [country, setcountry] = useState("");
+  const [location_loading, setlocation_loading] = useState(false);
+  const [job_loading, setjob_loading] = useState(false);
+  const [otp_loading, setotp_loading] = useState(false);
+  const [forgot_loading, setforgot_loading] = useState(false);
+  const [newpassowrd_loading, setnewpassowrd_loading] = useState(false);
+  const [login_loading, setlogin_loading] = useState(false);
+  const [signup_loading, setsignup_loading] = useState(false);
   const [isChecked, setIsChecked] = React.useState(false);
   const [Printed_file, setPrinted_file] = useState();
 
   const [totalCost, setTotalCost] = useState(Printed_file?.total_cost || 0);
   const [count, setCount] = useState(1);
-  const [isColor, setIsColor] = useState(false)
-  const [PrintType, setPrintType] = useState(false)
+  const [isColor, setIsColor] = useState(false);
+  const [PrintType, setPrintType] = useState(false);
 
   const [originalLocationList, setOriginalLocationList] = useState([]);
-
 
   const pricingTable = [
     { range: [1, 5], blackAndWhitePrice: 5.53, colorPrice: 6.64 },
@@ -234,29 +229,30 @@ const Home = () => {
     { range: [11, 15], blackAndWhitePrice: 11.08, colorPrice: 12.19 },
     { range: [16, 20], blackAndWhitePrice: 13.86, colorPrice: 14.97 },
     { range: [21, 25], blackAndWhitePrice: 16.63, colorPrice: 17.74 },
-    { range: [26, Infinity], pricePerPageBW: 0.65, pricePerPageColor: 0.75 }
+    { range: [26, Infinity], pricePerPageBW: 0.65, pricePerPageColor: 0.75 },
   ];
-
-
 
   const [numPages, setNumPages] = useState(null);
 
-
   const otp_verifyHandler = async () => {
     try {
-      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/customer/verify-otp`, { email: signupEmail, otp: otp })
+      let signup_user = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/customer/verify-otp`,
+        { email: signupEmail, otp: otp }
+      );
       setLoginModal(true);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
       } else {
         toast.error("Internal server error");
       }
-
     }
-
-  }
-
+  };
 
   const signUpHandler = async () => {
     if (fullName === "") {
@@ -273,25 +269,38 @@ const Home = () => {
       toast.error("Confirm password doesn't match!");
     } else {
       try {
-        setsignup_loading(true)
+        setsignup_loading(true);
 
-        let CustomerFlag = loginType === "Customer"
+        let CustomerFlag = loginType === "Customer";
 
-        let url = CustomerFlag ? "/auth/customer/signup" : "/auth/print-agent/signup"
-        let CustomerDetails = {}
+        let url = CustomerFlag
+          ? "/auth/customer/signup"
+          : "/auth/print-agent/signup";
+        let CustomerDetails = {};
         if (CustomerFlag) {
-          CustomerDetails = { full_name: fullName, email: signupEmail, password: signUpPassword }
-        }
-        else {
+          CustomerDetails = {
+            full_name: fullName,
+            email: signupEmail,
+            password: signUpPassword,
+          };
+        } else {
           if (!businessname) return toast.error("Business name is required");
           if (!business_type) return toast.error("Business Type is required");
           if (!zip_code) return toast.error("Zip code is required");
-          CustomerDetails = { full_name: fullName, email: signupEmail, password: signUpPassword, business_name: businessname, business_type, zip_code }
-
+          CustomerDetails = {
+            full_name: fullName,
+            email: signupEmail,
+            password: signUpPassword,
+            business_name: businessname,
+            business_type,
+            zip_code,
+          };
         }
 
-
-        let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + url}`, CustomerDetails)
+        let signup_user = await axios.post(
+          `${process.env.REACT_APP_API_URL + url}`,
+          CustomerDetails
+        );
 
         toast.success("Successfully created new account");
         setFullName("");
@@ -301,23 +310,21 @@ const Home = () => {
         setSignUpModal(false);
         setConfirmEmailModal(true);
       } catch (error) {
-
-        if (error.response && error.response.data && error.response.data.message) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
           toast.error(error.response.data.message);
-          console.log(error.response.data.message)
+          console.log(error.response.data.message);
         } else {
           toast.error("Internal server error");
         }
-
       } finally {
-        setsignup_loading(false)
-
+        setsignup_loading(false);
       }
-
-
     }
   };
-
 
   // const calculateTotalCost = (count, isColor) => {
 
@@ -331,29 +338,31 @@ const Home = () => {
   //   return isColor? pricingTable[pricingTable.length - 1].pricePerPageColor * count : pricingTable[pricingTable.length - 1].pricePerPageBW * count;
   // };
 
-
   const calculateTotalCost = (count, isColor) => {
     const totalPages = count * (Printed_file?.pages || 1);
-  
+
     for (let i = 0; i < pricingTable.length; i++) {
-      const { range, blackAndWhitePrice, colorPrice, pricePerPageBW, pricePerPageColor } = pricingTable[i];
-      
+      const {
+        range,
+        blackAndWhitePrice,
+        colorPrice,
+        pricePerPageBW,
+        pricePerPageColor,
+      } = pricingTable[i];
+
       if (totalPages >= range[0] && totalPages <= range[1]) {
         return isColor ? colorPrice : blackAndWhitePrice;
       }
     }
-  
-    return isColor 
-      ? pricingTable[pricingTable.length - 1].pricePerPageColor * totalPages 
+
+    return isColor
+      ? pricingTable[pricingTable.length - 1].pricePerPageColor * totalPages
       : pricingTable[pricingTable.length - 1].pricePerPageBW * totalPages;
   };
-  
-
 
   const handleChange = (event) => {
     setIsChecked(event.target.checked);
   };
-
 
   // login handler
   const loginHandler = async () => {
@@ -364,88 +373,97 @@ const Home = () => {
     } else if (loginPassword === "") {
       toast.error("Password is required!");
     } else {
-      setlogin_loading(true)
-      let AgentFlag = loginType === "Agent"
+      setlogin_loading(true);
+      let AgentFlag = loginType === "Agent";
 
-      let URL = AgentFlag ? "/auth/print-agent/login" : "/auth/customer/login"
-
-
+      let URL = AgentFlag ? "/auth/print-agent/login" : "/auth/customer/login";
 
       try {
-        let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: loginEmail, password: loginPassword })
-        let token = signup_user.data.token
+        let signup_user = await axios.post(
+          `${process.env.REACT_APP_API_URL + URL}`,
+          { email: loginEmail, password: loginPassword }
+        );
+        let token = signup_user.data.token;
 
-        localStorage.setItem(AgentFlag ? "Agent_access_token" : "use_access_token", token)
-        localStorage.setItem(AgentFlag ? "agent_loggedIn_user" : "loggedIn_user", JSON.stringify(signup_user.data.customer))
+        localStorage.setItem(
+          AgentFlag ? "Agent_access_token" : "use_access_token",
+          token
+        );
+        localStorage.setItem(
+          AgentFlag ? "agent_loggedIn_user" : "loggedIn_user",
+          JSON.stringify(signup_user.data.customer)
+        );
         toast.success("Successfully Logged");
         setLoginEmail("");
         setLoginPassword("");
         setLoginModal(false);
         if (loginType === "Agent") {
           navigate("/dashboard");
-
         }
         window.dispatchEvent(new Event("logged_user"));
         if (loginType !== "Agent" && !signup_user.data.customer.location) {
-          setModal(true)
+          setModal(true);
         }
-
-
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
           toast.error(error.response.data.message);
         } else {
           toast.error("Internal server error");
         }
       } finally {
-        setlogin_loading(false)
-
+        setlogin_loading(false);
       }
-
     }
   };
 
-
   const agent_otp = async () => {
     try {
-      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL}/auth/print-agent/verify-otp`, { email: signupEmail, otp: otp })
+      let signup_user = await axios.post(
+        `${process.env.REACT_APP_API_URL}/auth/print-agent/verify-otp`,
+        { email: signupEmail, otp: otp }
+      );
       setLinkBankAccountModal(true);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
       } else {
         toast.error("Internal server error");
       }
-
     }
-
-  }
-
-
+  };
 
   const printSubmitHandler = async () => {
     try {
       if (!loggedIn_use) return setLoginModal(true);
 
-      let parsedLoggedInUser = typeof loggedIn_use === "string" ? JSON.parse(loggedIn_use) : loggedIn_use;
+      let parsedLoggedInUser =
+        typeof loggedIn_use === "string"
+          ? JSON.parse(loggedIn_use)
+          : loggedIn_use;
 
-      if (!agent_token) return toast.error('Please login your account and then try');
+      if (!agent_token)
+        return toast.error("Please login your account and then try");
 
       if (parsedLoggedInUser && !parsedLoggedInUser.location) {
-        toast.error('Please add the location');
+        toast.error("Please add the location");
         setModal(true);
         return;
       }
 
       if (printName === "") {
         return toast.error("Print Job Title is required!");
-      } 
-      else if (printEmail === "") {
+      } else if (printEmail === "") {
         return toast.error("Print Email is required!");
-      } 
- 
-      else if (!files.length > 0) {
-        return toast.error('Please select the relevant files.');
+      } else if (!files.length > 0) {
+        return toast.error("Please select the relevant files.");
       }
 
       const formData = new FormData();
@@ -453,20 +471,23 @@ const Home = () => {
         formData.append("file", file);
       });
       formData.append("print_job_title", printName);
-      if(printText){
+      if (printText) {
         formData.append("print_job_description", printText);
       }
       // formData.append("is_color", isChecked);
 
-
       setjob_loading(true);
 
-      let orders = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/create-print-job`, formData, {
-        headers: {
-          Authorization: `Bearer ${agent_token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      let orders = await axios.post(
+        `${process.env.REACT_APP_API_URL}/printjob/create-print-job`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       setPrinted_file(orders.data.printJob);
       setPrintJobModal(true);
@@ -477,10 +498,13 @@ const Home = () => {
       setPrintFile("");
       setPrintText("");
       setSignUpModal(true);
-
     } catch (error) {
       // Handle errors and provide feedback
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
         console.log(error.response.data.message);
       } else if (error.message) {
@@ -493,34 +517,34 @@ const Home = () => {
     }
   };
 
-
-
   const Add_card = async () => {
     try {
+      if (!agent_token) throw new Error("Please re-login and try again");
 
-      if (!agent_token) throw new Error("Please re-login and try again")
-
-      let orders = await axios.post(`${process.env.REACT_APP_API_URL}/customer/create-card`, { card: card }, {
-        headers: {
-          Authorization: `Bearer ${agent_token}`
+      let orders = await axios.post(
+        `${process.env.REACT_APP_API_URL}/customer/create-card`,
+        { card: card },
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+          },
         }
-      });
-
+      );
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
-        console.log(error.response.data.message)
-      }
-
-      else if (error.message) {
+        console.log(error.response.data.message);
+      } else if (error.message) {
         toast.error(error.message);
-      }
-      else {
+      } else {
         toast.error("Internal server error");
       }
     }
-  }
-
+  };
 
   const get_nearby_location = async () => {
     let loggedIn_use = localStorage.getItem("loggedIn_user");
@@ -540,11 +564,14 @@ const Home = () => {
         return setModal(true);
       }
 
-      let orders = await axios.get(`${process.env.REACT_APP_API_URL}/customer/available-print-agents`, {
-        headers: {
-          Authorization: `Bearer ${agent_token}`
+      let orders = await axios.get(
+        `${process.env.REACT_APP_API_URL}/customer/available-print-agents`,
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+          },
         }
-      });
+      );
 
       let availableAgents = (orders.data.availablePrintAgents || []).flat();
 
@@ -554,15 +581,20 @@ const Home = () => {
       }
 
       let filteredAgents = availableAgents.filter((agent) => {
-        return agent?.location?.zip_code === parsedLoggedInUser.location?.zip_code;
+        return (
+          agent?.location?.zip_code === parsedLoggedInUser.location?.zip_code
+        );
       });
 
       setcurrentLocationList(filteredAgents);
-      setOriginalLocationList(filteredAgents)
+      setOriginalLocationList(filteredAgents);
       console.log(filteredAgents, "filteredAgents");
-
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
         console.log(error.response.data.message);
       } else if (error.message) {
@@ -574,24 +606,23 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (searchVal.trim() === '') {
+    if (searchVal.trim() === "") {
       setcurrentLocationList(originalLocationList);
     } else {
       setcurrentLocationList(
-            originalLocationList.filter((item) => {
-                const itemString = JSON.stringify(item).toLowerCase();
-                return itemString.includes(searchVal.toLowerCase());
-            })
-        );
+        originalLocationList.filter((item) => {
+          const itemString = JSON.stringify(item).toLowerCase();
+          return itemString.includes(searchVal.toLowerCase());
+        })
+      );
     }
-}, [searchVal, originalLocationList]);
+  }, [searchVal, originalLocationList]);
 
-console.log(currentLocationList, "current lisst")
+  console.log(currentLocationList, "current lisst");
 
   useEffect(() => {
-    get_nearby_location()
-  }, [searchingModal])
-
+    get_nearby_location();
+  }, [searchingModal]);
 
   const selectPrintAgent = async () => {
     let loggedIn_use = localStorage.getItem("loggedIn_user");
@@ -599,17 +630,22 @@ console.log(currentLocationList, "current lisst")
     try {
       // Validation Checkpoints
       if (!selectedAgent) throw new Error("No agent selected");
-      if (!agent_token) throw new Error("User is not authenticated. Please login again.");
-      if (!Printed_file) throw new Error("Print Job not found, Please re-create.");
+      if (!agent_token)
+        throw new Error("User is not authenticated. Please login again.");
+      if (!Printed_file)
+        throw new Error("Print Job not found, Please re-create.");
       // let parsedLoggedInUser = JSON.parse(loggedIn_use);
 
-
-      let orders = await axios.get(`${process.env.REACT_APP_API_URL}/customer/available-print-agents`, {
-        headers: {
-          Authorization: `Bearer ${agent_token}`
+      let orders = await axios.get(
+        `${process.env.REACT_APP_API_URL}/customer/available-print-agents`,
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+          },
         }
-      })
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/printjob/select-print-agent/${Printed_file?._id}`,
+      );
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/printjob/select-print-agent/${Printed_file?._id}`,
         {
           print_agent_id: selectedAgent._id,
         },
@@ -622,15 +658,16 @@ console.log(currentLocationList, "current lisst")
       );
 
       setSearchingModal(false);
-      setPaymentModal(true)
-
+      setPaymentModal(true);
 
       toast.success("Print agent selected successfully!");
       console.log(response.data);
-
     } catch (error) {
-
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
       } else if (error.message) {
         toast.error(error.message);
@@ -643,7 +680,7 @@ console.log(currentLocationList, "current lisst")
   const handleSave = async () => {
     const cityDetails = { city: cityName, state, zip_code: zipCode, country };
 
-    console.log(cityDetails, "city details")
+    console.log(cityDetails, "city details");
 
     if (!cityName || !state || !zipCode || !country) {
       toast.error("Please fill in all the required fields.");
@@ -651,131 +688,146 @@ console.log(currentLocationList, "current lisst")
     }
 
     try {
-      setlocation_loading(true)
-      let orders = await axios.post(`${process.env.REACT_APP_API_URL}/customer/add-location`, { location: cityDetails }, {
-        headers: {
-          Authorization: `Bearer ${agent_token}`
+      setlocation_loading(true);
+      let orders = await axios.post(
+        `${process.env.REACT_APP_API_URL}/customer/add-location`,
+        { location: cityDetails },
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+          },
         }
-      });
+      );
 
-      console.log(orders, "orders")
+      console.log(orders, "orders");
       toast.success("location has been added");
       setModal(false);
-      setLoginModal(true)
+      setLoginModal(true);
       toast.success("location has been added, Please login again");
-
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
-        console.log(error.response.data.message)
-      }
-
-      else if (error.message) {
+        console.log(error.response.data.message);
+      } else if (error.message) {
         toast.error(error.message);
-      }
-      else {
+      } else {
         toast.error("Internal server error");
       }
     } finally {
-      setlocation_loading(false)
-
+      setlocation_loading(false);
     }
-
   };
 
   const foreget_passowrd = async () => {
     try {
-      setforgot_loading(true)
-      let AgentFlag = loginType === "Agent"
+      setforgot_loading(true);
+      let AgentFlag = loginType === "Agent";
 
-      let URL = AgentFlag ? "/print-agent/forgot-password" : "/auth/customer/forgot-password"
+      let URL = AgentFlag
+        ? "/print-agent/forgot-password"
+        : "/auth/customer/forgot-password";
 
-      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: forgetEmail })
+      let signup_user = await axios.post(
+        `${process.env.REACT_APP_API_URL + URL}`,
+        { email: forgetEmail }
+      );
 
       setForgotPasswordModal(false);
       setPasswrodOtpModal(true);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
-        console.log(error.response.data.message)
-      }
-
-      else if (error.message) {
+        console.log(error.response.data.message);
+      } else if (error.message) {
         toast.error(error.message);
-      }
-      else {
+      } else {
         toast.error("Internal server error");
       }
     } finally {
-      setforgot_loading(false)
-
+      setforgot_loading(false);
     }
-  }
+  };
 
   const otp_Verify = async () => {
     try {
-      setotp_loading(true)
-      let AgentFlag = loginType === "Agent"
+      setotp_loading(true);
+      let AgentFlag = loginType === "Agent";
 
-      let URL = AgentFlag ? "/print-agent/forgot-password" : "/auth/customer/verify-otp"
+      let URL = AgentFlag
+        ? "/print-agent/forgot-password"
+        : "/auth/customer/verify-otp";
 
-      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: forgetEmail, otp })
+      let signup_user = await axios.post(
+        `${process.env.REACT_APP_API_URL + URL}`,
+        { email: forgetEmail, otp }
+      );
 
       setPasswrodOtpModal(false);
       // setPasswordUpdateSuccModal(true);
       setnewPasswordModal(true);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
-        console.log(error.response.data.message)
-      }
-
-      else if (error.message) {
+        console.log(error.response.data.message);
+      } else if (error.message) {
         toast.error(error.message);
-      }
-      else {
+      } else {
         toast.error("Internal server error");
       }
     } finally {
-      setotp_loading(false)
-
+      setotp_loading(false);
     }
-  }
-
-
+  };
 
   const new_passord_handler = async () => {
     try {
-      setnewpassowrd_loading(true)
-      let AgentFlag = loginType === "Agent"
+      setnewpassowrd_loading(true);
+      let AgentFlag = loginType === "Agent";
 
-      let URL = AgentFlag ? "/print-agent/forgot-password" : "/auth/customer/reset-password"
+      let URL = AgentFlag
+        ? "/print-agent/forgot-password"
+        : "/auth/customer/reset-password";
 
-      let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`, { email: forgetEmail, password: forgotPassword, otp })
+      let signup_user = await axios.post(
+        `${process.env.REACT_APP_API_URL + URL}`,
+        { email: forgetEmail, password: forgotPassword, otp }
+      );
 
       setnewPasswordModal(false);
       setPasswordUpdateSuccModal(true);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         toast.error(error.response.data.message);
-        console.log(error.response.data.message)
-      }
-
-      else if (error.message) {
+        console.log(error.response.data.message);
+      } else if (error.message) {
         toast.error(error.message);
-      }
-      else {
+      } else {
         toast.error("Internal server error");
       }
     } finally {
-      setnewpassowrd_loading(false)
-
+      setnewpassowrd_loading(false);
     }
-  }
+  };
 
   useEffect(() => {
     const cost = calculateTotalCost(count, isColor);
-  console.log(cost, "cost")
+    console.log(cost, "cost");
     setTotalCost(cost);
   }, [count, isColor]);
 
@@ -796,7 +848,8 @@ console.log(currentLocationList, "current lisst")
                     Your printing solution...
                   </p>
                   <p
-                    className="home-box-left-title" id="home-box-left-title"
+                    className="home-box-left-title"
+                    id="home-box-left-title"
                     style={{ marginBottom: "30px" }}
                   >
                     when you need it most
@@ -832,9 +885,6 @@ console.log(currentLocationList, "current lisst")
               </Grid>
 
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-
-
-
                 <div className="home-form-main">
                   <p className="home-input-title">Print Job Title</p>
                   <div className="home-input-main">
@@ -855,9 +905,16 @@ console.log(currentLocationList, "current lisst")
                     />
                   </div>
                   <p className="home-input-title">Upload Files</p>
-                  {files && files.length > 0 ? files.map((file) => <p className="" style={{ marginTop: "5px", marginBottom: "5px" }}>{file.name}</p>) : null}
-
-
+                  {files && files.length > 0
+                    ? files.map((file) => (
+                        <p
+                          className=""
+                          style={{ marginTop: "5px", marginBottom: "5px" }}
+                        >
+                          {file.name}
+                        </p>
+                      ))
+                    : null}
 
                   <FileUpload setfiles={setfiles} files={files} />
                   {/* <label className="upload-button">
@@ -892,13 +949,12 @@ console.log(currentLocationList, "current lisst")
             />
         </div> */}
 
-
                   <div className="home-form-submit-btn">
-                    <button onClick={printSubmitHandler} disabled={job_loading}>{job_loading ? <Btnloader /> : "Submit"}</button>
+                    <button onClick={printSubmitHandler} disabled={job_loading}>
+                      {job_loading ? <Btnloader /> : "Submit"}
+                    </button>
                   </div>
                 </div>
-
-
               </Grid>
             </Grid>
           </div>
@@ -977,11 +1033,14 @@ console.log(currentLocationList, "current lisst")
             Forget Password?
           </Link>
         </div>
-        <Button disabled={login_loading} title={login_loading ? <Btnloader /> : "Login"} onClick={loginHandler} />
+        <Button
+          disabled={login_loading}
+          title={login_loading ? <Btnloader /> : "Login"}
+          onClick={loginHandler}
+        />
         <SocialButton />
         <p className="modal-form-footer">
           Don’t have an account?{" "}
-
           <Link
             className="modal-form-footer-link"
             onClick={() => {
@@ -993,7 +1052,6 @@ console.log(currentLocationList, "current lisst")
           </Link>
         </p>
       </Model>
-
       {/* sign up modal */}
       <Model
         open={signUpModal}
@@ -1051,9 +1109,7 @@ console.log(currentLocationList, "current lisst")
               placeholder="Zip Code"
               value={zip_code}
               onChange={(val) => setzip_code(val.target.value)}
-
             />
-
 
             <Input
               password={false}
@@ -1062,7 +1118,6 @@ console.log(currentLocationList, "current lisst")
               placeholder="Business Name"
               value={businessname}
               onChange={(val) => setbusinessname(val.target.value)}
-
             />
             <Dropdown
               title="Business Type"
@@ -1105,9 +1160,11 @@ console.log(currentLocationList, "current lisst")
             setShowSignUpComfirmPassowrd(!showSignUpComfirmPassowrd)
           }
         />
-        <Button disabled={signup_loading} title={signup_loading ? <Btnloader /> : "Sign up"} onClick={signUpHandler} />
-
-
+        <Button
+          disabled={signup_loading}
+          title={signup_loading ? <Btnloader /> : "Sign up"}
+          onClick={signUpHandler}
+        />
 
         <SocialButton />
         <p className="modal-form-footer">
@@ -1123,7 +1180,6 @@ console.log(currentLocationList, "current lisst")
           </Link>
         </p>
       </Model>
-
       {/* Confirm your email */}
       <Model
         open={confirmEmailModal}
@@ -1141,8 +1197,8 @@ console.log(currentLocationList, "current lisst")
           Just one quick check to make sure you’re really you.
         </p>
         <p className="confirm-email-modal-text">
-          We’ve sent a verification link to <span>{signupEmail}</span>.If
-          you can’t find it then check your spam.
+          We’ve sent a verification link to <span>{signupEmail}</span>.If you
+          can’t find it then check your spam.
         </p>
         <div className="modal-icon">
           <button
@@ -1170,8 +1226,8 @@ console.log(currentLocationList, "current lisst")
         </div>
         <p className="confirm-email-modal-heading">Verify your email address</p>
         <p className="confirm-email-modal-text">
-          You've entered <span>{signupEmail}</span> as the email address
-          for your account. Please verify this email address by clicking button
+          You've entered <span>{signupEmail}</span> as the email address for
+          your account. Please verify this email address by clicking button
           below.
         </p>
         <div className="modal-icon">
@@ -1215,7 +1271,7 @@ console.log(currentLocationList, "current lisst")
           Verification Code
         </p>
         <p className="verification-text">
-          We have shared a 6 digits code of your registered email address {" "}
+          We have shared a 6 digits code of your registered email address{" "}
           {signupEmail}
         </p>
         <div className="otp-div">
@@ -1244,11 +1300,10 @@ console.log(currentLocationList, "current lisst")
           onClick={() => {
             setVerificationModal(false);
             if (loginType === "Customer") {
-              otp_verifyHandler()
-
+              otp_verifyHandler();
             } else {
               // setLinkBankAccountModal(true);
-              agent_otp()
+              agent_otp();
             }
           }}
         />
@@ -1276,15 +1331,19 @@ console.log(currentLocationList, "current lisst")
         </div>
 
         <div className="modal-header">
-          <p className="modal-header-heading">{Printed_file?.print_job_title}</p>
+          <p className="modal-header-heading">
+            {Printed_file?.print_job_title}
+          </p>
           <p className="modal-header-page">Pages: {Printed_file?.pages}</p>
         </div>
         {/* <img src={Invoice} width={"100%"} style={{ marginTop: "20px" }} /> */}
-        {Printed_file ?
-          <FileRenderer file={Printed_file} numPages={numPages} setNumPages={setNumPages} />
-
-          : null
-        }
+        {Printed_file ? (
+          <FileRenderer
+            file={Printed_file}
+            numPages={numPages}
+            setNumPages={setNumPages}
+          />
+        ) : null}
 
         <label className="download-btn">
           <input type="file" hidden />
@@ -1292,9 +1351,10 @@ console.log(currentLocationList, "current lisst")
             <img src={Pdf} />
             <div className="file_name">
               <p className="file_name">{Printed_file?.file_path} </p>
-              <p className="download-size">File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}</p>
+              <p className="download-size">
+                File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}
+              </p>
             </div>
-
           </div>
           <img src={Download} />
         </label>
@@ -1320,15 +1380,13 @@ console.log(currentLocationList, "current lisst")
             className="modal-footer-next-btn"
             onClick={() => {
               setPrintJobModal(false);
-              setSearchingModal(true)
+              setSearchingModal(true);
             }}
           >
             Next
           </button>
         </div>
       </Model>
-
-
       <Model
         open={searchingModal}
         onClose={() => setSearchingModal(false)}
@@ -1352,12 +1410,16 @@ console.log(currentLocationList, "current lisst")
         <p className="searching-heading">Searching Print Agents in your area</p>
         <div className="searching-main">
           <img src={Search2} />
-          <input placeholder="Enter zip code, city or state" value={searchVal} onChange={(e)=>setsearchVal(e.target.value)} />
+          <input
+            placeholder="Enter zip code, city or state"
+            value={searchVal}
+            onChange={(e) => setsearchVal(e.target.value)}
+          />
           <img src={Map} />
         </div>
 
         <div className="modal-map">
-          <GoogleMapReact
+          {/* <GoogleMapReact
             bootstrapURLKeys={{ key: "" }}
             defaultCenter={defaultProps.center}
             defaultZoom={defaultProps.zoom}
@@ -1368,25 +1430,31 @@ console.log(currentLocationList, "current lisst")
               lng={30.337844}
               text="My Marker"
             />
-          </GoogleMapReact>
+          </GoogleMapReact> */}
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28823.460374453345!2d-80.48738101619446!3d25.44051856350412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9e0cb35a8cf39%3A0xf7bdead0fe918320!2sFlorida%20City%2C%20FL%2C%20USA!5e0!3m2!1sen!2s!4v1730069520065!5m2!1sen!2s"
+            width="600"
+            height="450"
+            style={{ border: "0" }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
         <div className="current-location">
           <p>Use my current location</p>
           <button>Use Location</button>
         </div>
         {currentLocationList.map((val, index) => {
-          console.log(val.full_name)
+          console.log(val.full_name);
           return (
             <button
               key={index}
               className="current-location-box"
               onClick={() => {
-                setSelectedCurrentLocaiton(index)
-                setSelectedAgent(val)
-              }
-
-
-              }
+                setSelectedCurrentLocaiton(index);
+                setSelectedAgent(val);
+              }}
             >
               <div className="current-location-box-left">
                 {selectedCurrentLocation === index ? (
@@ -1427,17 +1495,20 @@ console.log(currentLocationList, "current lisst")
         <Button
           title="Save"
           onClick={() => {
-            selectPrintAgent()
-
+            selectPrintAgent();
           }}
         />
-
-
       </Model>
-
       {/* Payment / Add New Card */}
-      <Model open={paymentModal} onClose={() => setPaymentModal(false)} maxWidth="sm">
-        <div className="confirm-email-modal-header" style={{ justifyContent: "flex-start" }}>
+      <Model
+        open={paymentModal}
+        onClose={() => setPaymentModal(false)}
+        maxWidth="sm"
+      >
+        <div
+          className="confirm-email-modal-header"
+          style={{ justifyContent: "flex-start" }}
+        >
           <button
             className="back-button"
             onClick={() => {
@@ -1451,11 +1522,9 @@ console.log(currentLocationList, "current lisst")
         </div>
 
         <div className="modal-header">
-          <p className="modal-header-heading">{Printed_file?.print_job_title}</p>
-          <div className='modal-header-left'>
-            <IncrementDecrement count={count} setCount={setCount} />
-            <p className="mod">Pages: {Printed_file?.pages}</p>
-          </div>
+          <p className="modal-header-heading">
+            {Printed_file?.print_job_title}
+          </p>
         </div>
 
         <button className="download-btn">
@@ -1463,57 +1532,72 @@ console.log(currentLocationList, "current lisst")
             <img src={Pdf} alt="PDF" />
             <div className="file_name">
               <p>{Printed_file?.file_path}</p>
-              {files && files.length > 0 ? <p className="download-size">File Size: {(Number(files[0]?.size) / (1024 * 1024)).toFixed(2)} MB</p> : null}
+              {files && files.length > 0 ? (
+                <p className="download-size">
+                  File Size:{" "}
+                  {(Number(files[0]?.size) / (1024 * 1024)).toFixed(2)} MB
+                </p>
+              ) : null}
             </div>
           </div>
           <img src={Download} alt="Download" />
         </button>
-
-        <div className="modal-price-list">
-          <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">${totalCost}</p>
+        <div className="modal-header-left-1-heading">
+          <p>No. of copies:</p>
         </div>
-
-
+        <div className="modal-header-left-1">
+          <div>
+            <IncrementDecrement count={count} setCount={setCount} />
+          </div>
+          <p className="mod">Pages: {Printed_file?.pages}</p>
+        </div>
         <div className="print-type-container">
-          <label htmlFor="printType" className="print-type-label">Print Type</label>
+          <label htmlFor="printType" className="print-type-label">
+            Print Type:
+          </label>
           <select
             id="printType"
             className="print-type-dropdown"
             onChange={(e) => {
-              if (e.target.value == "color") {
-                setIsColor(true)
-
+              if (e.target.value === "color") {
+                setIsColor(true);
               } else {
-                setIsColor(false)
-
+                setIsColor(false);
               }
-
             }}
           >
             <option value="black-and-white">Black and White</option>
             <option value="color">Color</option>
           </select>
         </div>
+        <div className="modal-price-list">
+          <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
+          <p className="modal-price-price">${totalCost}</p>
+        </div>
 
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
-            ${Printed_file?.total_cost ? (Printed_file.total_cost * 0.11).toFixed(2) : '0.00'}
+            $
+            {Printed_file?.total_cost
+              ? (Printed_file.total_cost * 0.11).toFixed(2)
+              : "0.00"}
           </p>
         </div>
 
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
-            ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : '0.00'}
+            ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : "0.00"}
           </p>
         </div>
 
-        <PaymentForm id={Printed_file?._id} setPaymentModal={setPaymentModal} setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal} />
+        <PaymentForm
+          id={Printed_file?._id}
+          setPaymentModal={setPaymentModal}
+          setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal}
+        />
       </Model>
-
-
       {/* Code Sent Successfully! */}``
       <Model
         open={codeSendSuccessfyllyModal}
@@ -1537,7 +1621,9 @@ console.log(currentLocationList, "current lisst")
         </div>
 
         <div className="modal-header">
-          <p className="modal-header-heading">{Printed_file?.print_job_title}</p>
+          <p className="modal-header-heading">
+            {Printed_file?.print_job_title}
+          </p>
           <p className="modal-header-page">{Printed_file?.page}</p>
         </div>
         <button className="download-btn">
@@ -1545,7 +1631,11 @@ console.log(currentLocationList, "current lisst")
             <img src={Pdf} />
             <div>
               <p className="file_name">{Printed_file?.file_path}</p>
-              {files && files.length > 0 ? <p className="download-size">File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}</p> : null}
+              {files && files.length > 0 ? (
+                <p className="download-size">
+                  File Size: {Number(files[0]?.size) / (1024 * 1024).toFixed(2)}
+                </p>
+              ) : null}
             </div>
           </div>
           <img src={Download} />
@@ -1557,21 +1647,26 @@ console.log(currentLocationList, "current lisst")
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
-            {Printed_file && Printed_file.total_cost ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}` : '$0.00'}
+            {Printed_file && Printed_file.total_cost
+              ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`
+              : "$0.00"}
           </p>
         </div>
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
-          ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : '0.00'}
+            ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : "0.00"}
           </p>
         </div>
 
         <h1 className="successfully-send-heading">Code Sent Successfully!</h1>
         <p className="successfully-send-text">
           A confirmation code has been sent to your email on file ending in
-          ******** {loggedIn_use?.email && loggedIn_use.email.split("@")[0].slice(-4) + "@" + loggedIn_use.email.split("@")[1]}
-
+          ********{" "}
+          {loggedIn_use?.email &&
+            loggedIn_use.email.split("@")[0].slice(-4) +
+              "@" +
+              loggedIn_use.email.split("@")[1]}
         </p>
         {/* <Button
           title=""
@@ -1581,69 +1676,59 @@ console.log(currentLocationList, "current lisst")
           }}
         /> */}
       </Model>
+      {loggedIn_use && !loggedIn_use.location ? (
+        <Model open={modal} onClose={() => setModal(false)} maxWidth="xs">
+          <div className="modal-header">
+            <p>Location Details</p>
+            <img src={Close} onClick={() => setModal(false)} alt="close" />
+          </div>
+          {/* <p className="modal-sub-heading">City Details</p> */}
 
+          {/* Controlled Input for City Name */}
+          <Input
+            title="City Name"
+            type="text"
+            placeholder="City Name"
+            value={cityName}
+            onChange={(e) => setCityName(e.target.value)}
+          />
 
-      {
-        loggedIn_use && !loggedIn_use.location ?
-          <Model open={modal} onClose={() => setModal(false)} maxWidth="xs">
-            <div className="modal-header">
-              <p>Location Details</p>
-              <img src={Close} onClick={() => setModal(false)} alt="close" />
-            </div>
-            {/* <p className="modal-sub-heading">City Details</p> */}
+          {/* Controlled Input for State */}
+          <Input
+            title="State"
+            type="text"
+            placeholder="State"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+          />
 
-            {/* Controlled Input for City Name */}
-            <Input
-              title="City Name"
-              type="text"
-              placeholder="City Name"
-              value={cityName}
-              onChange={(e) => setCityName(e.target.value)}
-            />
+          {/* Controlled Input for Zip Code */}
+          <Input
+            title="Zip Code"
+            type="number"
+            placeholder="Zip Code"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
+          />
 
-            {/* Controlled Input for State */}
-            <Input
-              title="State"
-              type="text"
-              placeholder="State"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-            />
+          <Input
+            title="Country"
+            type="text"
+            placeholder="Country"
+            value={country}
+            onChange={(e) => setcountry(e.target.value)}
+          />
 
-            {/* Controlled Input for Zip Code */}
-            <Input
+          {/* Save Button */}
 
-              title="Zip Code"
-              type="number"
-              placeholder="Zip Code"
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-            />
-
-            <Input
-              title="Country"
-              type="text"
-              placeholder="Country"
-              value={country}
-              onChange={(e) => setcountry(e.target.value)}
-            />
-
-            {/* Save Button */}
-
-
-            <Button
-              disabled={location_loading}
-              onClick={handleSave}
-              title="Save"
-            />
-
-          </Model> : null
-      }
-
-
-
+          <Button
+            disabled={location_loading}
+            onClick={handleSave}
+            title="Save"
+          />
+        </Model>
+      ) : null}
       {/* Searching Print Agents in your area */}
-
       {/* Receipt from Print to Point, LLC */}
       <Model
         open={receiptModal}
@@ -1682,8 +1767,6 @@ console.log(currentLocationList, "current lisst")
           call us at +1 561-234-5912.
         </p>
       </Model>
-
-
       {/* Forgot Password */}
       <Model
         open={forgotPasswordModal}
@@ -1694,12 +1777,7 @@ console.log(currentLocationList, "current lisst")
           className="confirm-email-modal-header"
           style={{ justifyContent: "flex-start" }}
         >
-          <button
-            className="back-button"
-            onClick={() => {
-
-            }}
-          >
+          <button className="back-button" onClick={() => {}}>
             <img src={ArrowLeft} />
             <p>Back</p>
           </button>
@@ -1715,20 +1793,21 @@ console.log(currentLocationList, "current lisst")
           Enter your registered email address. we will send you a code to reset
           your password.
         </p>
-        <Input title="Email" value={forgetEmail} onChange={(e) => setforgetEmail(e.target.value)} placeholder="john@example.com" />
+        <Input
+          title="Email"
+          value={forgetEmail}
+          onChange={(e) => setforgetEmail(e.target.value)}
+          placeholder="john@example.com"
+        />
 
         <Button
           title={forgot_loading ? <Btnloader /> : "Send OTP"}
           disabled={forgot_loading}
           onClick={() => {
-            foreget_passowrd()
+            foreget_passowrd();
           }}
         />
       </Model>
-
-
-
-
       {/* password otp */}
       <Model
         open={passwordOtpMoadal}
@@ -1758,8 +1837,7 @@ console.log(currentLocationList, "current lisst")
           Enter the OTP
         </p>
         <p className="verification-text">
-          We have shared a code of your registered email address {" "}
-          {forgetEmail}
+          We have shared a code of your registered email address {forgetEmail}
         </p>
         <div className="otp-div">
           <OtpInput
@@ -1786,12 +1864,10 @@ console.log(currentLocationList, "current lisst")
           disabled={otp_loading}
           title={otp_loading ? <Btnloader /> : "Verify"}
           onClick={() => {
-            otp_Verify()
-
+            otp_Verify();
           }}
         />
       </Model>
-
       {/* New passowrd */}
       <Model
         open={newPasswordModal}
@@ -1820,9 +1896,7 @@ console.log(currentLocationList, "current lisst")
         >
           Forgot Password
         </p>
-        <p className="verification-text">
-          Enter your New passowrd.
-        </p>
+        <p className="verification-text">Enter your New passowrd.</p>
         {/* <Input password={true} title="Passowrd" value={forgetEmail} onChange={(e) => setforgetEmail(e.target.value)} placeholder="john@example.com" /> */}
 
         <Input
@@ -1838,17 +1912,14 @@ console.log(currentLocationList, "current lisst")
           }
         />
 
-
         <Button
           title={newpassowrd_loading ? <Btnloader /> : "SUBMIT"}
           disabled={newpassowrd_loading}
           onClick={() => {
-            new_passord_handler()
+            new_passord_handler();
           }}
         />
       </Model>
-
-
       {/* Password update Successful */}
       <Model
         open={passwordUpdateSuccModal}
@@ -1871,8 +1942,6 @@ console.log(currentLocationList, "current lisst")
           }}
         />
       </Model>
-
-
       {/* Link your bank account */}
       <Model
         open={linkBankAccountModal}
@@ -1923,9 +1992,6 @@ console.log(currentLocationList, "current lisst")
           }}
         />
       </Model>
-
-
-
       {/* Send Money */}
       <Model
         open={sendMoneyModal}
@@ -1976,7 +2042,7 @@ console.log(currentLocationList, "current lisst")
           className="send-money-card"
           onClick={() => {
             setSendMoneyModal(false);
-            setLoginModal(true)
+            setLoginModal(true);
           }}
         >
           <div>
@@ -2014,9 +2080,6 @@ console.log(currentLocationList, "current lisst")
           <MdChevronRight style={{ height: "24px", width: "24px" }} />
         </div>
       </Model>
-
-
-
     </div>
   );
 };
