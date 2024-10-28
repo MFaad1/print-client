@@ -498,7 +498,8 @@ const Home = () => {
       setPrintEmail("");
       setPrintFile("");
       setPrintText("");
-      setSignUpModal(true);
+      // setSignUpModal(true);
+      setCounter(false)
     } catch (error) {
       // Handle errors and provide feedback
       if (
