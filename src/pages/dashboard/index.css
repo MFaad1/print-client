@@ -12,7 +12,7 @@
 }
 .page-header > p {
   color: #1a1d1f;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-size: 20px;
   font-weight: 500;
   margin-left: 10px;
@@ -29,7 +29,7 @@
 }
 .dashboard-header-dropdown > p {
   color: #000000b2;
-  font-family: "Inter";
+  /* font-family: "Inter"; */
   font-size: 16px;
   font-weight: 500;
 }
@@ -44,7 +44,7 @@ select {
   height: 100%;
   margin-left: 5px;
   color: #000000;
-  font-family: "Inter";
+  /* font-family: "Inter"; */
   font-size: 16px;
   font-weight: 500;
 }
@@ -57,13 +57,13 @@ select {
 }
 .dashboard-box-heading {
   color: #000000b2;
-  font-family: "Inter";
+  /* font-family: "Inter"; */
   font-size: 14px;
   font-weight: 500;
 }
 .dashboard-box-value {
   color: #000000;
-  font-family: "Inter";
+  /* font-family: "Inter"; */
   font-size: 24px;
   font-weight: 700;
   margin-top: 20px;
@@ -83,13 +83,13 @@ select {
 }
 .dashboard-activity-main > p {
   color: #4d4d4d;
-  font-family: "Inter";
+  /* font-family: "Inter"; */
   font-size: 14px;
   font-weight: 500;
 }
 .dashboard-activity-main >select{
     color: #0F2552;
-font-family: 'Inter';
+/* font-family: 'Inter'; */
 font-size: 12px;
 font-weight: 600;
 

@@ -16,10 +16,8 @@ import {
 import Grid from "@mui/material/Grid";
 import "./index.css";
 import { MdChevronRight } from "react-icons/md";
-import GoogleMapReact from "google-map-react";
 import FileUpload from "./upload";
-import Checkbox from "@mui/material/Checkbox";
-
+import Switch from "react-switch";
 import {
   Upload,
   Close,
@@ -30,12 +28,9 @@ import {
   Download,
   Search2,
   Map,
-  Location,
-  LocationWave,
-  Copy,
-  Time,
+  // LocationWave,
+  // Copy,
   Location3,
-  Invoice,
   Success,
   File,
   LocationList,
@@ -52,7 +47,6 @@ import FileRenderer from "../../components/Docs_rendered/FileRenderer";
 import PaymentModal from "../../components/PaymentModal";
 import PaymentForm from "../../components/PaymentForm";
 import IncrementDecrement from "../../components/IncrementDecrement/IncrementDecrement";
-
 import Btnloader from "../../components/Loader/Btnloader";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -67,7 +61,7 @@ const Home = () => {
   const [printText, setPrintText] = useState("");
   const [files, setfiles] = useState([]);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
+  const nav = useNavigate();
   let agent_token = localStorage.getItem("use_access_token");
   let user = localStorage.getItem("loggedIn_user");
   let loggedIn_use;
@@ -142,27 +136,6 @@ const Home = () => {
     zoom: 11,
   };
   const [selectedCurrentLocation, setSelectedCurrentLocaiton] = useState();
-
-  // const currentLocationList = [
-  //   {
-  //     heading: "Second Cup",
-  //     location: "St. 311, David Road, USA",
-  //     time: "Open Weds at 0800 PM",
-  //     distance: "6 mile away",
-  //   },
-  //   {
-  //     heading: "Mall A One",
-  //     location: "St. 311, David Road, USA",
-  //     time: "Open Weds at 0800 PM",
-  //     distance: "6 mile away",
-  //   },
-  //   {
-  //     heading: "Jupitar Mall",
-  //     location: "St. 311, David Road, USA",
-  //     time: "Open Weds at 0800 PM",
-  //     distance: "6 mile away",
-  //   },
-  // ];
 
   {
     /* Receipt from Print to Point, LLC */
@@ -475,7 +448,7 @@ const Home = () => {
         formData.append("print_job_description", printText);
       }
       formData.append("is_color", isColor);
-      formData.append("no_of_copies", count)
+      formData.append("no_of_copies", count);
 
       setjob_loading(true);
 
@@ -499,7 +472,7 @@ const Home = () => {
       setPrintFile("");
       setPrintText("");
       // setSignUpModal(true);
-      setCounter(false)
+      setCounter(false);
     } catch (error) {
       // Handle errors and provide feedback
       if (
@@ -833,6 +806,10 @@ const Home = () => {
     setTotalCost(cost);
   }, [count, isColor]);
 
+  const handleToggle = (checked) => {
+    setIsColor(checked);
+  };
+
   return (
     <div>
       <Navbar
@@ -894,6 +871,7 @@ const Home = () => {
                       type="text"
                       placeholder="Enter Name"
                       value={printName}
+                      required
                       onChange={(val) => setPrintName(val.target.value)}
                     />
                   </div>
@@ -903,19 +881,25 @@ const Home = () => {
                       type="email"
                       placeholder="Enter email"
                       value={printEmail}
+                      required
                       onChange={(val) => setPrintEmail(val.target.value)}
                     />
                   </div>
                   <p className="home-input-title">Upload Files</p>
                   {files && files.length > 0
                     ? files.map((file) => (
-                      <p
-                        className=""
-                        style={{ marginTop: "5px", marginBottom: "5px" }}
-                      >
-                        {file.name}
-                      </p>
-                    ))
+                        <p
+                          className=""
+                          style={{
+                            marginTop: "5px",
+                            marginBottom: "5px",
+                            marginRight: "20px",
+                            whiteSpace: "break-spaces",
+                          }}
+                        >
+                          {file.name}
+                        </p>
+                      ))
                     : null}
 
                   <FileUpload setfiles={setfiles} files={files} />
@@ -952,9 +936,7 @@ const Home = () => {
         </div> */}
 
                   <div className="home-form-submit-btn">
-                    <button onClick={() => setCounter(true)} >
-                      Submit
-                    </button>
+                    <button onClick={() => setCounter(true)}>Submit</button>
                   </div>
                 </div>
               </Grid>
@@ -1259,10 +1241,11 @@ const Home = () => {
             onClick={() => {
               setVerificationModal(false);
               setVerifyModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1325,10 +1308,11 @@ const Home = () => {
             onClick={() => {
               setPrintJobModal(false);
               // setVerificationModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1358,7 +1342,7 @@ const Home = () => {
               </p>
             </div>
           </div>
-          <img src={Download} />
+          {/* <img src={Download} /> */}
         </label>
 
         <p className="input-title">Title</p>
@@ -1389,14 +1373,8 @@ const Home = () => {
           </button>
         </div>
       </Model>
-
-
-{/* Counter ui */}
-      <Model
-        open={Counter}
-        onClose={() => setCounter(false)}
-        maxWidth="sm"
-      >
+      {/* Counter ui */}
+      <Model open={Counter} onClose={() => setCounter(false)} maxWidth="sm">
         <div
           className="confirm-email-modal-header"
           style={{ justifyContent: "flex-start" }}
@@ -1405,25 +1383,24 @@ const Home = () => {
             className="back-button"
             onClick={() => {
               setCounter(false);
-              // setPrintJobModal(true);
+              window.location.reload(false);
+              nav("/");
             }}
           >
             <img src={ArrowLeft} alt="Back" />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
         <div className="modal-header">
-          <p className="modal-header-heading">
-            {printName}
-          </p>
+          <p className="modal-header-heading">Title: {printName}</p>
         </div>
 
         <button className="download-btn" style={{ width: "100%" }}>
           <div className="file_info">
             <img src={Pdf} alt="PDF" />
             <div className="file_name">
-              <p>{(files[0]?.name)}</p>
+              <p>{files[0]?.name}</p>
               {files && files.length > 0 ? (
                 <p className="download-size">
                   File Size:{" "}
@@ -1432,7 +1409,6 @@ const Home = () => {
               ) : null}
             </div>
           </div>
-          <img src={Download} alt="Download" />
         </button>
         <div className="count_heading">
           <div className="para">
@@ -1440,43 +1416,67 @@ const Home = () => {
           </div>
 
           <div>
-
             <IncrementDecrement count={count} setCount={setCount} />
           </div>
         </div>
 
-
         <div className="print-type-container">
-          <label htmlFor="printType" className="print-type-label">
+          <label htmlFor="printTypeSwitch" className="print-type-label" style={{marginRight:'15px'}}>
             Print Type:
           </label>
-          <select
-            id="printType"
-            className="print-type-dropdown"
-            onChange={(e) => {
-              if (e.target.value === "color") {
-                setIsColor(true);
-              } else {
-                setIsColor(false);
-              }
-            }}
-          >
-            <option value="black-and-white">Black and White</option>
-            <option value="color">Color</option>
-          </select>
+          <Switch
+            checked={isColor}
+            onChange={handleToggle}
+            onColor="#f7801a"
+            offColor="#ccc"
+            onHandleColor="#fff"
+            offHandleColor="#fff"
+            handleDiameter={20}
+            width={90}
+            uncheckedIcon={
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  fontSize: 12,
+                  paddingRight: 2,
+                  color: "#000",
+                }}
+              >
+                B&W
+              </div>
+            }
+            checkedIcon={
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  fontSize: 12,
+                  paddingLeft: 6,
+                  color: "#fff",
+                }}
+              >
+                Color
+              </div>
+            }
+            id="printTypeSwitch"
+          />
         </div>
 
-
-<div className="home-form-submit-btn btn-count">
-                    <button onClick={printSubmitHandler} disabled={job_loading} style={{width: "100%"}}>
-                      {job_loading ? <Btnloader /> : "Save"}
-                    </button>
-                  </div>
-
+        <div className="home-form-submit-btn btn-count">
+          <button
+            onClick={printSubmitHandler}
+            disabled={job_loading}
+            style={{ width: "100%" }}
+          >
+            {job_loading ? <Btnloader /> : "Save"}
+          </button>
+        </div>
       </Model>
-
-
-
       {/* Search Model */}
       <Model
         open={searchingModal}
@@ -1492,14 +1492,15 @@ const Home = () => {
             onClick={() => {
               setSearchingModal(false);
               setPrintJobModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
         <p className="searching-heading">Searching Print Agents in your area</p>
-        <div className="searching-main">
+        {/*<div className="searching-main">
           <img src={Search2} />
           <input
             placeholder="Enter zip code, city or state"
@@ -1507,21 +1508,9 @@ const Home = () => {
             onChange={(e) => setsearchVal(e.target.value)}
           />
           <img src={Map} />
-        </div>
+        </div> */}
 
         <div className="modal-map">
-          {/* <GoogleMapReact
-            bootstrapURLKeys={{ key: "" }}
-            defaultCenter={defaultProps.center}
-            defaultZoom={defaultProps.zoom}
-            style={{ height: "150px" }}
-          >
-            <AnyReactComponent
-              lat={59.955413}
-              lng={30.337844}
-              text="My Marker"
-            />
-          </GoogleMapReact> */}
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28823.460374453345!2d-80.48738101619446!3d25.44051856350412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9e0cb35a8cf39%3A0xf7bdead0fe918320!2sFlorida%20City%2C%20FL%2C%20USA!5e0!3m2!1sen!2s!4v1730069520065!5m2!1sen!2s"
             width="600"
@@ -1532,10 +1521,15 @@ const Home = () => {
             referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
-        <div className="current-location">
+        <div>
+          <p style={{ marginTop: "10px", fontSize: "18px", fontWeight: "700" }}>
+            Available Agents:
+          </p>
+        </div>
+        {/* <div className="current-location">
           <p>Use my current location</p>
           <button>Use Location</button>
-        </div>
+        </div> */}
         {currentLocationList.map((val, index) => {
           console.log(val.full_name);
           return (
@@ -1562,22 +1556,18 @@ const Home = () => {
 
                 <div>
                   <p className="current-location-heading">
-                    ({index + 1}){val.business_name}
+                    {index + 1} - {val.business_name}
                   </p>
-                  {/* <p className="current-location-location">{val.location.zip_code}</p> */}
-                  {/* <div className="current-location-time">
-                    <img src={Time} />
-                    <p>{val.time}</p>
-                  </div> */}
                   <div className="current-location-time">
                     <img src={Location3} />
                     <p>{val.location.zip_code}</p>
+                    <p>{val?.location?.state}</p>
                   </div>
                 </div>
               </div>
               <div className="current-location-box-right">
-                <img src={LocationWave} />
-                <img src={Copy} style={{ marginTop: "10px" }} />
+                {/* <img src={LocationWave} /> */}
+                {/* <img src={Copy} style={{ marginTop: "10px" }} /> */}
               </div>
             </button>
           );
@@ -1590,8 +1580,6 @@ const Home = () => {
           }}
         />
       </Model>
-
-
       {/* Payment / Add New Card */}
       <Model
         open={paymentModal}
@@ -1607,10 +1595,11 @@ const Home = () => {
             onClick={() => {
               setPaymentModal(false);
               setPrintJobModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} alt="Back" />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1633,37 +1622,49 @@ const Home = () => {
               ) : null}
             </div>
           </div>
-          <img src={Download} alt="Download" />
+          {/* <img src={Download} alt="Download" /> */}
         </button>
-      
-  
+
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">${Printed_file?.total_cost }</p>
+          <p className="modal-price-price">${(Printed_file?.total_cost* 0.90).toFixed(2)}</p>
         </div>
-
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">No. of Copies</p>
+          <p className="modal-price-price">{Printed_file?.no_of_copies}</p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">Color Print</p>
+          <p className="modal-price-price">
+            {Printed_file?.is_color ? "Yes" : "No"}
+          </p>
+        </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
             $
-            {Printed_file?.total_cost ? (Printed_file.total_cost * 0.11).toFixed(2): "0.00"}
+            {Printed_file?.total_cost
+              ? (Printed_file.total_cost * 0.10).toFixed(2)
+              : "0.00"}
           </p>
         </div>
 
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
-            ${Printed_file?.total_cost ? (Printed_file?.total_cost  + Printed_file?.total_cost  * 0.11).toFixed(2) : "0.00"}
+            $
+            {Printed_file?.total_cost}
           </p>
         </div>
-
-        <PaymentForm
-          id={Printed_file?._id}
-          setPaymentModal={setPaymentModal}
-          setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal}
-        />
+        <div style={{ marginTop: "15px" }}>
+          <PaymentForm
+            id={Printed_file?._id}
+            setPaymentModal={setPaymentModal}
+            setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal}
+          />
+        </div>
       </Model>
-      {/* Code Sent Successfully! */}``
+      {/* Code Sent Successfully! */}
       <Model
         open={codeSendSuccessfyllyModal}
         onClose={() => setCodeSendSuccessfyllyModal(false)}
@@ -1678,10 +1679,11 @@ const Home = () => {
             onClick={() => {
               setCodeSendSuccessfyllyModal(false);
               // setPaymentModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1703,24 +1705,37 @@ const Home = () => {
               ) : null}
             </div>
           </div>
-          <img src={Download} />
+          {/* <img src={Download} /> */}
         </button>
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">{Printed_file?.total_cost}</p>
+          <p className="modal-price-price">${(Printed_file?.total_cost* 0.90).toFixed(2)}</p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">No. of Copies</p>
+          <p className="modal-price-price">{Printed_file?.no_of_copies}</p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">Color Print</p>
+          <p className="modal-price-price">
+            {Printed_file?.is_color ? "Yes" : "No"}
+          </p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
-            {Printed_file && Printed_file.total_cost
-              ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`
-              : "$0.00"}
+            $
+            {Printed_file?.total_cost
+              ? (Printed_file.total_cost * 0.10).toFixed(2)
+              : "0.00"}
           </p>
         </div>
+
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
-            ${Printed_file?.total_cost ? (Printed_file?.total_cost + Printed_file?.total_cost * 0.11).toFixed(2) : "0.00"}
+            $
+            {Printed_file?.total_cost}
           </p>
         </div>
 
@@ -1730,8 +1745,8 @@ const Home = () => {
           ********{" "}
           {loggedIn_use?.email &&
             loggedIn_use.email.split("@")[0].slice(-4) +
-            "@" +
-            loggedIn_use.email.split("@")[1]}
+              "@" +
+              loggedIn_use.email.split("@")[1]}
         </p>
         {/* <Button
           title=""
@@ -1842,7 +1857,7 @@ const Home = () => {
           className="confirm-email-modal-header"
           style={{ justifyContent: "flex-start" }}
         >
-          <button className="back-button" onClick={() => { }}>
+          <button className="back-button" onClick={() => {}}>
             <img src={ArrowLeft} />
             <p>Back</p>
           </button>

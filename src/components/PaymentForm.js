@@ -165,8 +165,8 @@ const handleSubmit = async (event) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1>Payment</h1>
-      <div>
+      <h2 style={{marginBottom:'10px', textTransform:'uppercase', color:'#606060'}}>Payment:</h2>
+      <div style={{marginBottom:'10px'}}>
         <CardElement options={cardElementOptions} />
       </div>
       {error && <div style={{ color: "red" }}>{error}</div>}

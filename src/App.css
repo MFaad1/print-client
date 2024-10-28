@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 * {
   padding: 0px;
   margin: 0px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+
 }
 button {
   border: none;
@@ -16,8 +19,10 @@ textarea {
 }
 body {
   background-color: #fff;
+  font-family: "Plus Jakarta Sans", sans-serif;
+
 }
-@font-face {
+/* @font-face {
   font-family: "Switzer-Regular";
   src: url("./fonts/Switzer-Regular.otf");
 }
@@ -36,4 +41,4 @@ body {
 @font-face {
   font-family: "Switzer-Medium";
   src: url("./fonts/Switzer-Medium.otf");
-}
+} */
