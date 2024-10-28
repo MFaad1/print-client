@@ -1707,7 +1707,7 @@ const Home = () => {
         </button>
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">{totalCost}</p>
+          <p className="modal-price-price">{Printed_file?.total_cost}</p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
@@ -1720,7 +1720,7 @@ const Home = () => {
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
-            ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : "0.00"}
+            ${Printed_file?.total_cost ? (Printed_file?.total_cost + Printed_file?.total_cost * 0.11).toFixed(2) : "0.00"}
           </p>
         </div>
 
