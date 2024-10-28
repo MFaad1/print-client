@@ -66,7 +66,7 @@ const BusinessMode = () => {
                 <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
                 <Grid item xs={10} sm={6} md={4} lg={4} xl={4}>
                    <div className="business-mode">
-                   <img src={Logo} className="business-mode-logo"/>
+                   <img src={Logo} className="business-mode-logo" alt=""/>
                     <p className="business-mode-heading">Welcome</p>
                     <p className="business-mode-text">If you have a confirmation code, please enter it below</p>
                    </div>

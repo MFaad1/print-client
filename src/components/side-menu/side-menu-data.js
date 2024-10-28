@@ -1,20 +1,39 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import "./side-menu-data.css";
 import { useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { Button } from "@mui/material";
+import { Button, Collapse } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { Logo, Dashboard,Orders,DeliverDocuments,BusinessMode } from "./../../svg";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import {
+  Logo,
+  Dashboard,
+  Orders,
+  DeliverDocuments,
+  BusinessMode,
+  Notification,
+Calendar,
+  VerifyJob
+} from "./../../svg";
+
 const SideMenuData = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  let CurrentPagePath = location.pathname;
+  const CurrentPagePath = location.pathname;
   const theme = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
   const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
+
+  // State to manage the open/close state of the Business Mode submenu
+  const [openBusinessMode, setOpenBusinessMode] = useState(false);
+
+  const handleBusinessModeClick = () => {
+    setOpenBusinessMode(!openBusinessMode);
+  };
+
   return (
     <>
       {isMatch ? (
@@ -30,6 +49,7 @@ const SideMenuData = () => {
             </div>
             <div className="side-menu-data-list-main">
               <ul className="side-menu-ul">
+                {/* Dashboard */}
                 <li className="side-menu-list-item">
                   <Button
                     variant="text"
@@ -42,10 +62,12 @@ const SideMenuData = () => {
                       navigate("/dashboard");
                     }}
                   >
-                    <img src={Dashboard} />
-                    <span className="side-menu-page-title">dashboard</span>
+                    <img src={Dashboard} alt="Dashboard" />
+                    <span className="side-menu-page-title">Dashboard</span>
                   </Button>
                 </li>
+
+                {/* Orders */}
                 <li className="side-menu-list-item">
                   <Button
                     variant="text"
@@ -58,10 +80,12 @@ const SideMenuData = () => {
                       navigate("/orders");
                     }}
                   >
-                    <img src={Orders} />
-                    <span className="side-menu-page-title">orders</span>
+                    <img src={Orders} alt="Orders" />
+                    <span className="side-menu-page-title">Orders</span>
                   </Button>
                 </li>
+
+                {/* Deliver Documents */}
                 <li className="side-menu-list-item">
                   <Button
                     variant="text"
@@ -74,50 +98,82 @@ const SideMenuData = () => {
                       navigate("/deliver-documents");
                     }}
                   >
-                    <img src={DeliverDocuments} />
-                    <span className="side-menu-page-title">Deliver Documents</span>
+                    <img src={DeliverDocuments} alt="Deliver Documents" />
+                    <span className="side-menu-page-title">
+                      Deliver Documents
+                    </span>
                   </Button>
                 </li>
+
+                {/* Business Mode - Main Heading */}
                 <li className="side-menu-list-item">
                   <Button
                     variant="text"
                     className={
-                      CurrentPagePath === "/business-mode"
+                      CurrentPagePath === "/businessmode" ||
+                      CurrentPagePath === "/verifyjob"
                         ? "side-menu-active-page"
                         : "side-menu-page"
                     }
-                    onClick={() => {
-                      navigate("/business-mode");
-                    }}
+                    onClick={handleBusinessModeClick}
                   >
-                    <img src={BusinessMode} />
+                    <img src={BusinessMode} alt="Business Mode" />
+
                     <span className="side-menu-page-title">Business Mode</span>
+                    {openBusinessMode ? <ExpandLess /> : <ExpandMore />}
                   </Button>
+
+                  {/* Submenu */}
+                  <Collapse in={openBusinessMode} timeout="auto" unmountOnExit>
+                    <ul className="side-menu-sub-ul">
+                      {/* Agent Mode */}
+                      <li className="side-menu-list-item">
+                        <Button
+                          variant="text"
+                          className={
+                            CurrentPagePath === "/business-mode"
+                              ? "side-menu-active-page"
+                              : "side-menu-page"
+                          }
+                          onClick={() => {
+                            navigate("/business-mode");
+                          }}
+                        >
+                          <img src={Calendar} alt=""/>
+
+                          <span className="side-menu-page-title">
+                          Agent Availability
+                          </span>
+                        </Button>
+                      </li>
+
+                      {/* Verify Job */}
+                      <li className="side-menu-list-item">
+                        <Button
+                          variant="text"
+                          className={
+                            CurrentPagePath === "/verify-job"
+                              ? "side-menu-active-page"
+                              : "side-menu-page"
+                          }
+                          onClick={() => {
+                            navigate("/verify-job");
+                          }}
+                        >
+                          <img src={VerifyJob}  alt=""/>
+
+                          <span className="side-menu-page-title">
+                            Verify Job
+                          </span>
+                        </Button>
+                      </li>
+                    </ul>
+                  </Collapse>
                 </li>
-                
-                <li className="side-menu-list-item">
-                  <Button
-                    variant="text"
-                    className={
-                      CurrentPagePath === "/verify-job"
-                        ? "side-menu-active-page"
-                        : "side-menu-page"
-                    }
-                    onClick={() => {
-                      navigate("/verify-job");
-                    }}
-                  >
-                    <img src={BusinessMode} />
-                    <span className="side-menu-page-title">Verify job</span>
-                  </Button>
-                </li>
-
-
-
-
-                <br />
               </ul>
             </div>
+
+            {/* Footer */}
             <div className="side-menu-footer-container">
               <Button
                 variant="text"
@@ -136,4 +192,5 @@ const SideMenuData = () => {
     </>
   );
 };
+
 export default SideMenuData;

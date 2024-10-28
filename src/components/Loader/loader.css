@@ -3,6 +3,10 @@
 .lds-ring div {
   box-sizing: border-box;
 }
+.loader-loading-margin{
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
 
 .lds-ring {
   display: inline-block;

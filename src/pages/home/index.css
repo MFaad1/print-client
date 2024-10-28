@@ -787,10 +787,20 @@
   color: #333;
 }
 
-.modal-header-left {
+.modal-header-left-1 {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.modal-header-left-1-heading{
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 10px;
+  text-transform: capitalize;
+  color: #666;
+
 }
 
 .mod {
@@ -879,6 +889,8 @@
 
 .print-type-label {
   font-weight: bold;
+  color: #666;
+
 }
 
 .print-type-dropdown {

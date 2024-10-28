@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import SideMenuData from "./side-menu-data";
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, Collapse, List, ListItem } from "@mui/material";
 import "./index.css";
 import { useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -10,10 +12,23 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { Logo, Search2, Notification ,Dashboard,Orders,DeliverDocuments ,BusinessMode } from "./../../svg";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import {
+  Logo,
+  Search2,
+  Notification,
+  Dashboard,
+  Orders,
+  DeliverDocuments,
+  BusinessMode,
+  Calendar,
+  VerifyJob,
+} from "./../../svg";
 import { toast } from "react-toastify";
 
 import axios from "axios";
+
 export const SideMenu = (props) => {
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -25,52 +40,53 @@ export const SideMenu = (props) => {
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
   const [isOnline, setIsOnline] = useState(true);
-  let agent_token = localStorage.getItem("Agent_access_token")
+  const [businessModeOpen, setBusinessModeOpen] = useState(false); // State for submenu
+  let agent_token = localStorage.getItem("Agent_access_token");
 
+  const online_offline_toggler = async () => {
+    try {
+      let otp = await axios.get(
+        `${process.env.REACT_APP_API_URL}/print-agent/online-status`,
+        {
+          headers: {
+            Authorization: `Bearer ${agent_token}`,
+          },
+        }
+      );
 
-const online_offline_toggler =async()=>{
-  try {
-    
-  let otp = await axios.get(`${process.env.REACT_APP_API_URL}/print-agent/online-status`,
-     {
-    headers: {
-      Authorization: `Bearer ${agent_token}` 
+      toast.success(otp.data.message);
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        toast.error(error.response.data.message);
+        console.log(error.response.data.message);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        toast.error("Internal server error");
+      }
     }
+  };
 
-
-  });
-
-  toast.success(otp.data.message);
-
-
-  } catch (error) {
-    if (error.response && error.response.data && error.response.data.message) {
-      toast.error(error.response.data.message);
-      console.log(error.response.data.message)
-    } 
-    
-    else if(error.message){
-      toast.error(error.message);
+  const toggler = () => {
+    if (props.otp_verificaion) {
+      setIsOnline(!isOnline);
+      props.setotp_verificaion(false);
     }
-    else {
-      toast.error("Internal server error");
-    }  
-  }
-}
+  };
 
-const toggler =()=>{
-  if(props.otp_verificaion){
-    setIsOnline(!isOnline)
-    props.setotp_verificaion(false)
-  }
-}
+  console.log(props.otp_verificaion, "otp_verificaion");
 
-console.log(props.otp_verificaion,"otp_verificaion" )
+  useEffect(() => {
+    toggler();
+  }, [props.otp_verificaion]);
 
-useEffect(()=>{
-  toggler()
-},[props.otp_verificaion])
-
+  const handleBusinessModeClick = () => {
+    setBusinessModeOpen(!businessModeOpen);
+  };
 
   return (
     <>
@@ -133,9 +149,9 @@ useEffect(()=>{
                                     navigate("/dashboard");
                                   }}
                                 >
-                                  <img src={Dashboard} />
+                                  <img src={Dashboard} alt="" />
                                   <span className="side-menu-page-title">
-                                    dashboard
+                                    Dashboard
                                   </span>
                                 </Button>
                               </li>
@@ -151,9 +167,9 @@ useEffect(()=>{
                                     navigate("/orders");
                                   }}
                                 >
-                                  <img src={Orders} />
+                                  <img src={Orders} alt="" />
                                   <span className="side-menu-page-title">
-                                  orders
+                                    Orders
                                   </span>
                                 </Button>
                               </li>
@@ -169,54 +185,73 @@ useEffect(()=>{
                                     navigate("/deliver-documents");
                                   }}
                                 >
-                                  <img src={DeliverDocuments} />
+                                  <img src={DeliverDocuments} alt="" />
                                   <span className="side-menu-page-title">
-                                  Deliver Documents
+                                    Deliver Documents
                                   </span>
                                 </Button>
                               </li>
 
-
+                              {/* Business Mode Dropdown */}
                               <li className="side-menu-list-item">
                                 <Button
                                   variant="text"
-                                  className={
-                                    CurrentPagePath === "/business-mode"
-                                      ? "side-menu-active-page"
-                                      : "side-menu-page"
+                                  className="side-menu-page"
+                                  onClick={handleBusinessModeClick}
+                                  endIcon={
+                                    businessModeOpen ? (
+                                      <ExpandLess />
+                                    ) : (
+                                      <ExpandMore />
+                                    )
                                   }
-                                  onClick={() => {
-                                    navigate("/business-mode");
-                                  }}
                                 >
-                                  <img src={BusinessMode} />
+                                  <img src={BusinessMode} alt="" />
                                   <span className="side-menu-page-title">
-                                  Business Mode
+                                    Business Mode
                                   </span>
                                 </Button>
-                              </li>
-
-
-                              <li className="side-menu-list-item">
-                                <Button
-                                  variant="text"
-                                  className={
-                                    CurrentPagePath === "/verify-job"
-                                      ? "side-menu-active-page"
-                                      : "side-menu-page"
-                                  }
-                                  onClick={() => {
-                                    navigate("/verify-job");
-                                  }}
+                                <Collapse
+                                  in={businessModeOpen}
+                                  timeout="auto"
+                                  unmountOnExit
                                 >
-                                  <img src={BusinessMode} />
-                                  <span className="side-menu-page-title">
-                               Verify Job
-                                  </span>
-                                </Button>
+                                  <List component="div" disablePadding>
+                                    <ListItem
+                                      button
+                                      className={
+                                        CurrentPagePath === "/business-mode"
+                                          ? "side-menu-active-page sub-menu-item"
+                                          : "side-menu-page sub-menu-item"
+                                      }
+                                      onClick={() => {
+                                        navigate("/business-mode");
+                                      }}
+                                    >
+                                      <img src={Calendar} alt="" />
+                                      <span className="side-menu-page-title">
+                                        Agent Availability
+                                      </span>
+                                    </ListItem>
+                                    <ListItem
+                                      button
+                                      className={
+                                        CurrentPagePath === "/verify-job"
+                                          ? "side-menu-active-page sub-menu-item"
+                                          : "side-menu-page sub-menu-item"
+                                      }
+                                      onClick={() => {
+                                        navigate("/verify-job");
+                                      }}
+                                    >
+                                      <img src={VerifyJob} alt="" />
+                                      <span className="side-menu-page-title">
+                                        Verify Job
+                                      </span>
+                                    </ListItem>
+                                  </List>
+                                </Collapse>
                               </li>
-
-
 
                               <br />
                             </ul>
@@ -226,7 +261,7 @@ useEffect(()=>{
                               variant="text"
                               className={"side-menu-page"}
                               onClick={() => {
-                                localStorage.removeItem('Agent_access_token')
+                                localStorage.removeItem("Agent_access_token");
                                 navigate("/");
                               }}
                             >
@@ -243,38 +278,29 @@ useEffect(()=>{
 
                   <div className="side-menu-header">
                     <div className="header-online">
-                      <label class="switch">
+                      <label className="switch">
                         <input
                           type="checkbox"
                           checked={isOnline}
-                          onChange={() =>{
+                          onChange={() => {
                             // setIsOnline(!isOnline)
-                            online_offline_toggler()
-                          }
-                            
-                          
-                          
-                          }
+                            online_offline_toggler();
+                          }}
                         />
-                        <span class="slider round"></span>
+                        <span className="slider round"></span>
                       </label>
                       <p>{isOnline ? "Online" : "Offline"}</p>
                     </div>
 
                     <div>
-                      <Button variant="text" className="side-menu-notificatin">
-                        <img src={Search2} />
-                      </Button>
-                      <Button variant="text" className="side-menu-notificatin">
-                        <img src={Notification} />
-                      </Button>
                       <Button variant="text" className="side-menu-profile">
-                        <img src="https://a.storyblok.com/f/191576/1200x800/faa88c639f/round_profil_picture_before_.webp" />
+                        <img
+                          src="https://a.storyblok.com/f/191576/1200x800/faa88c639f/round_profil_picture_before_.webp"
+                          alt=""
+                        />
                       </Button>
                     </div>
                   </div>
-
-
                 </div>
               </div>
               <div className={"side-menu-children-data"}>{props.children}</div>

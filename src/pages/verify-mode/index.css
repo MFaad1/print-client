@@ -22,7 +22,14 @@
   margin-bottom: 15px;
   text-align: center;
 }
-
+.background-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
 
 .Text-buton{
   height: 100% !important;
@@ -37,3 +44,22 @@
 /* } */
   
 
+/* index.css */
+.confirm-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.confirm-button:hover {
+  background-color: #0056b3;
+}
+
+
+.main-content {
+  position: relative;
+  z-index: 2;
+}
