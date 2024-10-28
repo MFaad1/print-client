@@ -219,7 +219,7 @@ const Home = () => {
   const [totalCost, setTotalCost] = useState(Printed_file?.total_cost || 0);
   const [count, setCount] = useState(1);
   const [isColor, setIsColor] = useState(false);
-  const [PrintType, setPrintType] = useState(false);
+  const [Counter, setCounter] = useState(false);
 
   const [originalLocationList, setOriginalLocationList] = useState([]);
 
@@ -474,7 +474,8 @@ const Home = () => {
       if (printText) {
         formData.append("print_job_description", printText);
       }
-      // formData.append("is_color", isChecked);
+      formData.append("is_color", isColor);
+      formData.append("no_of_copies", count)
 
       setjob_loading(true);
 
@@ -907,13 +908,13 @@ const Home = () => {
                   <p className="home-input-title">Upload Files</p>
                   {files && files.length > 0
                     ? files.map((file) => (
-                        <p
-                          className=""
-                          style={{ marginTop: "5px", marginBottom: "5px" }}
-                        >
-                          {file.name}
-                        </p>
-                      ))
+                      <p
+                        className=""
+                        style={{ marginTop: "5px", marginBottom: "5px" }}
+                      >
+                        {file.name}
+                      </p>
+                    ))
                     : null}
 
                   <FileUpload setfiles={setfiles} files={files} />
@@ -950,8 +951,8 @@ const Home = () => {
         </div> */}
 
                   <div className="home-form-submit-btn">
-                    <button onClick={printSubmitHandler} disabled={job_loading}>
-                      {job_loading ? <Btnloader /> : "Submit"}
+                    <button onClick={() => setCounter(true)} >
+                      Submit
                     </button>
                   </div>
                 </div>
@@ -1387,6 +1388,95 @@ const Home = () => {
           </button>
         </div>
       </Model>
+
+
+{/* Counter ui */}
+      <Model
+        open={Counter}
+        onClose={() => setCounter(false)}
+        maxWidth="sm"
+      >
+        <div
+          className="confirm-email-modal-header"
+          style={{ justifyContent: "flex-start" }}
+        >
+          <button
+            className="back-button"
+            onClick={() => {
+              setCounter(false);
+              // setPrintJobModal(true);
+            }}
+          >
+            <img src={ArrowLeft} alt="Back" />
+            <p>Back</p>
+          </button>
+        </div>
+
+        <div className="modal-header">
+          <p className="modal-header-heading">
+            {printName}
+          </p>
+        </div>
+
+        <button className="download-btn" style={{ width: "100%" }}>
+          <div className="file_info">
+            <img src={Pdf} alt="PDF" />
+            <div className="file_name">
+              <p>{(files[0]?.name)}</p>
+              {files && files.length > 0 ? (
+                <p className="download-size">
+                  File Size:{" "}
+                  {(Number(files[0]?.size) / (1024 * 1024)).toFixed(2)} MB
+                </p>
+              ) : null}
+            </div>
+          </div>
+          <img src={Download} alt="Download" />
+        </button>
+        <div className="count_heading">
+          <div className="para">
+            <p>No. of copies:</p>
+          </div>
+
+          <div>
+
+            <IncrementDecrement count={count} setCount={setCount} />
+          </div>
+        </div>
+
+
+        <div className="print-type-container">
+          <label htmlFor="printType" className="print-type-label">
+            Print Type:
+          </label>
+          <select
+            id="printType"
+            className="print-type-dropdown"
+            onChange={(e) => {
+              if (e.target.value === "color") {
+                setIsColor(true);
+              } else {
+                setIsColor(false);
+              }
+            }}
+          >
+            <option value="black-and-white">Black and White</option>
+            <option value="color">Color</option>
+          </select>
+        </div>
+
+
+<div className="home-form-submit-btn btn-count">
+                    <button onClick={printSubmitHandler} disabled={job_loading} style={{width: "100%"}}>
+                      {job_loading ? <Btnloader /> : "Save"}
+                    </button>
+                  </div>
+
+      </Model>
+
+
+
+      {/* Search Model */}
       <Model
         open={searchingModal}
         onClose={() => setSearchingModal(false)}
@@ -1499,6 +1589,8 @@ const Home = () => {
           }}
         />
       </Model>
+
+
       {/* Payment / Add New Card */}
       <Model
         open={paymentModal}
@@ -1542,53 +1634,25 @@ const Home = () => {
           </div>
           <img src={Download} alt="Download" />
         </button>
-        <div className="modal-header-left-1-heading">
-          <p>No. of copies:</p>
-        </div>
-        <div className="modal-header-left-1">
-          <div>
-            <IncrementDecrement count={count} setCount={setCount} />
-          </div>
-          <p className="mod">Pages: {Printed_file?.pages}</p>
-        </div>
-        <div className="print-type-container">
-          <label htmlFor="printType" className="print-type-label">
-            Print Type:
-          </label>
-          <select
-            id="printType"
-            className="print-type-dropdown"
-            onChange={(e) => {
-              if (e.target.value === "color") {
-                setIsColor(true);
-              } else {
-                setIsColor(false);
-              }
-            }}
-          >
-            <option value="black-and-white">Black and White</option>
-            <option value="color">Color</option>
-          </select>
-        </div>
+      
+  
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">${totalCost}</p>
+          <p className="modal-price-price">${Printed_file?.total_cost }</p>
         </div>
 
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
             $
-            {Printed_file?.total_cost
-              ? (Printed_file.total_cost * 0.11).toFixed(2)
-              : "0.00"}
+            {Printed_file?.total_cost ? (Printed_file.total_cost * 0.11).toFixed(2): "0.00"}
           </p>
         </div>
 
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
           <p className="modal-price-price">
-            ${totalCost ? (totalCost + totalCost * 0.11).toFixed(2) : "0.00"}
+            ${Printed_file?.total_cost ? (Printed_file?.total_cost  + Printed_file?.total_cost  * 0.11).toFixed(2) : "0.00"}
           </p>
         </div>
 
@@ -1665,8 +1729,8 @@ const Home = () => {
           ********{" "}
           {loggedIn_use?.email &&
             loggedIn_use.email.split("@")[0].slice(-4) +
-              "@" +
-              loggedIn_use.email.split("@")[1]}
+            "@" +
+            loggedIn_use.email.split("@")[1]}
         </p>
         {/* <Button
           title=""
@@ -1777,7 +1841,7 @@ const Home = () => {
           className="confirm-email-modal-header"
           style={{ justifyContent: "flex-start" }}
         >
-          <button className="back-button" onClick={() => {}}>
+          <button className="back-button" onClick={() => { }}>
             <img src={ArrowLeft} />
             <p>Back</p>
           </button>

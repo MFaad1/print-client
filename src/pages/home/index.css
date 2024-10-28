@@ -901,3 +901,28 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+
+
+.count_heading{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+margin-top: 20px;
+  
+}
+.count_heading  .para{
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #666;
+}
+
+
+
+
+.home-form-submit-btn-count{
+  width: 100%;
+  margin-top: 20px;
+}
