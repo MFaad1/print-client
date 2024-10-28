@@ -28,6 +28,7 @@
     "react-router-dom": "^6.26.0",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.14.1",
+    "react-switch": "^7.0.0",
     "react-to-print": "^3.0.2",
     "react-toastify": "^10.0.5",
     "recharts": "^2.13.0",

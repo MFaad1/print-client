@@ -48,7 +48,7 @@
   justify-content: flex-start !important;
   background-color: #faf0e8 !important;
   height: 48px !important;
-  font-family: "Poppins" !important;
+  /* font-family: "Poppins" !important; */
 }
 .side-menu-page {
   width: 100% !important;
@@ -60,7 +60,7 @@
   background-color: transparent !important;
   height: 48px !important;
   border-radius: 15px !important;
-  font-family: "Poppins" !important;
+  /* font-family: "Poppins" !important; */
 }
 .side-menu-page:hover {
   color: #f7801a !important;
@@ -166,7 +166,7 @@ input:checked + .slider:before {
 }
 .header-online > p {
   color: #000000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 16px;
   font-weight: 400;
   margin-left: 10px;

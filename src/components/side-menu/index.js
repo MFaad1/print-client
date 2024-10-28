@@ -293,12 +293,12 @@ export const SideMenu = (props) => {
                     </div>
 
                     <div>
-                      <Button variant="text" className="side-menu-profile">
+                      {/* <Button variant="text" className="side-menu-profile">
                         <img
                           src="https://a.storyblok.com/f/191576/1200x800/faa88c639f/round_profil_picture_before_.webp"
                           alt=""
                         />
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </div>
