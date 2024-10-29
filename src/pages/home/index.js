@@ -95,14 +95,6 @@ const Home = () => {
   const [forgetEmail, setforgetEmail] = useState("");
   const [searchVal, setsearchVal] = useState("");
 
-  const [card, setCard] = useState({
-    bank_name: "",
-    card_number: "",
-    expiry_date: "",
-    phone_number: "",
-    cvv: "",
-  });
-
   // Confirm your email
   const [confirmEmailModal, setConfirmEmailModal] = useState(false);
 
@@ -211,7 +203,7 @@ const Home = () => {
     try {
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL}/auth/customer/verify-otp`,
-        { email: signupEmail, otp: otp }
+        { email: signupEmail, otp: otp },
       );
       setLoginModal(true);
     } catch (error) {
@@ -272,7 +264,7 @@ const Home = () => {
 
         let signup_user = await axios.post(
           `${process.env.REACT_APP_API_URL + url}`,
-          CustomerDetails
+          CustomerDetails,
         );
 
         toast.success("Successfully created new account");
@@ -354,17 +346,17 @@ const Home = () => {
       try {
         let signup_user = await axios.post(
           `${process.env.REACT_APP_API_URL + URL}`,
-          { email: loginEmail, password: loginPassword }
+          { email: loginEmail, password: loginPassword },
         );
         let token = signup_user.data.token;
 
         localStorage.setItem(
           AgentFlag ? "Agent_access_token" : "use_access_token",
-          token
+          token,
         );
         localStorage.setItem(
           AgentFlag ? "agent_loggedIn_user" : "loggedIn_user",
-          JSON.stringify(signup_user.data.customer)
+          JSON.stringify(signup_user.data.customer),
         );
         toast.success("Successfully Logged");
         setLoginEmail("");
@@ -397,9 +389,10 @@ const Home = () => {
     try {
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL}/auth/print-agent/verify-otp`,
-        { email: signupEmail, otp: otp }
+        { email: signupEmail, otp: otp },
       );
       setLinkBankAccountModal(true);
+      localStorage.setItem("Agent_access_token", signup_user.data.token);
     } catch (error) {
       if (
         error.response &&
@@ -460,7 +453,7 @@ const Home = () => {
             Authorization: `Bearer ${agent_token}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       setPrinted_file(orders.data.printJob);
@@ -503,7 +496,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
     } catch (error) {
       if (
@@ -545,7 +538,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
 
       let availableAgents = (orders.data.availablePrintAgents || []).flat();
@@ -588,7 +581,7 @@ const Home = () => {
         originalLocationList.filter((item) => {
           const itemString = JSON.stringify(item).toLowerCase();
           return itemString.includes(searchVal.toLowerCase());
-        })
+        }),
       );
     }
   }, [searchVal, originalLocationList]);
@@ -617,7 +610,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/printjob/select-print-agent/${Printed_file?._id}`,
@@ -629,7 +622,7 @@ const Home = () => {
             Authorization: `Bearer ${agent_token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       setSearchingModal(false);
@@ -671,7 +664,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
 
       console.log(orders, "orders");
@@ -708,7 +701,7 @@ const Home = () => {
 
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL + URL}`,
-        { email: forgetEmail }
+        { email: forgetEmail },
       );
 
       setForgotPasswordModal(false);
@@ -742,7 +735,7 @@ const Home = () => {
 
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL + URL}`,
-        { email: forgetEmail, otp }
+        { email: forgetEmail, otp },
       );
 
       setPasswrodOtpModal(false);
@@ -777,7 +770,7 @@ const Home = () => {
 
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL + URL}`,
-        { email: forgetEmail, password: forgotPassword, otp }
+        { email: forgetEmail, password: forgotPassword, otp },
       );
 
       setnewPasswordModal(false);
@@ -808,6 +801,57 @@ const Home = () => {
 
   const handleToggle = (checked) => {
     setIsColor(checked);
+  };
+  const [card, setCard] = useState({
+    bank_name: "",
+    card_number: "",
+    expiry_date: "",
+    phone_number: "",
+    cvv: "",
+  });
+
+  const handleCardCreate = async () => {
+    try {
+      // setLinkBankAccountModal(false);
+      // setSendMoneyModal(true);
+
+      console.log("Current Card State: ", card); // Check state values here
+      const url = `${process.env.REACT_APP_API_URL}/print-agent/create-card`;
+
+      const token = localStorage.getItem("Agent_access_token");
+      const data = {
+        card: {
+          bank_name: card.bank_name,
+          card_number: card.card_number,
+          expiry_date: card.expiry_date,
+          phone_number: card.phone_number,
+          cvv: card.cvv,
+        },
+      };
+
+      const res = await axios.post(url, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setLinkBankAccountModal(false);
+      setSendMoneyModal(true);
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message &&
+        error.response.data.err
+      ) {
+        toast.error(error.response.data.err.message);
+        console.log(error.response);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        // toast.error("Internal server error");
+      }
+    }
   };
 
   return (
@@ -1421,7 +1465,11 @@ const Home = () => {
         </div>
 
         <div className="print-type-container">
-          <label htmlFor="printTypeSwitch" className="print-type-label" style={{marginRight:'15px'}}>
+          <label
+            htmlFor="printTypeSwitch"
+            className="print-type-label"
+            style={{ marginRight: "15px" }}
+          >
             Print Type:
           </label>
           <Switch
@@ -1627,7 +1675,9 @@ const Home = () => {
 
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">${(Printed_file?.total_cost* 0.90).toFixed(2)}</p>
+          <p className="modal-price-price">
+            ${(Printed_file?.total_cost * 0.9).toFixed(2)}
+          </p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">No. of Copies</p>
@@ -1644,17 +1694,14 @@ const Home = () => {
           <p className="modal-price-price">
             $
             {Printed_file?.total_cost
-              ? (Printed_file.total_cost * 0.10).toFixed(2)
+              ? (Printed_file.total_cost * 0.1).toFixed(2)
               : "0.00"}
           </p>
         </div>
 
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">
-            $
-            {Printed_file?.total_cost}
-          </p>
+          <p className="modal-price-price">${Printed_file?.total_cost}</p>
         </div>
         <div style={{ marginTop: "15px" }}>
           <PaymentForm
@@ -1709,7 +1756,9 @@ const Home = () => {
         </button>
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">${(Printed_file?.total_cost* 0.90).toFixed(2)}</p>
+          <p className="modal-price-price">
+            ${(Printed_file?.total_cost * 0.9).toFixed(2)}
+          </p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">No. of Copies</p>
@@ -1726,17 +1775,14 @@ const Home = () => {
           <p className="modal-price-price">
             $
             {Printed_file?.total_cost
-              ? (Printed_file.total_cost * 0.10).toFixed(2)
+              ? (Printed_file.total_cost * 0.1).toFixed(2)
               : "0.00"}
           </p>
         </div>
 
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">
-            $
-            {Printed_file?.total_cost}
-          </p>
+          <p className="modal-price-price">${Printed_file?.total_cost}</p>
         </div>
 
         <h1 className="successfully-send-heading">Code Sent Successfully!</h1>
@@ -2044,33 +2090,43 @@ const Home = () => {
           </button>
         </div>
         <h1 className="link-bank-account-heading">Link your bank account</h1>
-        <p className="link-bank-account-title">Personal Details</p>
-        <div className="modal-card-input-main">
-          <div>
-            <Input type="text" title="First Name" placeholder="First Name" />
-          </div>
-          <div>
-            <Input type="text" title="Last Name" placeholder="Last Name" />
-          </div>
-        </div>
-        <Input type="text" title="Personal Info" placeholder="Personal Info" />
-        <Input type="number" title="Phone" placeholder="Phone" />
         <p className="link-bank-account-title">Transfer Details</p>
-        <Input type="text" title="Bank Name" placeholder="Bank Name" />
-        <Input type="text" title="Account Type" placeholder="Account Type" />
+        <Input
+          type="text"
+          title="Bank Name"
+          placeholder="Bank Name"
+          value={card.bank_name}
+          onChange={(e) => setCard({ ...card, bank_name: e.target.value })}
+        />
         <Input
           type="number"
-          title="Account Number"
-          placeholder="Account Number"
+          title="Card Number"
+          placeholder="Card Number"
+          value={card.card_number}
+          onChange={(e) => setCard({ ...card, card_number: e.target.value })}
         />
-        <Input type="number" title="Phone" placeholder="Phone" />
-        <Button
-          title="Link Bank Account"
-          onClick={() => {
-            setLinkBankAccountModal(false);
-            setSendMoneyModal(true);
-          }}
+        <Input
+          type="text"
+          title="Expiry Date"
+          placeholder="Expiry Date"
+          value={card.expiry_date}
+          onChange={(e) => setCard({ ...card, expiry_date: e.target.value })}
         />
+        <Input
+          type="number"
+          title="CVV"
+          placeholder="CVV"
+          value={card.cvv}
+          onChange={(e) => setCard({ ...card, cvv: e.target.value })}
+        />
+        <Input
+          type="Text"
+          title="Phone"
+          placeholder="Phone"
+          value={card.phone_number}
+          onChange={(e) => setCard({ ...card, phone_number: e.target.value })}
+        />
+        <Button title="Link Bank Account" onClick={handleCardCreate} />
       </Model>
       {/* Send Money */}
       <Model
