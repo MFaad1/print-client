@@ -128,7 +128,7 @@ const VerifyMode = () => {
 <Print fileUrl ={fileUrl} ref={componentRef} />
 </Model>
  : null} */}
-      <div style={{ opacity: "0" }}>
+      <div style={{ opacity: "0", objectFit:'contain' }}>
         {fileUrl ? <Print fileUrl={fileUrl} ref={componentRef} /> : null}
       </div>
     </SideMenu>

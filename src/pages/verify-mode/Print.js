@@ -20,6 +20,7 @@ const Print = React.forwardRef((props, ref) => {
         file={props.fileUrl}
         numPages={numPages}
         setNumPages={setNumPages}
+        className="main_container"
       />
     </div>
   );
