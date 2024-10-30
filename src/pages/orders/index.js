@@ -219,7 +219,7 @@ const Orders = () => {
         pages: job.pages,
         fileType: job.file_path.split('.').pop().toUpperCase(),
         price: job.total_cost,
-        status: job.payment_status.charAt(0).toUpperCase() + job.payment_status.slice(1),
+        status: job.status.charAt(0).toUpperCase() + job.status.slice(1),
         createdDate: new Date(job.created_at).toLocaleDateString(),
       }));
 
