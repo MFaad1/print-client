@@ -8,14 +8,14 @@
 }
 .business-mode-heading {
   color: #16151c;
-  font-family: "Lexend";
+  /* font-family: "Lexend"; */
   font-size: 30px;
   font-weight: 600;
   margin-top: 20px;
 }
 .business-mode-text {
   color: #a2a1a8;
-  font-family: "Lexend";
+  /* font-family: "Lexend"; */
   font-size: 16px;
   font-weight: 300;
   margin-top: 5px;
@@ -58,8 +58,74 @@
   background-color: #0056b3;
 }
 
+.main_container {
+  margin: 0;
+  page-break-after: avoid;
+  page-break-inside: avoid;
+  page-break-before: avoid;
+  object-fit: contain;
+  width: 100%;
+}
 
-.main-content {
-  position: relative;
-  z-index: 2;
+@media print {
+  html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  iframe {
+    margin: 0;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    page-break-before: avoid;
+    }
+
+
+  .main_container {
+    margin: 0;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    page-break-before: avoid;
+    object-fit: contain;
+    width: 100%;
+  }
+}
+
+@media print {
+  @page {
+    size: auto; /* Use the default page size */
+    margin: 0; /* Remove default margins */
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .pdf-page {
+    page-break-after: always;
+    page-break-inside: avoid;
+    width: 100% !important;
+
+  }
+
+  .pdf-page canvas {
+    max-width: 95% !important;
+    height: auto !important;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100% !important;
+
+  }
+  .main_container {
+    margin: 0;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+    page-break-before: avoid;
+    max-width: 95% !important;
+    margin: 0 auto;
+    width: 100% !important;
+
+  }
 }

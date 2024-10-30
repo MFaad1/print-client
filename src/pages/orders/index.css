@@ -11,19 +11,19 @@
 }
 .order-table-text {
   color: #1d1d1d;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-size: 12px;
   font-weight: 400;
 }
 .order-table-header-title {
   color: #333333;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-size: 12px;
   font-weight: 600;
 }
 .order-table-status-delivered {
   color: #089e2e;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-size: 12px;
   font-weight: 400;
 }
@@ -33,7 +33,7 @@
   height: 27px;
   border-radius: 8px;
   color: #1d1d1d;
-  font-family: "Poppins";
+  /* font-family: "Poppins"; */
   font-size: 12px;
   font-weight: 400;
   width: 100%;

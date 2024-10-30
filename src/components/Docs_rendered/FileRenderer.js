@@ -4,6 +4,7 @@ import React from "react";
 import { Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "../../components/Docs_rendered/index.css";
+import "./index.css";
 
 const FileRenderer = ({ file, numPages, setNumPages }) => {
   const fileType = file.file_path.split(".").pop().toLowerCase();
@@ -28,8 +29,8 @@ const FileRenderer = ({ file, numPages, setNumPages }) => {
             <Page
               key={`page_${index + 1}`}
               pageNumber={index + 1}
-              width={window.innerWidth}
               renderTextLayer={false}
+              className="pdf-page"
             />
           ))}
         </Document>

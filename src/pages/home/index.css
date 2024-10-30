@@ -16,7 +16,7 @@
 }
 .home-input-title {
   color: #16151ce5;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
   margin-top: 15px;
@@ -33,7 +33,7 @@
   height: 100%;
   border-radius: 10px;
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
 }
@@ -54,7 +54,7 @@
   height: 100%;
   border-radius: 10px;
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
 }
@@ -74,7 +74,7 @@
 }
 .upload-button-title {
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 14px;
   font-weight: 300;
   margin-top: 15px;
@@ -84,7 +84,7 @@
 }
 .upload-button-format {
   color: #a2a1a8;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 11px;
   font-weight: 300;
   margin-top: 5px;
@@ -101,7 +101,7 @@
   height: 45px;
   border-radius: 10px;
   color: #fff;
-  font-family: "Lexend";
+  /* font-family: "Lexend"; */
   font-size: 16px;
   font-weight: 500;
 }
@@ -115,13 +115,13 @@
 }
 .home-box-left-title {
   color: #1e1e24;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 50px;
   font-weight: 600;
 }
 .home-box-left-text {
   color: #4c4c5c;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 18px;
   font-weight: 400;
   margin: 15px 0px;
@@ -132,7 +132,7 @@
   width: 153px;
   height: 46px;
   border-radius: 100px;
-  font-family: "Inter";
+  /* font-family: "Inter"; */
   font-size: 16px;
   font-weight: 600;
   color: #ffffff;
@@ -140,13 +140,13 @@
 }
 .modal-from-heading {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 30px;
   font-weight: 600;
 }
 .modal-from-title {
   color: #a2a1a8;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
 }
@@ -165,7 +165,7 @@
   height: 46px;
   border-radius: 8px;
   color: #ffffff;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 16px;
   font-weight: 400;
   padding: 0px 30px;
@@ -174,7 +174,7 @@
   height: 46px;
   border-radius: 8px;
   color: #000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 16px;
   font-weight: 400;
   padding: 0px 30px;
@@ -204,21 +204,21 @@
 }
 .remember-main > button > p {
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
   margin-left: 15px;
 }
 .forget-password-link {
   color: #f7801a;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 14px;
   font-weight: 300;
   text-decoration: none;
 }
 .modal-form-footer {
   color: #000000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 18px;
   font-weight: 400;
   text-align: center;
@@ -226,7 +226,7 @@
 }
 .modal-form-footer-link {
   color: #f7801a;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
@@ -248,7 +248,7 @@
 }
 .confirm-email-modal-heading {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 30px;
   font-weight: 600;
   text-align: center;
@@ -256,13 +256,13 @@
 }
 .confirm-email-modal-text {
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 18px;
   font-weight: 300;
   text-align: center;
 }
 .confirm-email-modal-text > span {
-  font-family: "Switzer-Bold";
+  /* font-family: "Switzer-Bold"; */
   font-weight: 700;
 }
 .its-me-btn {
@@ -271,7 +271,7 @@
   border-radius: 10px;
   padding: 0px 30px;
   color: white;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
 }
 .otp-div {
@@ -286,7 +286,7 @@
   border: 1px solid #f7801a;
   border-radius: 14px;
   color: #16151c;
-  font-family: "Lexend";
+  /* font-family: "Lexend"; */
   font-size: 24px;
   font-weight: 600;
 }
@@ -296,13 +296,13 @@
 }
 .back-button > p {
   color: #16151c;
-  font-family: "Lexend";
+  /* font-family: "Lexend"; */
   font-size: 16px;
   font-weight: 300;
 }
 .verification-text {
   color: #a2a1a8;
-  font-family: "Lexend";
+  /* font-family: "Lexend"; */
   font-size: 16px;
   font-weight: 300;
   margin-bottom: 30px;
@@ -315,14 +315,14 @@
   margin-top: 10px;
 }
 .modal-header-heading {
-  color: #16151c;
-  font-family: "Switzer-Semibold";
+  color: #606060	;
+  /* font-family: "Switzer-Semibold"; */
   font-size: 25px;
   font-weight: 600;
 }
 .modal-header-page {
   color: #000000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 16px;
   font-weight: 400;
 }
@@ -351,13 +351,13 @@
 }
 .download-title {
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
 }
 .download-size {
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 12px;
   font-weight: 300;
 }
@@ -373,7 +373,7 @@
   height: 100%;
   resize: none;
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
 }
@@ -389,7 +389,7 @@
   border-radius: 10px;
   width: 48%;
   color: #000000;
-  font-family: "Switzer-Medium";
+  /* font-family: "Switzer-Medium"; */
   font-size: 16px;
   font-weight: 500;
 }
@@ -399,7 +399,7 @@
   border-radius: 10px;
   width: 48%;
   color: #fff;
-  font-family: "Switzer-Medium";
+  /* font-family: "Switzer-Medium"; */
   font-size: 16px;
   font-weight: 500;
 }
@@ -415,13 +415,13 @@
 }
 .modal-price-title {
   color: #4c4c5c;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 16px;
   font-weight: 400;
 }
 .modal-price-price {
   color: #4c4c5c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 18px;
   font-weight: 600;
 }
@@ -445,7 +445,7 @@
 }
 .modal-payment-heading {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 22px;
   font-weight: 600;
   margin-top: 30px;
@@ -460,7 +460,7 @@
 }
 .successfully-send-heading {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 22px;
   font-weight: 600;
   text-align: center;
@@ -468,7 +468,7 @@
 }
 .successfully-send-text {
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 18px;
   font-weight: 300;
   text-align: center;
@@ -476,7 +476,7 @@
 }
 .searching-heading {
   color: #16151c;
-  font-family: "Switzer-Medium";
+  /* font-family: "Switzer-Medium"; */
   font-size: 18px;
   font-weight: 500;
   margin-top: 15px;
@@ -497,7 +497,7 @@
   height: 100%;
   margin: 0px 10px;
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
 }
@@ -509,7 +509,7 @@
 }
 .current-location > p {
   color: #16151c;
-  font-family: "Switzer-Medium";
+  /* font-family: "Switzer-Medium"; */
   font-size: 16px;
   font-weight: 500;
 }
@@ -519,7 +519,7 @@
   border-radius: 10px;
   height: 36px;
   color: #ffffff;
-  font-family: "Switzer-Medium";
+  /* font-family: "Switzer-Medium"; */
   font-size: 16px;
   font-weight: 500;
 }
@@ -537,13 +537,13 @@
 }
 .current-location-heading {
   color: #000000;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 18px;
   font-weight: 600;
 }
 .current-location-location {
   color: #000000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 14px;
   font-weight: 400;
   margin-top: 3px;
@@ -573,14 +573,14 @@
 }
 .current-location-time > p {
   color: #000000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 14px;
   font-weight: 400;
   margin-left: 5px;
 }
 .receipt-heading {
   color: #16151c;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 22px;
   font-weight: 600;
   text-align: center;
@@ -588,7 +588,7 @@
 }
 .receipt-id {
   color: #000000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 16px;
   font-weight: 400;
   text-align: center;
@@ -596,21 +596,21 @@
 }
 .receipt-date {
   color: #000000;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 16px;
   font-weight: 400;
   text-align: center;
 }
 .receipt-summary {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 18px;
   font-weight: 600;
   margin-top: 25px;
 }
 .password-update-successful {
   color: #16151c;
-  font-family: "Lexend";
+  /* font-family: "Lexend"; */
   font-size: 23px;
   font-weight: 600;
   text-align: center;
@@ -618,14 +618,14 @@
 }
 .link-bank-account-heading {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 26px;
   font-weight: 600;
   margin-top: 10px;
 }
 .link-bank-account-title {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 18px;
   font-weight: 600;
   margin-top: 15px;
@@ -651,17 +651,17 @@
 }
 .send-money-card-name {
   color: #16151c;
-  font-family: "Switzer-Semibold";
+  /* font-family: "Switzer-Semibold"; */
   font-size: 18px;
   font-weight: 600;
 }
 .send-money-card-name > span {
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-weight: 400;
 }
 .send-money-card-time {
   color: #000000;
-  font-family: "Switzer-Light";
+  /* font-family: "Switzer-Light"; */
   font-size: 16px;
   font-weight: 300;
   opacity: 0.5;
@@ -686,14 +686,14 @@
 }
 .home-list-type {
   color: #4c4c5c;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 18px;
   font-weight: 400;
   width: 20px;
 }
 .home-list-text{
   color: #4C4C5C;
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 18px;
   font-weight: 400;
 }
@@ -782,9 +782,9 @@
 
 /* Global CSS for the Modal */
 .modal-header-heading {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  color: #333;
+  color: #606060	;
 }
 
 .modal-header-left-1 {
@@ -814,9 +814,9 @@
 }
 
 .file_name {
-  font-size: 1rem;
+  font-size: 0.7rem;
   color: #333;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .download-size {
@@ -913,7 +913,7 @@ margin-top: 20px;
   
 }
 .count_heading  .para{
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   text-transform: capitalize;
   color: #666;

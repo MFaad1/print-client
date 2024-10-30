@@ -16,10 +16,8 @@ import {
 import Grid from "@mui/material/Grid";
 import "./index.css";
 import { MdChevronRight } from "react-icons/md";
-import GoogleMapReact from "google-map-react";
 import FileUpload from "./upload";
-import Checkbox from "@mui/material/Checkbox";
-
+import Switch from "react-switch";
 import {
   Upload,
   Close,
@@ -30,12 +28,9 @@ import {
   Download,
   Search2,
   Map,
-  Location,
-  LocationWave,
-  Copy,
-  Time,
+  // LocationWave,
+  // Copy,
   Location3,
-  Invoice,
   Success,
   File,
   LocationList,
@@ -52,7 +47,6 @@ import FileRenderer from "../../components/Docs_rendered/FileRenderer";
 import PaymentModal from "../../components/PaymentModal";
 import PaymentForm from "../../components/PaymentForm";
 import IncrementDecrement from "../../components/IncrementDecrement/IncrementDecrement";
-
 import Btnloader from "../../components/Loader/Btnloader";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -67,7 +61,7 @@ const Home = () => {
   const [printText, setPrintText] = useState("");
   const [files, setfiles] = useState([]);
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
-
+  const nav = useNavigate();
   let agent_token = localStorage.getItem("use_access_token");
   let user = localStorage.getItem("loggedIn_user");
   let loggedIn_use;
@@ -100,14 +94,6 @@ const Home = () => {
     useState(false);
   const [forgetEmail, setforgetEmail] = useState("");
   const [searchVal, setsearchVal] = useState("");
-
-  const [card, setCard] = useState({
-    bank_name: "",
-    card_number: "",
-    expiry_date: "",
-    phone_number: "",
-    cvv: "",
-  });
 
   // Confirm your email
   const [confirmEmailModal, setConfirmEmailModal] = useState(false);
@@ -142,27 +128,6 @@ const Home = () => {
     zoom: 11,
   };
   const [selectedCurrentLocation, setSelectedCurrentLocaiton] = useState();
-
-  // const currentLocationList = [
-  //   {
-  //     heading: "Second Cup",
-  //     location: "St. 311, David Road, USA",
-  //     time: "Open Weds at 0800 PM",
-  //     distance: "6 mile away",
-  //   },
-  //   {
-  //     heading: "Mall A One",
-  //     location: "St. 311, David Road, USA",
-  //     time: "Open Weds at 0800 PM",
-  //     distance: "6 mile away",
-  //   },
-  //   {
-  //     heading: "Jupitar Mall",
-  //     location: "St. 311, David Road, USA",
-  //     time: "Open Weds at 0800 PM",
-  //     distance: "6 mile away",
-  //   },
-  // ];
 
   {
     /* Receipt from Print to Point, LLC */
@@ -238,7 +203,7 @@ const Home = () => {
     try {
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL}/auth/customer/verify-otp`,
-        { email: signupEmail, otp: otp }
+        { email: signupEmail, otp: otp },
       );
       setLoginModal(true);
     } catch (error) {
@@ -299,7 +264,7 @@ const Home = () => {
 
         let signup_user = await axios.post(
           `${process.env.REACT_APP_API_URL + url}`,
-          CustomerDetails
+          CustomerDetails,
         );
 
         toast.success("Successfully created new account");
@@ -381,17 +346,17 @@ const Home = () => {
       try {
         let signup_user = await axios.post(
           `${process.env.REACT_APP_API_URL + URL}`,
-          { email: loginEmail, password: loginPassword }
+          { email: loginEmail, password: loginPassword },
         );
         let token = signup_user.data.token;
 
         localStorage.setItem(
           AgentFlag ? "Agent_access_token" : "use_access_token",
-          token
+          token,
         );
         localStorage.setItem(
           AgentFlag ? "agent_loggedIn_user" : "loggedIn_user",
-          JSON.stringify(signup_user.data.customer)
+          JSON.stringify(signup_user.data.customer),
         );
         toast.success("Successfully Logged");
         setLoginEmail("");
@@ -424,9 +389,10 @@ const Home = () => {
     try {
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL}/auth/print-agent/verify-otp`,
-        { email: signupEmail, otp: otp }
+        { email: signupEmail, otp: otp },
       );
       setLinkBankAccountModal(true);
+      localStorage.setItem("Agent_access_token", signup_user.data.token);
     } catch (error) {
       if (
         error.response &&
@@ -475,7 +441,7 @@ const Home = () => {
         formData.append("print_job_description", printText);
       }
       formData.append("is_color", isColor);
-      formData.append("no_of_copies", count)
+      formData.append("no_of_copies", count);
 
       setjob_loading(true);
 
@@ -487,7 +453,7 @@ const Home = () => {
             Authorization: `Bearer ${agent_token}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       setPrinted_file(orders.data.printJob);
@@ -499,7 +465,7 @@ const Home = () => {
       setPrintFile("");
       setPrintText("");
       // setSignUpModal(true);
-      setCounter(false)
+      setCounter(false);
     } catch (error) {
       // Handle errors and provide feedback
       if (
@@ -530,7 +496,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
     } catch (error) {
       if (
@@ -572,7 +538,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
 
       let availableAgents = (orders.data.availablePrintAgents || []).flat();
@@ -615,7 +581,7 @@ const Home = () => {
         originalLocationList.filter((item) => {
           const itemString = JSON.stringify(item).toLowerCase();
           return itemString.includes(searchVal.toLowerCase());
-        })
+        }),
       );
     }
   }, [searchVal, originalLocationList]);
@@ -644,7 +610,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/printjob/select-print-agent/${Printed_file?._id}`,
@@ -656,7 +622,7 @@ const Home = () => {
             Authorization: `Bearer ${agent_token}`,
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       setSearchingModal(false);
@@ -698,7 +664,7 @@ const Home = () => {
           headers: {
             Authorization: `Bearer ${agent_token}`,
           },
-        }
+        },
       );
 
       console.log(orders, "orders");
@@ -735,7 +701,7 @@ const Home = () => {
 
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL + URL}`,
-        { email: forgetEmail }
+        { email: forgetEmail },
       );
 
       setForgotPasswordModal(false);
@@ -769,7 +735,7 @@ const Home = () => {
 
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL + URL}`,
-        { email: forgetEmail, otp }
+        { email: forgetEmail, otp },
       );
 
       setPasswrodOtpModal(false);
@@ -804,7 +770,7 @@ const Home = () => {
 
       let signup_user = await axios.post(
         `${process.env.REACT_APP_API_URL + URL}`,
-        { email: forgetEmail, password: forgotPassword, otp }
+        { email: forgetEmail, password: forgotPassword, otp },
       );
 
       setnewPasswordModal(false);
@@ -832,6 +798,61 @@ const Home = () => {
     console.log(cost, "cost");
     setTotalCost(cost);
   }, [count, isColor]);
+
+  const handleToggle = (checked) => {
+    setIsColor(checked);
+  };
+  const [card, setCard] = useState({
+    bank_name: "",
+    card_number: "",
+    expiry_date: "",
+    phone_number: "",
+    cvv: "",
+  });
+
+  const handleCardCreate = async () => {
+    try {
+      // setLinkBankAccountModal(false);
+      // setSendMoneyModal(true);
+
+      console.log("Current Card State: ", card); // Check state values here
+      const url = `${process.env.REACT_APP_API_URL}/print-agent/create-card`;
+
+      const token = localStorage.getItem("Agent_access_token");
+      const data = {
+        card: {
+          bank_name: card.bank_name,
+          card_number: card.card_number,
+          expiry_date: card.expiry_date,
+          phone_number: card.phone_number,
+          cvv: card.cvv,
+        },
+      };
+
+      const res = await axios.post(url, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setLinkBankAccountModal(false);
+      setSendMoneyModal(true);
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message &&
+        error.response.data.err
+      ) {
+        toast.error(error.response.data.err.message);
+        console.log(error.response);
+      } else if (error.message) {
+        toast.error(error.message);
+      } else {
+        // toast.error("Internal server error");
+      }
+    }
+  };
 
   return (
     <div>
@@ -894,6 +915,7 @@ const Home = () => {
                       type="text"
                       placeholder="Enter Name"
                       value={printName}
+                      required
                       onChange={(val) => setPrintName(val.target.value)}
                     />
                   </div>
@@ -903,19 +925,25 @@ const Home = () => {
                       type="email"
                       placeholder="Enter email"
                       value={printEmail}
+                      required
                       onChange={(val) => setPrintEmail(val.target.value)}
                     />
                   </div>
                   <p className="home-input-title">Upload Files</p>
                   {files && files.length > 0
                     ? files.map((file) => (
-                      <p
-                        className=""
-                        style={{ marginTop: "5px", marginBottom: "5px" }}
-                      >
-                        {file.name}
-                      </p>
-                    ))
+                        <p
+                          className=""
+                          style={{
+                            marginTop: "5px",
+                            marginBottom: "5px",
+                            marginRight: "20px",
+                            whiteSpace: "break-spaces",
+                          }}
+                        >
+                          {file.name}
+                        </p>
+                      ))
                     : null}
 
                   <FileUpload setfiles={setfiles} files={files} />
@@ -952,9 +980,7 @@ const Home = () => {
         </div> */}
 
                   <div className="home-form-submit-btn">
-                    <button onClick={() => setCounter(true)} >
-                      Submit
-                    </button>
+                    <button onClick={() => setCounter(true)}>Submit</button>
                   </div>
                 </div>
               </Grid>
@@ -1259,10 +1285,11 @@ const Home = () => {
             onClick={() => {
               setVerificationModal(false);
               setVerifyModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1325,10 +1352,11 @@ const Home = () => {
             onClick={() => {
               setPrintJobModal(false);
               // setVerificationModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1358,7 +1386,7 @@ const Home = () => {
               </p>
             </div>
           </div>
-          <img src={Download} />
+          {/* <img src={Download} /> */}
         </label>
 
         <p className="input-title">Title</p>
@@ -1389,14 +1417,8 @@ const Home = () => {
           </button>
         </div>
       </Model>
-
-
-{/* Counter ui */}
-      <Model
-        open={Counter}
-        onClose={() => setCounter(false)}
-        maxWidth="sm"
-      >
+      {/* Counter ui */}
+      <Model open={Counter} onClose={() => setCounter(false)} maxWidth="sm">
         <div
           className="confirm-email-modal-header"
           style={{ justifyContent: "flex-start" }}
@@ -1405,25 +1427,24 @@ const Home = () => {
             className="back-button"
             onClick={() => {
               setCounter(false);
-              // setPrintJobModal(true);
+              window.location.reload(false);
+              nav("/");
             }}
           >
             <img src={ArrowLeft} alt="Back" />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
         <div className="modal-header">
-          <p className="modal-header-heading">
-            {printName}
-          </p>
+          <p className="modal-header-heading">Title: {printName}</p>
         </div>
 
         <button className="download-btn" style={{ width: "100%" }}>
           <div className="file_info">
             <img src={Pdf} alt="PDF" />
             <div className="file_name">
-              <p>{(files[0]?.name)}</p>
+              <p>{files[0]?.name}</p>
               {files && files.length > 0 ? (
                 <p className="download-size">
                   File Size:{" "}
@@ -1432,7 +1453,6 @@ const Home = () => {
               ) : null}
             </div>
           </div>
-          <img src={Download} alt="Download" />
         </button>
         <div className="count_heading">
           <div className="para">
@@ -1440,43 +1460,71 @@ const Home = () => {
           </div>
 
           <div>
-
             <IncrementDecrement count={count} setCount={setCount} />
           </div>
         </div>
 
-
         <div className="print-type-container">
-          <label htmlFor="printType" className="print-type-label">
+          <label
+            htmlFor="printTypeSwitch"
+            className="print-type-label"
+            style={{ marginRight: "15px" }}
+          >
             Print Type:
           </label>
-          <select
-            id="printType"
-            className="print-type-dropdown"
-            onChange={(e) => {
-              if (e.target.value === "color") {
-                setIsColor(true);
-              } else {
-                setIsColor(false);
-              }
-            }}
-          >
-            <option value="black-and-white">Black and White</option>
-            <option value="color">Color</option>
-          </select>
+          <Switch
+            checked={isColor}
+            onChange={handleToggle}
+            onColor="#f7801a"
+            offColor="#ccc"
+            onHandleColor="#fff"
+            offHandleColor="#fff"
+            handleDiameter={20}
+            width={90}
+            uncheckedIcon={
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  fontSize: 12,
+                  paddingRight: 2,
+                  color: "#000",
+                }}
+              >
+                B&W
+              </div>
+            }
+            checkedIcon={
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  fontSize: 12,
+                  paddingLeft: 6,
+                  color: "#fff",
+                }}
+              >
+                Color
+              </div>
+            }
+            id="printTypeSwitch"
+          />
         </div>
 
-
-<div className="home-form-submit-btn btn-count">
-                    <button onClick={printSubmitHandler} disabled={job_loading} style={{width: "100%"}}>
-                      {job_loading ? <Btnloader /> : "Save"}
-                    </button>
-                  </div>
-
+        <div className="home-form-submit-btn btn-count">
+          <button
+            onClick={printSubmitHandler}
+            disabled={job_loading}
+            style={{ width: "100%" }}
+          >
+            {job_loading ? <Btnloader /> : "Save"}
+          </button>
+        </div>
       </Model>
-
-
-
       {/* Search Model */}
       <Model
         open={searchingModal}
@@ -1492,14 +1540,15 @@ const Home = () => {
             onClick={() => {
               setSearchingModal(false);
               setPrintJobModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
         <p className="searching-heading">Searching Print Agents in your area</p>
-        <div className="searching-main">
+        {/*<div className="searching-main">
           <img src={Search2} />
           <input
             placeholder="Enter zip code, city or state"
@@ -1507,21 +1556,9 @@ const Home = () => {
             onChange={(e) => setsearchVal(e.target.value)}
           />
           <img src={Map} />
-        </div>
+        </div> */}
 
         <div className="modal-map">
-          {/* <GoogleMapReact
-            bootstrapURLKeys={{ key: "" }}
-            defaultCenter={defaultProps.center}
-            defaultZoom={defaultProps.zoom}
-            style={{ height: "150px" }}
-          >
-            <AnyReactComponent
-              lat={59.955413}
-              lng={30.337844}
-              text="My Marker"
-            />
-          </GoogleMapReact> */}
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28823.460374453345!2d-80.48738101619446!3d25.44051856350412!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9e0cb35a8cf39%3A0xf7bdead0fe918320!2sFlorida%20City%2C%20FL%2C%20USA!5e0!3m2!1sen!2s!4v1730069520065!5m2!1sen!2s"
             width="600"
@@ -1532,10 +1569,15 @@ const Home = () => {
             referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
-        <div className="current-location">
+        <div>
+          <p style={{ marginTop: "10px", fontSize: "18px", fontWeight: "700" }}>
+            Available Agents:
+          </p>
+        </div>
+        {/* <div className="current-location">
           <p>Use my current location</p>
           <button>Use Location</button>
-        </div>
+        </div> */}
         {currentLocationList.map((val, index) => {
           console.log(val.full_name);
           return (
@@ -1562,22 +1604,18 @@ const Home = () => {
 
                 <div>
                   <p className="current-location-heading">
-                    ({index + 1}){val.business_name}
+                    {index + 1} - {val.business_name}
                   </p>
-                  {/* <p className="current-location-location">{val.location.zip_code}</p> */}
-                  {/* <div className="current-location-time">
-                    <img src={Time} />
-                    <p>{val.time}</p>
-                  </div> */}
                   <div className="current-location-time">
                     <img src={Location3} />
                     <p>{val.location.zip_code}</p>
+                    <p>{val?.location?.state}</p>
                   </div>
                 </div>
               </div>
               <div className="current-location-box-right">
-                <img src={LocationWave} />
-                <img src={Copy} style={{ marginTop: "10px" }} />
+                {/* <img src={LocationWave} /> */}
+                {/* <img src={Copy} style={{ marginTop: "10px" }} /> */}
               </div>
             </button>
           );
@@ -1590,8 +1628,6 @@ const Home = () => {
           }}
         />
       </Model>
-
-
       {/* Payment / Add New Card */}
       <Model
         open={paymentModal}
@@ -1607,10 +1643,11 @@ const Home = () => {
             onClick={() => {
               setPaymentModal(false);
               setPrintJobModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} alt="Back" />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1633,37 +1670,48 @@ const Home = () => {
               ) : null}
             </div>
           </div>
-          <img src={Download} alt="Download" />
+          {/* <img src={Download} alt="Download" /> */}
         </button>
-      
-  
+
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">${Printed_file?.total_cost }</p>
+          <p className="modal-price-price">
+            ${(Printed_file?.total_cost * 0.9).toFixed(2)}
+          </p>
         </div>
-
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">No. of Copies</p>
+          <p className="modal-price-price">{Printed_file?.no_of_copies}</p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">Color Print</p>
+          <p className="modal-price-price">
+            {Printed_file?.is_color ? "Yes" : "No"}
+          </p>
+        </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
             $
-            {Printed_file?.total_cost ? (Printed_file.total_cost * 0.11).toFixed(2): "0.00"}
+            {Printed_file?.total_cost
+              ? (Printed_file.total_cost * 0.1).toFixed(2)
+              : "0.00"}
           </p>
         </div>
 
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">
-            ${Printed_file?.total_cost ? (Printed_file?.total_cost  + Printed_file?.total_cost  * 0.11).toFixed(2) : "0.00"}
-          </p>
+          <p className="modal-price-price">${Printed_file?.total_cost}</p>
         </div>
-
-        <PaymentForm
-          id={Printed_file?._id}
-          setPaymentModal={setPaymentModal}
-          setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal}
-        />
+        <div style={{ marginTop: "15px" }}>
+          <PaymentForm
+            id={Printed_file?._id}
+            setPaymentModal={setPaymentModal}
+            setCodeSendSuccessfullyModal={setCodeSendSuccessfyllyModal}
+          />
+        </div>
       </Model>
-      {/* Code Sent Successfully! */}``
+      {/* Code Sent Successfully! */}
       <Model
         open={codeSendSuccessfyllyModal}
         onClose={() => setCodeSendSuccessfyllyModal(false)}
@@ -1678,10 +1726,11 @@ const Home = () => {
             onClick={() => {
               setCodeSendSuccessfyllyModal(false);
               // setPaymentModal(true);
+              window.location.reload(false);
             }}
           >
             <img src={ArrowLeft} />
-            <p>Back</p>
+            <p>Close</p>
           </button>
         </div>
 
@@ -1703,25 +1752,37 @@ const Home = () => {
               ) : null}
             </div>
           </div>
-          <img src={Download} />
+          {/* <img src={Download} /> */}
         </button>
         <div className="modal-price-list">
           <p className="modal-price-title">1-{Printed_file?.pages} Pages</p>
-          <p className="modal-price-price">{Printed_file?.total_cost}</p>
+          <p className="modal-price-price">
+            ${(Printed_file?.total_cost * 0.9).toFixed(2)}
+          </p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">No. of Copies</p>
+          <p className="modal-price-price">{Printed_file?.no_of_copies}</p>
+        </div>
+        <div className="modal-price-list-2">
+          <p className="modal-price-title">Color Print</p>
+          <p className="modal-price-price">
+            {Printed_file?.is_color ? "Yes" : "No"}
+          </p>
         </div>
         <div className="modal-price-list-2">
           <p className="modal-price-title">Service Fee</p>
           <p className="modal-price-price">
-            {Printed_file && Printed_file.total_cost
-              ? `$${(Printed_file.total_cost * 0.11).toFixed(2)}`
-              : "$0.00"}
+            $
+            {Printed_file?.total_cost
+              ? (Printed_file.total_cost * 0.1).toFixed(2)
+              : "0.00"}
           </p>
         </div>
+
         <div className="modal-price-list-3">
           <p className="modal-price-title">Total</p>
-          <p className="modal-price-price">
-            ${Printed_file?.total_cost ? (Printed_file?.total_cost + Printed_file?.total_cost * 0.11).toFixed(2) : "0.00"}
-          </p>
+          <p className="modal-price-price">${Printed_file?.total_cost}</p>
         </div>
 
         <h1 className="successfully-send-heading">Code Sent Successfully!</h1>
@@ -1730,8 +1791,8 @@ const Home = () => {
           ********{" "}
           {loggedIn_use?.email &&
             loggedIn_use.email.split("@")[0].slice(-4) +
-            "@" +
-            loggedIn_use.email.split("@")[1]}
+              "@" +
+              loggedIn_use.email.split("@")[1]}
         </p>
         {/* <Button
           title=""
@@ -1842,7 +1903,7 @@ const Home = () => {
           className="confirm-email-modal-header"
           style={{ justifyContent: "flex-start" }}
         >
-          <button className="back-button" onClick={() => { }}>
+          <button className="back-button" onClick={() => {}}>
             <img src={ArrowLeft} />
             <p>Back</p>
           </button>
@@ -2029,36 +2090,46 @@ const Home = () => {
           </button>
         </div>
         <h1 className="link-bank-account-heading">Link your bank account</h1>
-        <p className="link-bank-account-title">Personal Details</p>
-        <div className="modal-card-input-main">
-          <div>
-            <Input type="text" title="First Name" placeholder="First Name" />
-          </div>
-          <div>
-            <Input type="text" title="Last Name" placeholder="Last Name" />
-          </div>
-        </div>
-        <Input type="text" title="Personal Info" placeholder="Personal Info" />
-        <Input type="number" title="Phone" placeholder="Phone" />
         <p className="link-bank-account-title">Transfer Details</p>
-        <Input type="text" title="Bank Name" placeholder="Bank Name" />
-        <Input type="text" title="Account Type" placeholder="Account Type" />
+        <Input
+          type="text"
+          title="Bank Name"
+          placeholder="Bank Name"
+          value={card.bank_name}
+          onChange={(e) => setCard({ ...card, bank_name: e.target.value })}
+        />
         <Input
           type="number"
-          title="Account Number"
-          placeholder="Account Number"
+          title="Card Number"
+          placeholder="Card Number"
+          value={card.card_number}
+          onChange={(e) => setCard({ ...card, card_number: e.target.value })}
         />
-        <Input type="number" title="Phone" placeholder="Phone" />
-        <Button
-          title="Link Bank Account"
-          onClick={() => {
-            setLinkBankAccountModal(false);
-            setSendMoneyModal(true);
-          }}
+        <Input
+          type="text"
+          title="Expiry Date"
+          placeholder="MM/YY"
+          value={card.expiry_date}
+          onChange={(e) => setCard({ ...card, expiry_date: e.target.value })}
         />
+        <Input
+          type="number"
+          title="CVV"
+          placeholder="CVV"
+          value={card.cvv}
+          onChange={(e) => setCard({ ...card, cvv: e.target.value })}
+        />
+        <Input
+          type="Text"
+          title="Phone"
+          placeholder="+923184111999"
+          value={card.phone_number}
+          onChange={(e) => setCard({ ...card, phone_number: e.target.value })}
+        />
+        <Button title="Link Bank Account" onClick={handleCardCreate} />
       </Model>
       {/* Send Money */}
-      <Model
+      {/* <Model
         open={sendMoneyModal}
         onClose={() => setSendMoneyModal(false)}
         maxWidth="xs"
@@ -2078,7 +2149,7 @@ const Home = () => {
             <p>Back</p>
           </button>
         </div>
-        <h1 className="link-bank-account-heading">Send Money</h1>
+        {/* <h1 className="link-bank-account-heading">Send Money</h1>
         <div style={{ display: "flex" }}>
           <div className="modal-type-main">
             <button
@@ -2143,8 +2214,8 @@ const Home = () => {
             </div>
           </div>
           <MdChevronRight style={{ height: "24px", width: "24px" }} />
-        </div>
-      </Model>
+        </div> 
+      </Model> */}
     </div>
   );
 };

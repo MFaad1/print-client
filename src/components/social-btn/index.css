@@ -13,7 +13,7 @@
 }
 .or-main > p {
   color: #2c5ebf;
-  font-family: "Work Sans";
+  /* font-family: "Work Sans"; */
   font-size: 13.08px;
   font-weight: 400;
   margin: 0px 10px;
@@ -26,7 +26,7 @@
   margin-top: 15px !important;
 }
 .social-button > p {
-  font-family: "Switzer-Regular";
+  /* font-family: "Switzer-Regular"; */
   font-size: 13px;
   font-weight: 400;
   color: #191919;
