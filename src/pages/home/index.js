@@ -2108,7 +2108,7 @@ const Home = () => {
         <Input
           type="text"
           title="Expiry Date"
-          placeholder="Expiry Date"
+          placeholder="MM/YY"
           value={card.expiry_date}
           onChange={(e) => setCard({ ...card, expiry_date: e.target.value })}
         />
@@ -2122,14 +2122,14 @@ const Home = () => {
         <Input
           type="Text"
           title="Phone"
-          placeholder="Phone"
+          placeholder="+923184111999"
           value={card.phone_number}
           onChange={(e) => setCard({ ...card, phone_number: e.target.value })}
         />
         <Button title="Link Bank Account" onClick={handleCardCreate} />
       </Model>
       {/* Send Money */}
-      <Model
+      {/* <Model
         open={sendMoneyModal}
         onClose={() => setSendMoneyModal(false)}
         maxWidth="xs"
@@ -2149,7 +2149,7 @@ const Home = () => {
             <p>Back</p>
           </button>
         </div>
-        <h1 className="link-bank-account-heading">Send Money</h1>
+        {/* <h1 className="link-bank-account-heading">Send Money</h1>
         <div style={{ display: "flex" }}>
           <div className="modal-type-main">
             <button
@@ -2214,8 +2214,8 @@ const Home = () => {
             </div>
           </div>
           <MdChevronRight style={{ height: "24px", width: "24px" }} />
-        </div>
-      </Model>
+        </div> 
+      </Model> */}
     </div>
   );
 };
