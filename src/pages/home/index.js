@@ -519,13 +519,10 @@ const Home = () => {
     let loggedIn_use = localStorage.getItem("loggedIn_user");
 
     try {
-      if (!agent_token) {
+      if (!agent_token || !loggedIn_use) {
         return setLoginModal(true);
       }
 
-      if (!loggedIn_use) {
-        return setLoginModal(true);
-      }
 
       let parsedLoggedInUser = JSON.parse(loggedIn_use);
 
@@ -544,6 +541,7 @@ const Home = () => {
 
       let availableAgents = (orders.data.availablePrintAgents || []).flat();
 
+      console.log(orders.data, "availableAgents")
       if (!Array.isArray(availableAgents) || availableAgents.length === 0) {
         toast.error("No available agents found.");
         return;
@@ -803,6 +801,7 @@ const Home = () => {
   const handleToggle = (checked) => {
     setIsColor(checked);
   };
+
   const [card, setCard] = useState({
     bank_name: "",
     card_number: "",
@@ -854,6 +853,9 @@ const Home = () => {
       }
     }
   };
+
+
+
 
   return (
     <div>
