@@ -90,8 +90,12 @@ const Bank_details = () => {
         {isCardVisible ? <FaEyeSlash /> : <FaEye />} 
       </button>
 
-          <span class="number">{isCardVisible ? formatCardId(logged_agent?.cards[0]) :"**** **** **** ****"  }</span>
-          <span class="owner">Jhon D.</span>
+          <span class="number">
+            
+            {isCardVisible ? formatCardId(logged_agent?.cards[0]) :"**** **** **** ****"  }
+            
+            </span>
+          <span class="owner">{logged_agent?.full_name}</span>
         </div>
       </div>
 }
