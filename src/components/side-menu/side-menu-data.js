@@ -17,7 +17,8 @@ import {
   BusinessMode,
   Notification,
 Calendar,
-  VerifyJob
+  VerifyJob,
+  bank_details
 } from "./../../svg";
 
 const SideMenuData = () => {
@@ -102,6 +103,24 @@ const SideMenuData = () => {
                     <span className="side-menu-page-title">
                       Deliver Documents
                     </span>
+                  </Button>
+                </li>
+
+                <li className="side-menu-list-item">
+                  <Button
+                    variant="text"
+                    className={
+                      CurrentPagePath === "/bank_details"
+                        ? "side-menu-active-page"
+                        : "side-menu-page"
+                    }
+                    onClick={() => {
+                      navigate("/bank_details");
+                    }}
+                  >
+                    <img src={bank_details} alt="Deliver Documents" style={{height:"25px", width: "25px"}} />
+                    <span className="side-menu-page-title">
+Bank Details                    </span>
                   </Button>
                 </li>
 

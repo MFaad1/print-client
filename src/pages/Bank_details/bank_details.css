@@ -1,0 +1,68 @@
+.logo svg {
+    height: 48px;
+    width: 54px;
+  }
+  
+  ::selection {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  
+  .container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .card {
+    background: radial-gradient(circle, white 0%, #d5d5d5 100%);
+    width: 300px;
+    height: 200px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 3px 3px 17px 0px rgba(0, 0, 0, 0.55);
+  }
+  
+  .card .remove, .card .logo {
+    position: absolute;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .card .remove {
+    top: 30px;
+    right: 30px;
+    opacity: .9;
+    color: black;
+  }
+  
+  .card .remove:hover {
+    color: #f06b5d;
+  }
+  
+  .card .logo {
+    top: 20px;
+    left: 30px;
+    font-size: 3em;
+    opacity: 1;
+  }
+  
+  .card .number, .card .owner {
+    display: block;
+    position: absolute;
+    left: 30px;
+    cursor: default;
+    color: black;
+    opacity: .9;
+    transition: color .7s ease-out;
+  }
+  
+  .card .number {
+    bottom: 60px;
+    letter-spacing: 4px;
+  }
+  
+  .card .owner {
+    bottom: 30px;
+    letter-spacing: 1px;
+  }

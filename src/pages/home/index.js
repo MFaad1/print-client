@@ -354,17 +354,18 @@ const Home = () => {
           AgentFlag ? "Agent_access_token" : "use_access_token",
           token,
         );
+
+        let agentType = AgentFlag ? "printAgent" : "customer"
+
         localStorage.setItem(
-          AgentFlag ? "agent_loggedIn_user" : "loggedIn_user",
-          JSON.stringify(signup_user.data.customer),
+          AgentFlag ? "agent_loggedIn_user" : "loggedIn_user",JSON.stringify(signup_user.data[agentType]),
         );
         toast.success("Successfully Logged");
         setLoginEmail("");
         setLoginPassword("");
         setLoginModal(false);
         if (loginType === "Agent") {
-          navigate("/dashboard");
-        }
+          navigate("/dashboard"); }
         window.dispatchEvent(new Event("logged_user"));
         if (loginType !== "Agent" && !signup_user.data.customer.location) {
           setModal(true);
