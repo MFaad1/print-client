@@ -47,7 +47,7 @@
     opacity: 1;
   }
   
-  .card .number, .card .owner {
+  .card .number, .card .owner,.owner_ccv {
     display: block;
     position: absolute;
     left: 30px;
@@ -65,4 +65,9 @@
   .card .owner {
     bottom: 30px;
     letter-spacing: 1px;
+  }
+
+
+  .owner_ccv{
+    bottom: 5px;
   }
