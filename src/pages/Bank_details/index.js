@@ -62,15 +62,6 @@ const Bank_details = () => {
 
   const [isCardVisible, setIsCardVisible] = useState(false); 
 
-  const handleOrderClick = () => {
-    // Toggle the selection state for all orders
-    setOrdersList((prevOrdersList) =>
-      prevOrdersList.map((order) => ({ ...order, isSelected: !allSelected }))
-    );
-    // Update the allSelected state
-    setAllSelected((prev) => !prev);
-  };
-
 
   const toggleCardVisibility = () => {
     setIsCardVisible((prev) => !prev);
