@@ -31,6 +31,21 @@ const columns = [
     minWidth: 120,
   },
   {
+    id: "bankName",
+    label: "Bank Name",
+    minWidth: 120,
+  },
+  {
+    id: "ccvNumber",
+    label: "CCV Number",
+    minWidth: 120,
+  },
+  {
+    id: "expiry_Date",
+    label: "Card Expiry Date",
+    minWidth: 120,
+  },
+  {
     id: "CreatedDate",
     label: "Created Date",
     minWidth: 120,
@@ -232,57 +247,73 @@ const AgentManagement = () => {
 
 
 
+  const get_card_details = async (id) => {
+    if (!id) return null; 
+    try {
+      let Cards = await axios.get(`${process.env.REACT_APP_API_URL}/admin/print-agents/${id}`, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`
+        }
+      });
+      console.log(Cards.data.printAgent, "Cards.data.card");
+  
+      return Cards.data.printAgent?.cards[0] || null;
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        console.log(error.response.data.message);
+        throw new Error(error.response.data.message);
+      } else if (error.message) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Internal server error");
+      }
+    }
+  };
+  
   const get_Orders = async () => {
     try {
-
-      if (!agent_token) throw new Error("Please re-login and try again")
-      setloading(true)
+      if (!agent_token) throw new Error("Please re-login and try again");
+      setloading(true);
+  
       let orders = await axios.get(`${process.env.REACT_APP_API_URL}/admin/print-agents`, {
         headers: {
           Authorization: `Bearer ${agent_token}`
         }
       });
-
-      console.log(orders, "order")
-
-      const dynamicOrders = orders.data.printAgents.map((job) => ({
-        isSelected: false,
-        id: job._id,
-        customerName: job.full_name,
-        email: job.email,
-        createdDate: new Date(job.created_at).toLocaleDateString(),
-        businessName: job.business_name,
-        businessType: job.business_type,
-        Bank_details : job.cards[0],
-        ...job,
-      }));
-
-      setOrdersList((prevOrders) => [...dynamicOrders]);
-
+  
+      const dynamicOrders = await Promise.all(
+        orders.data.printAgents.map(async (job) => ({
+          isSelected: false,
+          id: job._id,
+          customerName: job.full_name,
+          email: job.email,
+          createdDate: new Date(job.created_at).toLocaleDateString(),
+          businessName: job.business_name,
+          businessType: job.business_type,
+          Bank_details: await get_card_details(job._id),
+          ...job,
+        }))
+      );
+  
+      setOrdersList(dynamicOrders); // Set the resolved orders
+  
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         toast.error(error.response.data.message);
-        console.log(error.response.data.message)
-      }
-
-      else if (error.message) {
+        console.log(error.response.data.message);
+      } else if (error.message) {
         toast.error(error.message);
-      }
-      else {
+      } else {
         toast.error("Internal server error");
       }
+    } finally {
+      setloading(false);
     }
-    finally {
-      setloading(false)
-
-    }
-  }
-
-
-
+  };
+  
   useEffect(() => {
-    get_Orders()
-  }, [])
+    get_Orders();
+  }, []);
 
   const localtion_del_handler = async (id) => {
     try {
@@ -314,7 +345,6 @@ const AgentManagement = () => {
 
 
 
-  console.log(modal, "modal")
 
   return (
     <SideMenu>
@@ -411,8 +441,24 @@ const AgentManagement = () => {
                               <p className="order-table-text">{row.email}</p>
                             </TableCell>
                             <TableCell>
-                        <p className="order-table-text">{row?.Bank_details}</p>
-                      </TableCell>
+                              <p className="order-table-text">{row?.Bank_details?.card_number}</p>
+               
+                            </TableCell>
+                            <TableCell>
+                              <p className="order-table-text">{row?.Bank_details?.bank_name}</p>
+                            </TableCell>
+
+
+                            <TableCell>
+                              <p className="order-table-text">{row?.Bank_details?.cvv}</p>
+                            </TableCell>
+
+                            <TableCell>
+                              <p className="order-table-text">{row?.Bank_details?.expiry_date}</p>
+                            </TableCell>
+
+                          
+
                             <TableCell>
                               <p className="order-table-text">{row.createdDate}</p>
                             </TableCell>

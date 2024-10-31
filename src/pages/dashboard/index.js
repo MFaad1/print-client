@@ -16,7 +16,7 @@ const Dashboard = () => {
   const get_Customers = async () => {
     try {
 
-      if (!agent_token) throw new Error("Please re-login and try again")
+      if (!agent_token) return 
       setloading(true)
       let orders = await axios.get(`${process.env.REACT_APP_API_URL}/print-agent/summary`, {
         headers: {
