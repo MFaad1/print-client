@@ -25,11 +25,11 @@ const columns = [
     label: "Email",
     minWidth: 120,
   },
-  // {
-  //   id: "PhoneNumber",
-  //   label: "Phone Number",
-  //   minWidth: 120,
-  // },
+  {
+    id: "PhoneNumber",
+    label: "Card Number",
+    minWidth: 120,
+  },
   {
     id: "CreatedDate",
     label: "Created Date",
@@ -251,9 +251,9 @@ const AgentManagement = () => {
         customerName: job.full_name,
         email: job.email,
         createdDate: new Date(job.created_at).toLocaleDateString(),
-
         businessName: job.business_name,
         businessType: job.business_type,
+        Bank_details : job.cards[0],
         ...job,
       }));
 
@@ -410,9 +410,9 @@ const AgentManagement = () => {
                             <TableCell>
                               <p className="order-table-text">{row.email}</p>
                             </TableCell>
-                            {/* <TableCell>
-                        <p className="order-table-text">{row.phone}</p>
-                      </TableCell> */}
+                            <TableCell>
+                        <p className="order-table-text">{row?.Bank_details}</p>
+                      </TableCell>
                             <TableCell>
                               <p className="order-table-text">{row.createdDate}</p>
                             </TableCell>
