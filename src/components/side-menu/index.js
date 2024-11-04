@@ -90,9 +90,11 @@ export const SideMenu = (props) => {
     setBusinessModeOpen(!businessModeOpen);
   };
 
+  
+
   return (
     <>
-      <div>
+      <div >
         <Grid container>
           <Grid item xs={12} md={2}>
             <SideMenuData />
@@ -120,6 +122,7 @@ export const SideMenu = (props) => {
                       anchor="left"
                       open={isDrawerOpen}
                       onClose={handleDrawerClose}
+                      className="side-menu-header"
                     >
                       <div>
                         <div className="sider-content-wraper">
@@ -323,6 +326,7 @@ export const SideMenu = (props) => {
                       </Button> */}
                     </div>
                   </div>
+
                 </div>
               </div>
               <div className={"side-menu-children-data"}>{props.children}</div>

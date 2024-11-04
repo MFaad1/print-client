@@ -128,4 +128,19 @@
     width: 100% !important;
 
   }
+
+
+
+  .print-content{
+    opacity: 1 !important;
+    
+  }
+
+  .page-header-main{
+    display: none !important;
+  }
+.side-menu-header, .right-side-header-container{
+  display: none !important;
+}
+
 }

@@ -49,7 +49,7 @@ const VerifyMode = () => {
       );
 
       console.log("OTP verification response:", response.data);
-      toast.success(response.data.message);
+      // toast.success(response.data.message);
 
       if (response.data.printJob && response.data.printJob.file_path) {
         setfileUrl(response.data.printJob);
@@ -84,6 +84,7 @@ const VerifyMode = () => {
 
   return (
     <SideMenu>
+      <div className="page-header-main">
       <div className="page-header">
         <div />
         <p>Verify Job</p>
@@ -124,11 +125,15 @@ const VerifyMode = () => {
         <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
       </Grid>
 
+      </div>
+
+
       {/* <Model open={model} onClose={()=>setmodel(false)}>
 <Print fileUrl ={fileUrl} ref={componentRef} />
 </Model>
  : null} */}
-      <div style={{ opacity: "0", objectFit:'contain' }}>
+
+      <div className="print-content" style={{ opacity: "0", objectFit:'contain' }}>
         {fileUrl ? <Print fileUrl={fileUrl} ref={componentRef} /> : null}
       </div>
     </SideMenu>
