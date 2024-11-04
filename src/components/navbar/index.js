@@ -57,8 +57,8 @@ useEffect(() => {
             <img src={Logo} alt="" />
           </button>
           <div>
-            {/* <Link className="navbar-explore">Locations</Link> */}
-    {/* <p className="navbar-explore navbar-location">Locations</p> */}
+            <Link to="/support-ticket" className="navbar-explore">Support TIcket</Link>
+            {/* <p className="navbar-explore navbar-location">Locations</p> */}
 
            {/*  <button className="navbar-search">
               <img src={Search} />

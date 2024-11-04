@@ -1,0 +1,171 @@
+/* SupportTicketsForm.css */
+
+.support-tickets-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    min-height: 100vh;
+  }
+  .navbar-container-support {
+    height: 94px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+  }
+  .navbar-logo-support > img {
+    height: 60px;
+  }
+  
+  .support-tickets-form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #f7801a;
+    max-width: 400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  
+  .support-tickets-heading {
+    text-align: center;
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .support-tickets-subheading {
+    font-size: 1.2em;
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .support-tickets-field {
+    margin-bottom: 15px;
+  }
+  
+  .support-tickets-label {
+    display: block;
+    font-size: 14px;
+    color: lightslategray;
+    margin-bottom: 5px;
+  }
+  
+  .support-tickets-input,
+  .support-tickets-textarea {
+    width: 94%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  
+  .support-tickets-textarea {
+    resize: vertical;
+    height: 100px;
+  }
+  
+  .support-tickets-submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #f7801a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .support-tickets-submit-button:hover {
+    background-color: orange;
+  }
+
+  .success-message-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f7801a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .success-content {
+    text-align: center;
+    color: white;
+  }
+  
+  .success-icon {
+    color: #fff;
+    margin-bottom: 16px;
+    animation: bounce 1s infinite alternate;
+  }
+  
+  .success-message {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 600px) {
+    .support-tickets-form {
+      padding: 15px;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+  
+    .support-tickets-heading {
+      font-size: 1.5em;
+    }
+  
+    .support-tickets-input,
+    .support-tickets-textarea {
+      padding: 8px;
+    }
+  
+    .support-tickets-submit-button {
+      padding: 10px;
+      font-size: 1em;
+    }
+    .success-message {
+      font-size: 1rem;
+    }
+    .success-content {
+      text-align: center;
+      color: white;
+      max-width: 400px;
+      margin: 0 auto;
+  
+    }
+    
+  }
+  
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes bounce {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-10px);
+    }
+  }
+  
