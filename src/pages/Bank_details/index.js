@@ -68,13 +68,52 @@ const Bank_details = () => {
   const [isCardVisible, setIsCardVisible] = useState(false); 
   const [ordersList, setOrdersList] = useState();
   const [loading, setloading] = useState(false);
-
+  const [hasStripeAccount, setHasStripeAccount] = useState(true);
 
 
 
   const toggleCardVisibility = () => {
     setIsCardVisible((prev) => !prev);
   };
+
+  const connectStripe = async () => {
+
+    if (!agent_token) 
+      setloading(true)
+  
+    let connect = await axios.get(`${process.env.REACT_APP_API_URL}/print-agent/create-connect-account`, {
+      headers: {
+        Authorization: `Bearer ${agent_token}`
+      }
+    });
+
+    if(connect.data.url){
+      window.location = connect.data.url;
+    }
+
+    setloading(false)
+
+  }
+
+
+  const checkStripeAccount = async () => {
+      if (!agent_token) 
+        setloading(true)
+    
+      let connect = await axios.get(`${process.env.REACT_APP_API_URL}/print-agent/check-connect-account`, {
+        headers: {
+          Authorization: `Bearer ${agent_token}`
+        }
+      });
+
+      
+
+      if(connect.data.hasStripeAccount){
+        setHasStripeAccount(true)
+      }
+
+      setloading(false)
+    }
 
 
   const formatCardId = (id) => {
@@ -120,6 +159,7 @@ const Bank_details = () => {
 
   useEffect(() => {
     get_Customers()
+    checkStripeAccount()
 }, [])
 
 
@@ -147,9 +187,13 @@ const Bank_details = () => {
             
             </span>
           <span class="owner">{logged_agent?.full_name}</span>
-          <span class="owner_ccv">CVV:  {ordersList?.cvv}</span>
+          <span class="valid">Valid thru {ordersList?.expiry_date}</span>
+          {/* <span class="owner_ccv">CVV:  {ordersList?.cvv}</span> */}
+          
+          { !hasStripeAccount && <button class="connect" onClick={connectStripe}>Connect to Stripe</button> }
+
         </div>
-      </div>
+        </div>
 }
 
 
