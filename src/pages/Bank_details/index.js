@@ -68,7 +68,7 @@ const Bank_details = () => {
   const [isCardVisible, setIsCardVisible] = useState(false); 
   const [ordersList, setOrdersList] = useState();
   const [loading, setloading] = useState(false);
-  const [hasStripeAccount, setHasStripeAccount] = useState(true);
+  const [hasStripeAccount, setHasStripeAccount] = useState(false);
 
 
 
