@@ -32,6 +32,8 @@ import Printing from './printing.svg'
 import VerifyJob from './verify-job.svg'
 import Calendar from './calendar.svg'
 import bank_details from './bank_details.svg'
+import user_setting from './user_setting.svg'
+
 export {
   Logo,
   Search,
@@ -66,5 +68,6 @@ export {
   Printing,
   VerifyJob,
   Calendar,
-  bank_details
+  bank_details,
+  user_setting
 };

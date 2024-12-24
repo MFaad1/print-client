@@ -344,8 +344,7 @@ const Home = () => {
       let URL = AgentFlag ? "/auth/print-agent/login" : "/auth/customer/login";
 
       try {
-        let signup_user = await axios.post(
-          `${process.env.REACT_APP_API_URL + URL}`,
+        let signup_user = await axios.post(`${process.env.REACT_APP_API_URL + URL}`,
           { email: loginEmail, password: loginPassword },
         );
         let token = signup_user.data.token;

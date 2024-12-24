@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home,Dashboard,Orders,DeliverDocuments,BusinessMode,VerifyMode,Bank_details,SupportTicketsForm } from "../../pages";
+import { Home,Dashboard,Orders,DeliverDocuments,BusinessMode,VerifyMode,Bank_details,SupportTicketsForm,Setting } from "../../pages";
 const RouterNavigation = () => {
   return (
     <BrowserRouter>
@@ -13,6 +13,7 @@ const RouterNavigation = () => {
         <Route path="/business-mode" element={<BusinessMode />} />
         <Route path="/verify-job" element={<VerifyMode />} />
         <Route path="/support-ticket" element={<SupportTicketsForm />} />
+        <Route path="/Setting" element={<Setting />} />
 
         
       </Routes>

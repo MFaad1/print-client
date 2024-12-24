@@ -23,7 +23,7 @@ const VerifyMode = () => {
 
   let agent_token = localStorage.getItem("Agent_access_token");
 
-  const handleAfterPrint = () => {};
+  const handleAfterPrint = () => { };
 
   const handleBeforePrint = () => {
     const iframe = componentRef.current.querySelector("iframe");
@@ -85,45 +85,45 @@ const VerifyMode = () => {
   return (
     <SideMenu>
       <div className="page-header-main">
-      <div className="page-header">
-        <div />
-        <p>Verify Job</p>
-      </div>
-      <Grid container spacing={3}>
-        <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
-        <Grid item xs={10} sm={6} md={4} lg={4} xl={4}>
-          <div className="business-mode">
-            <img src={Logo} className="business-mode-logo" alt="" />
-            <p className="business-mode-heading">Verify Your Job</p>
-            <p className="business-mode-text">
-              If you have a confirmation code, please enter it below
-            </p>
-          </div>
-          <div className="otp-div">
-            <OtpInput
-              className="intput-class"
-              value={otp}
-              onChange={setOtp}
-              placeholder={"0".repeat(otp)}
-              numInputs={6}
-              renderInput={(props) => <input {...props} placeholder="0" />}
-              isInputNum={true}
-              shouldAutoFocus={true}
-              containerStyle={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-              inputStyle="otp-input"
-              focusStyle={{
-                border: "1px solid #CFD3DB",
-                outline: "none",
-              }}
-            />
-          </div>
+        <div className="page-header">
+          <div />
+          <p>Verify Job</p>
+        </div>
+        <Grid container spacing={3}>
+          <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
+          <Grid item xs={10} sm={6} md={4} lg={4} xl={4}>
+            <div className="business-mode">
+              <img src={Logo} className="business-mode-logo" alt="" />
+              <p className="business-mode-heading">Verify Your Job</p>
+              <p className="business-mode-text">
+                If you have a confirmation code, please enter it below
+              </p>
+            </div>
+            <div className="otp-div">
+              <OtpInput
+                className="intput-class"
+                value={otp}
+                onChange={setOtp}
+                placeholder={"0".repeat(otp)}
+                numInputs={6}
+                renderInput={(props) => <input {...props} placeholder="0" />}
+                isInputNum={true}
+                shouldAutoFocus={true}
+                containerStyle={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+                inputStyle="otp-input"
+                focusStyle={{
+                  border: "1px solid #CFD3DB",
+                  outline: "none",
+                }}
+              />
+            </div>
+          </Grid>
+          <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
         </Grid>
-        <Grid item xs={1} sm={3} md={4} lg={4} xl={4} />
-      </Grid>
 
       </div>
 
@@ -133,7 +133,7 @@ const VerifyMode = () => {
 </Model>
  : null} */}
 
-      <div className="print-content" style={{ opacity: "0", objectFit:'contain' }}>
+      <div className="print-content" style={{ opacity: "0", objectFit: 'contain' }}>
         {fileUrl ? <Print fileUrl={fileUrl} ref={componentRef} /> : null}
       </div>
     </SideMenu>

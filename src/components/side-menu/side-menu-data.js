@@ -16,9 +16,10 @@ import {
   DeliverDocuments,
   BusinessMode,
   Notification,
-Calendar,
+  Calendar,
   VerifyJob,
-  bank_details
+  bank_details,
+  user_setting
 } from "./../../svg";
 
 const SideMenuData = () => {
@@ -118,9 +119,28 @@ const SideMenuData = () => {
                       navigate("/bank_details");
                     }}
                   >
-                    <img src={bank_details} alt="Deliver Documents" style={{height:"25px", width: "25px"}} />
+                    <img src={bank_details} alt="Deliver Documents" style={{ height: "25px", width: "25px" }} />
                     <span className="side-menu-page-title">
-Bank Details                    </span>
+                      Bank Details                    </span>
+                  </Button>
+                </li>
+
+                
+                <li className="side-menu-list-item">
+                  <Button
+                    variant="text"
+                    className={
+                      CurrentPagePath === "/setting"
+                        ? "side-menu-active-page"
+                        : "side-menu-page"
+                    }
+                    onClick={() => {
+                      navigate("/setting");
+                    }}
+                  >
+                    <img src={user_setting} alt="Deliver Documents" style={{ height: "25px", width: "25px" }} />
+                    <span className="side-menu-page-title">
+                    Setting                   </span>
                   </Button>
                 </li>
 
@@ -130,7 +150,7 @@ Bank Details                    </span>
                     variant="text"
                     className={
                       CurrentPagePath === "/businessmode" ||
-                      CurrentPagePath === "/verifyjob"
+                        CurrentPagePath === "/verifyjob"
                         ? "side-menu-active-page"
                         : "side-menu-page"
                     }
@@ -158,10 +178,10 @@ Bank Details                    </span>
                             navigate("/business-mode");
                           }}
                         >
-                          <img src={Calendar} alt=""/>
+                          <img src={Calendar} alt="" />
 
                           <span className="side-menu-page-title">
-                          Agent Availability
+                            Agent Availability
                           </span>
                         </Button>
                       </li>
@@ -179,7 +199,7 @@ Bank Details                    </span>
                             navigate("/verify-job");
                           }}
                         >
-                          <img src={VerifyJob}  alt=""/>
+                          <img src={VerifyJob} alt="" />
 
                           <span className="side-menu-page-title">
                             Verify Job

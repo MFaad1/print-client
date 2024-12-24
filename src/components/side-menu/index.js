@@ -24,8 +24,8 @@ import {
   BusinessMode,
   Calendar,
   VerifyJob,
-  bank_details
-
+  bank_details,
+  user_setting
 } from "./../../svg";
 import { toast } from "react-toastify";
 
@@ -80,7 +80,6 @@ export const SideMenu = (props) => {
     }
   };
 
-  console.log(props.otp_verificaion, "otp_verificaion");
 
   useEffect(() => {
     toggler();
@@ -216,6 +215,27 @@ export const SideMenu = (props) => {
                                   </span>
                                 </Button>
                               </li>
+
+                              <li className="side-menu-list-item">
+                                <Button
+                                  variant="text"
+                                  className={
+                                    CurrentPagePath === "/setting"
+                                      ? "side-menu-active-page"
+                                      : "side-menu-page"
+                                  }
+                                  onClick={() => {
+                                    navigate("/setting");
+                                  }}
+                                >
+                                  <img src={user_setting} alt=""   style={{height:"25px", width: "25px"}}/>
+                                  <span className="side-menu-page-title">
+                                    Setting
+                                    </span>
+                                </Button>
+                              </li>
+
+
 
                               {/* Business Mode Dropdown */}
                               <li className="side-menu-list-item">

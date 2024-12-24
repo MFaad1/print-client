@@ -1,0 +1,10 @@
+.Setting_Container{
+  width: 50% ;
+  margin: auto;
+}
+
+.Setting_Container form{
+  width: 100%;
+  display: block;
+  border: 1px solid red;
+}
